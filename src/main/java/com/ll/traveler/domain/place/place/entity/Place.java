@@ -32,7 +32,7 @@ public class Place extends IdEntity {
     private String area; // 지역
     private String homepage; // 홈페이지
     private String usageTime; // 영업 시간
-    @OneToMany(mappedBy = "place", cascade = ALL, orphanRemoval = true)
-    @Builder.Default
+    @OneToMany(mappedBy = "place", cascade = ALL, orphanRemoval = true) // 부모와의 관계가 끊긴 자식 엔티티는 자동으로 삭제
+    @Builder.Default // 빌더 패턴을 사용하여 객체를 생성할 때 해당 필드의 기본값을 정의
     private List<Review> reviews = new ArrayList<>();
 }
