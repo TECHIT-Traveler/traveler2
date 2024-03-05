@@ -31,4 +31,6 @@ public class Member extends BaseEntity {
 
     private String providerTypeCode;
     private String verificationCode;
+
+    private String role;
 }
