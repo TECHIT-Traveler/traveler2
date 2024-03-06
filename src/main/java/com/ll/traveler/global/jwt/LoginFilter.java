@@ -47,8 +47,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
-
-        //UserDetailsS
+        System.out.println("=== LoginFilter - successfulAuthentication ===");
+        //UserDetails
         CustomMemberDetails customMemberDetails = (CustomMemberDetails) authentication.getPrincipal();
 
         String username = customMemberDetails.getUsername();
@@ -58,7 +58,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         GrantedAuthority auth = iterator.next();
 
         String role = auth.getAuthority();
-
+        System.out.println("role: " + role);
         String token = jwtUtil.createJwt(username, role, 60*60*10L);
 
         response.addHeader("Authorization", "Bearer " + token);

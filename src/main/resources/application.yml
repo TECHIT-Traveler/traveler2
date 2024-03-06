@@ -18,6 +18,11 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/traveler2
     username: root
     password: lldj123414
+  #sql:
+  #  init:
+  #    mode: always
+   #   continue-on-error: true
+    #  data-locations: classpath:sql/data.sql
   jpa:
     hibernate:
       ddl-auto: update
@@ -30,3 +35,51 @@ spring:
         highlight_sql: true
         use_sql_comments: true
     database-platform: org.hibernate.dialect.MySQLDialect
+    defer-datasource-initialization: true
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            clientId: ON_SECRET
+            scope: profile_nickname, profile_image
+            client-name: Kakao
+            authorization-grant-type: authorization_code
+            redirect-uri: '${custom.site.backUrl}/{action}/oauth2/code/{registrationId}'
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+  logging:
+    level:
+      com.ll.eitcharge: DEBUG
+      org.hibernate.SQL: DEBUG
+      org.hibernate.orm.jdbc.bind: TRACE
+      org.hibernate.orm.jdbc.extract: TRACE
+      org.springframework.transaction.interceptor: TRACE
+  custom:
+    dev:
+      cookieDomain: localhost
+      frontUrl: "http://${custom.dev.cookieDomain}:5173"
+      backUrl: "http://${custom.dev.cookieDomain}:${server.port}"
+    prod:
+      cookieDomain: www.caaano.site
+      frontUrl: "https://${custom.prod.cookieDomain}"
+      backUrl: "https://api.${custom.prod.cookieDomain}"
+    site:
+      cookieDomain: "${custom.dev.cookieDomain}"
+      frontUrl: "${custom.dev.frontUrl}"
+      backUrl: "${custom.dev.backUrl}"
+      name: traveler
+    jwt:
+      secretKey: ON_SECRET
+    accessToken:
+      expirationSec: '#{60*60}'
+    temp:
+      dirPath: c:/temp/traveler2_dev/temp
+    genFile:
+      dirPath: c:/temp/traveler2_dev
+    api:
+      serviceKey: ON_SECRET

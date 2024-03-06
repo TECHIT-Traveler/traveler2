@@ -12,22 +12,25 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
-@ResponseBody
 public class MemberController {
     private final MemberService memberService;
 
+    @GetMapping("/join")
+    public String showJoin() {
+        return "domain/member/member/join";
+    }
 
     @PostMapping("/join")
+    @ResponseBody
     public String joinProcess(MemberDTO memberDTO) {
-        System.out.println(memberDTO.getUsername());
+        System.out.println("username : " + memberDTO.getUsername());
         memberService.joinProcess(memberDTO);
 
         return "ok";
     }
 
-    @GetMapping("/")
-    public String index() {
-        return "test";
+    @GetMapping("/login")
+    public String showLogin() {
+        return "domain/member/member/login";
     }
-
 }

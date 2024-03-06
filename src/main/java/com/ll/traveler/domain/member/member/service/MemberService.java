@@ -25,15 +25,16 @@ public class MemberService {
 
             return;
         }
+
         Member member = Member.builder()
                 .username(memberDTO.getUsername())
                 .password(bCryptPasswordEncoder.encode(memberDTO.getPassword()))
                 .email(memberDTO.getEmail())
                 .nickname(memberDTO.getNickname())
                 .verificationCode(memberDTO.getVerificationCode())
-                .role("ROLE_ADMIN")
+                .role("ROLE_MEMBER")
                 .build();
 
         memberRepository.save(member);
-    }
+        }
 }
