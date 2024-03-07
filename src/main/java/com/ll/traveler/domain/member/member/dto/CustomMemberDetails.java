@@ -3,6 +3,7 @@ package com.ll.traveler.domain.member.member.dto;
 import com.ll.traveler.domain.member.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -18,7 +19,15 @@ public class CustomMemberDetails implements UserDetails {
 
         Collection<GrantedAuthority> collection = new ArrayList<>();
 
-        collection.add(new GrantedAuthority() {
+        if(member.getAdminLevel() > 0 ) {
+            collection.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else {
+            collection.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
+        }
+        return collection;
+
+
+        /*collection.add(new GrantedAuthority() {
 
             @Override
             public String getAuthority() {
@@ -27,7 +36,7 @@ public class CustomMemberDetails implements UserDetails {
             }
         });
 
-        return collection;
+        return collection;*/
     }
 
     @Override
