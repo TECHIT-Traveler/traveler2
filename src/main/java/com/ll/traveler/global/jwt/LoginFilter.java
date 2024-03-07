@@ -1,7 +1,6 @@
 package com.ll.traveler.global.jwt;
 
 import com.ll.traveler.domain.member.member.dto.CustomMemberDetails;
-import com.ll.traveler.domain.member.member.dto.MemberDTO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

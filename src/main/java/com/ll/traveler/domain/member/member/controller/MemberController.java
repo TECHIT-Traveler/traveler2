@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MemberController {
     private final MemberService memberService;
 
-
     @PostMapping("/join")
     public String joinProcess(MemberDTO memberDTO) {
         System.out.println(memberDTO.getUsername());
@@ -29,5 +28,4 @@ public class MemberController {
     public String index() {
         return "test";
     }
-
 }
