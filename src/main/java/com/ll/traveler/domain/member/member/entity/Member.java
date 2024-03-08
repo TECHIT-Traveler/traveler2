@@ -35,5 +35,9 @@ public class Member extends BaseEntity {
     private String nickname;
     private String role;
 
+    // OAuth를 위해 구성한 추가 필드 2개
+    private String provider;
+    private String providerId;
+
 }
 

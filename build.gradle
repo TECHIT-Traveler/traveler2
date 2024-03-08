@@ -35,6 +35,8 @@ dependencies {
 
     // OAUTH2
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    //NotNull 어노테이션
     implementation 'org.jetbrains:annotations:24.0.0'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

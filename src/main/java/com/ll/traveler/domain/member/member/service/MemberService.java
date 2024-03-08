@@ -30,15 +30,6 @@ public class MemberService {
                 .role(memberDTO.getRole())
                 .build();
 
-//        Member member = Member.builder()
-//                .username(memberDTO.getUsername())
-//                .password(bCryptPasswordEncoder.encode(memberDTO.getPassword()))
-//                .email(memberDTO.getEmail())
-//                .nickname(memberDTO.getNickname())
-//                .verificationCode(memberDTO.getVerificationCode())
-//                .role("ROLE_MEMBER")
-//                .build();
-
         memberRepository.save(member);
     }
 }

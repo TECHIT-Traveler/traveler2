@@ -1,5 +1,6 @@
 package com.ll.traveler.global.security;
 
+import com.ll.traveler.global.security.oAuth.PrincipalOauth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,8 +28,9 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // SecurityFilterChain Bean 설정
+    private final PrincipalOauth2UserService principalOauth2UserService;
 
+    // SecurityFilterChain Bean 설정
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -67,8 +69,13 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/")
                         .clearAuthentication(true)
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID"));
-
+                        .deleteCookies("JSESSIONID"))
+                // 소셜로그인 설정
+                .oauth2Login( oauth2Login -> oauth2Login
+                        .loginPage("/member/login")
+                        .userInfoEndpoint()
+                        .userService(principalOauth2UserService)
+                );
                 // 세션 설정
 //                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // 세션을 사용하지 않고 각 요청을 독립적으로 처리하도록 함
 
