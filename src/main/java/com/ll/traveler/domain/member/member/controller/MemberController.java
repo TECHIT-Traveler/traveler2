@@ -1,36 +1,37 @@
 package com.ll.traveler.domain.member.member.controller;
 
+
 import com.ll.traveler.domain.member.member.dto.MemberDTO;
 import com.ll.traveler.domain.member.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/member")
-@RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
 
-
     @GetMapping("/join")
-    public String showJoin() {
+    public String showJoin(MemberDTO memberDTO) {
         return "domain/member/member/join";
     }
 
     @PostMapping("/join")
-    @ResponseBody
-    public String joinProcess(MemberDTO memberDTO) {
-        System.out.println("username : " + memberDTO.getUsername());
-        memberService.joinProcess(memberDTO);
+    public String joinProc(MemberDTO memberDto) {
 
-        return "ok";
+        memberService.joinProc(memberDto);
+
+        return "redirect:/";
+
     }
 
     @GetMapping("/login")
-    public String showLogin() {
+    public String login() {
         return "domain/member/member/login";
     }
-
-
 }

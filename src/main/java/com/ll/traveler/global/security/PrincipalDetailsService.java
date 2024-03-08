@@ -1,6 +1,5 @@
-package com.ll.traveler.domain.member.member.service;
+package com.ll.traveler.global.security;
 
-import com.ll.traveler.domain.member.member.dto.CustomMemberDetails;
 import com.ll.traveler.domain.member.member.entity.Member;
 import com.ll.traveler.domain.member.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,22 +10,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CustomMemberDetailsService implements UserDetailsService {
+public class PrincipalDetailsService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+        Member member = memberRepository.findByUsername(username);
 
-        //DB에서 조회
-        Member memberData = memberRepository.findByUsername(username);
-
-        if (memberData != null) {
-
-            //UserDetails에 담아서 return하면 AutneticationManager가 검증 함
-            return new CustomMemberDetails(memberData);
+        if (member != null) {
+            return new PrincipalDetails(member);
         }
-
         return null;
     }
 }

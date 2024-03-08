@@ -23,7 +23,6 @@ import static lombok.AccessLevel.PROTECTED;
 @Setter
 @ToString(callSuper = true)// 클래스의 toString() 메서드를 생성할 때 부모 클래스의 필드들도 포함할지 여부를 지정
 public class Member extends BaseEntity {
-    private int adminLevel = 0;
 
     @Column(unique = true)
     private String username;
@@ -34,9 +33,6 @@ public class Member extends BaseEntity {
     private String password;
 
     private String nickname;
-
-    private String providerTypeCode;
-    private String verificationCode;
     private String role;
 
 }

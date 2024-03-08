@@ -17,24 +17,30 @@ public class MemberService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
-    public void joinProcess(MemberDTO memberDTO) {
+    public void joinProc(MemberDTO memberDTO) {
+        // 비밀번호 암호화
+        String encodedPassword = bCryptPasswordEncoder.encode(memberDTO.getPassword());
 
-        Boolean isExist = memberRepository.existsByUsername(memberDTO.getUsername());
-
-        if (isExist) {
-
-            return;
-        }
-
+        // MemberDTO로부터 Member 엔티티 생성
         Member member = Member.builder()
                 .username(memberDTO.getUsername())
-                .password(bCryptPasswordEncoder.encode(memberDTO.getPassword()))
+                .password(encodedPassword)
                 .email(memberDTO.getEmail())
                 .nickname(memberDTO.getNickname())
-                .verificationCode(memberDTO.getVerificationCode())
-                .role("ROLE_MEMBER")
+                .role(memberDTO.getRole())
                 .build();
 
+//        Member member = Member.builder()
+//                .username(memberDTO.getUsername())
+//                .password(bCryptPasswordEncoder.encode(memberDTO.getPassword()))
+//                .email(memberDTO.getEmail())
+//                .nickname(memberDTO.getNickname())
+//                .verificationCode(memberDTO.getVerificationCode())
+//                .role("ROLE_MEMBER")
+//                .build();
+
         memberRepository.save(member);
-        }
+    }
 }
+
+
