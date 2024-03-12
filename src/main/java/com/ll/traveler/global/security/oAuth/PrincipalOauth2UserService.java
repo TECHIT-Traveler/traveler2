@@ -16,8 +16,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
-    private MemberRepository memberRepository;
 
+    private final MemberRepository memberRepository;
     //userRequest 는 code 를 받아서 accessToken 을 응답 받은 객체
 
     @Override

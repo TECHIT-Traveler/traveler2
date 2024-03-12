@@ -60,7 +60,7 @@ public class SecurityConfig {
                 // Form 로그인 설정
                 .formLogin( formLogin  -> formLogin
                         .loginPage("/member/login")
-                        .loginProcessingUrl("/login")
+ //                       .loginProcessingUrl("member/login")
                         .defaultSuccessUrl("/")
                         .permitAll())
                 // 로그아웃 관련 설정 추가
@@ -71,10 +71,9 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID"))
                 // 소셜로그인 설정
-                .oauth2Login( oauth2Login -> oauth2Login
-                        .loginPage("/member/login")
-                        .userInfoEndpoint()
-                        .userService(principalOauth2UserService)
+                .oauth2Login( oauth2Login -> oauth2Login.userInfoEndpoint(userInfoEndpoint ->
+                                userInfoEndpoint.userService(principalOauth2UserService))
+                                .defaultSuccessUrl("/")
                 );
                 // 세션 설정
 //                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // 세션을 사용하지 않고 각 요청을 독립적으로 처리하도록 함

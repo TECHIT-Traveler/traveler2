@@ -1,8 +1,6 @@
 package com.ll.traveler.global.security;
 
 import com.ll.traveler.domain.member.member.entity.Member;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -17,8 +15,6 @@ import java.util.Map;
 // Authentication 안에 Member 정보가 있어야 됨.
 //Authentication 객체에 저장할 수 있는 유일한 타입
 
-@Data
-@RequiredArgsConstructor
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private Member member;
@@ -67,19 +63,16 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         return true;
     }
 
-     @Override
-        public Collection<? extends GrantedAuthority> getAuthorities() {
-           Collection<GrantedAuthority> collect = new ArrayList<>();
-           collect.add(new GrantedAuthority() {
-               @Override
-               public String getAuthority() {
-                   return member.getRole();
-               }
-           });
-           return collect;
-       }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> collet = new ArrayList<GrantedAuthority>();
+        collet.add(() -> {
+            return member.getRole();
+        });
+        return collet;
+    }
 
-    // 리소스 서버로 부터 받는 회원정보
+        // 리소스 서버로 부터 받는 회원정보
     @Override
     public Map<String, Object> getAttributes() {
         return attributes;
