@@ -1,5 +1,5 @@
 <nav th:fragment="navbarFragment" class="navbar navbar-expand-lg navbar-light shadow-sm"
-     xmlns:sec="http://www.w3.org/1999/xhtml">
+     xmlns:sec="http://www.thymeleaf.org">
     <div class="container">
         <a class="navbar-brand" href="/">Traveler</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -18,36 +18,26 @@
             <!-- 오른쪽 정렬을 위한 div -->
             <ul class="navbar-nav ml-auto">
                 <!-- 관리자 홈 링크는 ADMIN 권한을 가진 사용자에게만 표시됩니다 -->
-                <sec:authorize access="hasRole('ADMIN')">
-                    <li class="nav-item active">
-                        <a href="/adm">관리자 홈</a>
-                    </li>
-                </sec:authorize>
+                <li class="nav-item active" sec:authorize="hasRole('ADMIN')">
+                    <a href="/adm">관리자 홈</a>
+                </li>
                 <!-- 인증된 사용자일 때만 보이는 메뉴 -->
-                <sec:authorize access="isAuthenticated()">
-                    <li class="nav-item active">
-                        <a href="/member/logout">로그아웃</a>
-                    </li>
-                </sec:authorize>
+                <li class="nav-item active" sec:authorize="isAuthenticated()">
+                    <a href="/member/logout">로그아웃</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <span class="navbar-text me-3">
+                        <strong><sec:authentication property="principal.member.username"/></strong>님 환영합니다.
+                    </span>
+                </li>
                 <!-- 인증되지 않은 사용자일 때만 보이는 메뉴 -->
-                <sec:authorize access="isAnonymous()">
-                    <li class="nav-item">
-                        <a href="/member/login">로그인</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a href="/member/join">회원가입</a>
-                    </li>
-                </sec:authorize>
-                <sec:authorize access="isAuthenticated()">
-                <span class="navbar-text me-3">
-                <strong><sec:authentication property="principal.nickname"/></strong>님 환영합니다.
-                </span>
-                </sec:authorize>
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a href="/member/login">로그인</a>
+                </li>
+                <li class="nav-item active" sec:authorize="isAnonymous()">
+                    <a href="/member/join">회원가입</a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
-
-
-
-

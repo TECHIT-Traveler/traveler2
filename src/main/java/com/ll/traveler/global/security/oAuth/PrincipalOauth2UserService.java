@@ -63,6 +63,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .username(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId())
                     .email(oAuth2UserInfo.getEmail())
                     .role("ROLE_MEMBER")
+                    .nickname(oAuth2UserInfo.getName())
                     .provider(oAuth2UserInfo.getProvider())
                     .providerId(oAuth2UserInfo.getProviderId())
                     .build();
