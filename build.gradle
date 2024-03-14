@@ -26,12 +26,18 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
     // 시큐리티
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
+    //JWT
+    implementation 'com.auth0:java-jwt:3.4.1'
+
+    // json
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
     // OAUTH2
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
@@ -53,6 +59,7 @@ dependencies {
     // TEST
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+
 }
 
 tasks.named('test') {
