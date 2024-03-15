@@ -1,4 +1,4 @@
-package com.ll.traveler.domain.place.place.playGround;
+package com.ll.traveler.domain.place.place.gyeonggi;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package com.ll.traveler.domain.place.place.playGround;
+package com.ll.traveler.domain.place.place.gyeonggi;
 
 import com.ll.traveler.global.jpa.IdEntity;
 import jakarta.persistence.Entity;
@@ -27,9 +27,7 @@ public class PlayGround extends IdEntity {
     private String IMAGE_NM; // 이미지
 
     // 추가적으로 위도와 경도 필드를 정의해야 합니다.
-    private double REFINE_WGS84_LAT;
-    private double REFINE_WGS84_LOGT;
-
-
+    private double REFINE_WGS84_LAT; // 위도
+    private double REFINE_WGS84_LOGT; // 경도
 
 }

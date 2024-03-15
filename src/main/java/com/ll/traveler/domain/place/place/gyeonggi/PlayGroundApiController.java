@@ -1,4 +1,4 @@
-package com.ll.traveler.domain.place.place.playGround;
+package com.ll.traveler.domain.place.place.gyeonggi;
 
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class PlayGroundApiController {
     private final PlayGroundService service;
 
 
-    @GetMapping("/api")
+    @GetMapping("/apiGyeongi")
     public String callApi() throws IOException {
         StringBuilder result = new StringBuilder();
 

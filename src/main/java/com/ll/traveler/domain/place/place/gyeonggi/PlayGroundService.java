@@ -1,4 +1,4 @@
-package com.ll.traveler.domain.place.place.playGround;
+package com.ll.traveler.domain.place.place.gyeonggi;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 
