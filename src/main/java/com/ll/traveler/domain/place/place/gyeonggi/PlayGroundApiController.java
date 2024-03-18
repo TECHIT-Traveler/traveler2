@@ -18,7 +18,7 @@ public class PlayGroundApiController {
     private final PlayGroundService service;
 
 
-    @GetMapping("/apiGyeongi")
+    @GetMapping("/apiGyeonggi")
     public String callApi() throws IOException {
         StringBuilder result = new StringBuilder();
 
