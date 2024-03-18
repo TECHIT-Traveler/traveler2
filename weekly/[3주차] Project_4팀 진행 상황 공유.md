@@ -94,4 +94,10 @@
 
 Github Repository URL: https://github.com/TECHIT-Traveler/traveler2
 
+<<<<<<< HEAD
 - 팀원 회의 사진
+=======
+- 팀원 회의 사진
+
+![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/c69962b0-3951-485b-b10a-5bb29576bba8/e870596f-cf0f-4da3-84aa-c16c10ba8a77/Untitled.png)
+>>>>>>> 590cd9b34af721bb19867157dea6a455c5123a4c
