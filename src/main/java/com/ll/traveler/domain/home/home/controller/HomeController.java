@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 @Controller
-@ResponseBody
 public class HomeController {
 
     @GetMapping("/")
@@ -26,6 +25,6 @@ public class HomeController {
         GrantedAuthority auth = iter.next();
         String role = auth.getAuthority();
 
-        return "Main Controller : "+name;
+        return "domain/home/home/main";
     }
 }

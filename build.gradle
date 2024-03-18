@@ -26,25 +26,31 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
     // 시큐리티
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
-    // JWT
-    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
-    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
-    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+    //JWT
+    implementation 'com.auth0:java-jwt:3.4.1'
+
+    // json
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
     // OAUTH2
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    //NotNull 어노테이션
+    implementation 'org.jetbrains:annotations:24.0.0'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     // LOMBOK
     annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // DB
     runtimeOnly 'com.mysql:mysql-connector-j'
@@ -53,6 +59,12 @@ dependencies {
     // TEST
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+
+    //api
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.0'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1' // JSON parsing을 위한 종속성
+
 }
 
 tasks.named('test') {

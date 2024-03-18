@@ -1,37 +1,37 @@
 package com.ll.traveler.domain.place.place.controller;
 
-import com.ll.traveler.domain.place.place.repositiry.PlaceRepository;
-import com.ll.traveler.domain.place.place.service.PlaceService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/place")
-@RequiredArgsConstructor
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+@RestController
 public class PlaceController {
-
-    private final PlaceRepository placeRepository;
-    private final PlaceService placeService;
-
-    @GetMapping("/list")
-    @ResponseBody
-    public String list() {
-        return null;
+//        @GetMapping("/api")
+//        public String callApi() throws IOException {
+//            StringBuilder result = new StringBuilder();
+//
+//            String urlstr = "https://api.odcloud.kr/api/v1/detailSeqPart.do" +
+//                    "ServiceKey=HZWg2u2vgiUmNCbqK6uKdyt3Q7xyRc%2FlcHldD%2FyNb9QRMQ0I9wYVQsZpILvenqid%2FqKsOd6Nvs2FWLkVWzPHsg%3D%3D" +
+//                    "&type=json" +
+//                    "&pageNo=1" +
+//                    "&numOfRows=20";
+//            URL url = new URL(urlstr);
+//            HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
+//            urlconnection.setRequestMethod("GET");
+//
+//            BufferedReader br = new BufferedReader(new InputStreamReader(urlconnection.getInputStream(), "UTF-8"));
+//
+//            String returnLine;
+//
+//            while ((returnLine = br.readLine()) != null) {
+//                result.append(returnLine + "\n\r");
+//            }
+//            urlconnection.disconnect();
+//
+//            return result.toString();
+//        }
     }
-
-    @PostMapping("/list")
-    @ResponseBody
-    public String showlist(){
-        return null;
-    }
-
-    @GetMapping("/detail")
-    @ResponseBody
-    public String detail() {
-        return null;
-    }
-}
