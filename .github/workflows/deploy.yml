@@ -3,7 +3,7 @@ name: traveler Dev CI/CD
 on:
   push:
     branches:
-      - main  # push되면 실행될 브랜치를 선택합니다.
+      - master  # push되면 실행될 브랜치를 선택합니다.
 
   workflow_dispatch: # 수동 실행
 
