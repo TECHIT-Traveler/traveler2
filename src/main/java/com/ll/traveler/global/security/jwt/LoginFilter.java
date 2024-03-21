@@ -12,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -26,7 +27,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         //클라이언트 요청에서 username, password 추출
         String username = obtainUsername(request);
+//        System.out.println("username: " + username);
         String password = obtainPassword(request);
+//        System.out.println("password: " + password);
 
         //스프링 시큐리티에서 username과 password를 검증하기 위해서는 token에 담아야 함
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password, null);
@@ -37,7 +40,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     //로그인 성공시 실행하는 메소드
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
         //UserDetailsS
         PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
 
@@ -51,7 +54,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String token = jwtUtil.createJwt(username, role, 60*60*10L);
 
-        response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader("Authorization", token);
+//        response.sendRedirect("http://localhost:8081");
     }
 
     //로그인 실패시 실행하는 메소드

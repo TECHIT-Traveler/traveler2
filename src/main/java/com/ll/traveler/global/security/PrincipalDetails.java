@@ -83,4 +83,8 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     public String getName() {
         return member.getId()+"";
     }
+
+    public String getNickname() {
+        return member.getNickname();
+    }
 }

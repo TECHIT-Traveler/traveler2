@@ -44,7 +44,6 @@ public class JWTFilter extends OncePerRequestFilter { // 요청에 담긴 JWT를
         //Authorization 헤더 검증
         if (authorization == null) {
 
-//            System.out.println("token null");
             filterChain.doFilter(request, response);
             return;
         }

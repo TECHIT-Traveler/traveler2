@@ -12,10 +12,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -43,47 +48,46 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-//                // CORS 설정
-//                .cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
-//                    CorsConfiguration configuration = new CorsConfiguration();
-//                    configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8090"));
-//                    configuration.setAllowedMethods(Collections.singletonList("*"));
-//                    configuration.setAllowCredentials(true);
-//                    configuration.setAllowedHeaders(Collections.singletonList("*"));
-//                    configuration.setMaxAge(3600L);
-//                    configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-//
-//                    return configuration;
-//                }))
-//                 .headers((headers) -> headers
-//                                        .addHeaderWriter(new XFrameOptionsHeaderWriter(
-//                                                XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
+                // CORS 설정
+                .cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
+                    CorsConfiguration configuration = new CorsConfiguration();
+                    configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8081"));
+                    configuration.setAllowedMethods(Collections.singletonList("*"));
+                    configuration.setAllowCredentials(true);
+                    configuration.setAllowedHeaders(Collections.singletonList("*"));
+                    configuration.setMaxAge(3600L);
+                    configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+
+                    return configuration;
+                }))
+                .headers((headers) -> headers
+                        .addHeaderWriter(new XFrameOptionsHeaderWriter(
+                                XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
                 // CSRF disable
                 .csrf(csrf -> csrf.disable())
 
                 // 경로별 인가 작업
-                .authorizeHttpRequests( auth -> auth
+                .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/member/**").authenticated()
                         .requestMatchers("/adm/**").hasRole("ADMIN")
                         .anyRequest().permitAll())
                 // Form 로그인 설정
-                .formLogin( formLogin  -> formLogin
-                        .loginPage("/member/login")
-                        //                       .loginProcessingUrl("member/login")
-                        .defaultSuccessUrl("/")
-                        .successHandler(customSuccessHandler)
-                        .permitAll())
+//                .formLogin( formLogin  -> formLogin
+//                        .loginProcessingUrl("/login")
+//                        .defaultSuccessUrl("/")
+//                        .successHandler(customSuccessHandler)
+//                        .permitAll())
+                .formLogin(auth -> auth.disable())
                 // 로그아웃 관련 설정 추가
-                .logout(logout -> logout
-                        .logoutUrl("/member/logout")
-                        .logoutSuccessUrl("/")
-                        .clearAuthentication(true)
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID", "Authorization")// 삭제할 쿠키 목록
-                        .addLogoutHandler((request, response, authentication) -> {
-                            // JWT 토큰 삭제
-                            jwtUtil.invalidateJwt(request, response);
-                        }))
+//                .logout(logout -> logout
+//                        .logoutUrl("/member/logout")
+//                        .clearAuthentication(true)
+//                        .invalidateHttpSession(true)
+//                        .deleteCookies("JSESSIONID", "Authorization")// 삭제할 쿠키 목록
+//                        .addLogoutHandler((request, response, authentication) -> {
+//                            jwtUtil.invalidateJwt(request, response, "JSESSIONID");
+//                            jwtUtil.invalidateJwt(request, response, "Authorization");
+//                        }))
                 //LoginFilter 추가
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 //JWTFilter 추가
@@ -93,9 +97,9 @@ public class SecurityConfig {
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(principalOauth2UserService))
                         .successHandler(customSuccessHandler)
-                );
-        // 세션 설정
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // 세션을 사용하지 않고 각 요청을 독립적으로 처리하도록 함
+                )
+                //세션 설정
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // 세션을 사용하지 않고 각 요청을 독립적으로 처리하도록 함
 
         return http.build();
     }

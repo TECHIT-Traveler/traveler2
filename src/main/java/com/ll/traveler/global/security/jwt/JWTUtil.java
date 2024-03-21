@@ -16,7 +16,6 @@ import java.util.Date;
 public class JWTUtil {
 
     private SecretKey secretKey;
-    private final String jwtCookieName = "Authorization";
 
     public JWTUtil(@Value("${spring.jwt.secret}")String secret) {
 
@@ -49,12 +48,11 @@ public class JWTUtil {
                 .compact();
     }
 
-    public void invalidateJwt(HttpServletRequest request, HttpServletResponse response) {
-        //클라이언트에 저장된 JWT 쿠키를 삭제
+    public void invalidateJwt(HttpServletRequest request, HttpServletResponse response, String cookieName) {
         Cookie[] cookies = request.getCookies();
         if(cookies != null) {
             for(Cookie cookie : cookies) {
-                if(cookie.getName().equals(jwtCookieName)) {
+                if(cookie.getName().equals(cookieName)) {
                     cookie.setMaxAge(0);
                     cookie.setValue("");
                     cookie.setPath("");
