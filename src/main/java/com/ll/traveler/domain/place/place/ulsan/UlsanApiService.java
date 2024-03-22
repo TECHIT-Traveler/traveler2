@@ -56,4 +56,7 @@ public class UlsanApiService {
 
         return ulsanList;
     }
+    public List<Ulsan> getAllUlsanData() {
+        return ulsanApiRepository.findAll();
+    }
 }
