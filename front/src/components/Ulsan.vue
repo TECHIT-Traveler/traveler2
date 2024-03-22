@@ -4,7 +4,11 @@
 		  <h1>{{ o.facility }}</h1>
 		  <hr>
 		  <span>
-			{{o.streetNameAddress}}
+			{{o.streetNameAddress}}<br>
+			{{o.address}}<br>
+			{{o.tel}}<br>
+			{{o.lat}}<br>
+			{{o.lng}}<br>
 		  </span>
 		</div>
 	</div>

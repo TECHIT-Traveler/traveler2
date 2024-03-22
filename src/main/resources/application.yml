@@ -24,10 +24,10 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/traveler2
     username: root
     password: lldj123414
-  sql:
-    init:
-      mode: always
-      continue-on-error: true
+#  sql:
+#    init:
+#      mode: always
+#      continue-on-error: true
 #      data-locations: classpath:sql/data.sql
   jpa:
     hibernate:
