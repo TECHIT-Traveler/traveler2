@@ -13,8 +13,8 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Setter
 public class Gangwon extends IdEntity {
-    private String latitude; // 위도
-    private String longitude; // 경도
+//    private String latitude; // 위도
+//    private String longitude; // 경도
     private String roadAddress; // 도로명 주소
     private String businessType; // 업종
     private String businessName; // 업체명
