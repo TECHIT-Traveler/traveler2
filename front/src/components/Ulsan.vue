@@ -1,18 +1,52 @@
 <template>
 	<div class="ulsan">
-		<h1>울산</h1>
+		<div v-for="(o, k) in ulsanData">
+		  <h1>{{ o.facility }}</h1>
+		  <hr>
+		  <span>
+			{{o.streetNameAddress}}
+		  </span>
+		</div>
 	</div>
 </template>
 
 <script>
 export default {
-	name: 'Ulsan',
+  mounted () {
+	  this.getUlsanData()
+  },
+  name: 'Ulsan',
+  data () {
+	  return {
+      ulsanData: []
+	  }
+  },
+  methods: {
+	  getUlsanData () {
+      fetch('http://localhost:8090/ulsan')
+		  .then(resp => resp.json())
+		  .then(data => {
+          this.ulsanData = data
+		  }).catch(err => console.log(err))
+	  }
+  }
 }
 </script>
 
-<style>
-	.ulsan {
-		width: 800px;
-		margin: 20px auto;
-	}
-</style>
+  <!-- Add "scoped" attribute to limit CSS to this component only -->
+  <style scoped>
+  h1, h2 {
+	font-weight: normal;
+  }
+  ul {
+	list-style-type: none;
+	padding: 0;
+  }
+  li {
+	display: inline-block;
+	margin: 0 10px;
+  }
+  a {
+	color: #42b983;
+  }
+  </style>

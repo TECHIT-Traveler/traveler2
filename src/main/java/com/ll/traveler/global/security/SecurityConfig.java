@@ -10,6 +10,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -33,7 +38,20 @@ public class SecurityConfig {
     // SecurityFilterChain Bean 설정
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+
+        http.httpBasic( basic -> basic.disable());
+
+        http.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOrigins(Collections.singletonList("*"));
+            configuration.setAllowedMethods(Collections.singletonList("*"));
+//                    configuration.setAllowCredentials(true);
+//                    configuration.setAllowedHeaders(Collections.singletonList("Authorization", "Content-Type"));
+            configuration.setMaxAge(3600L);
+            return configuration;
+        }));
+
+//        http
 //                // CORS 설정
 //                .cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
 //                    CorsConfiguration configuration = new CorsConfiguration();
@@ -49,9 +67,9 @@ public class SecurityConfig {
 //                 .headers((headers) -> headers
 //                                        .addHeaderWriter(new XFrameOptionsHeaderWriter(
 //                                                XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
+        http
                 // CSRF disable
                 .csrf(csrf -> csrf.disable())
-
                 // 경로별 인가 작업
                 .authorizeHttpRequests( auth -> auth
 //                        .requestMatchers("/member/**").authenticated()
@@ -80,4 +98,19 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
 }
