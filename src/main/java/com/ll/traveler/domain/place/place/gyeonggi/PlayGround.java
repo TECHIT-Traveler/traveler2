@@ -4,12 +4,10 @@ import com.ll.traveler.global.jpa.IdEntity;
 import jakarta.persistence.Entity;
 import lombok.*;
 
-import static lombok.AccessLevel.PROTECTED;
-
 @Entity
 @Builder
-@NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class PlayGround extends IdEntity {

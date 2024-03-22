@@ -22,12 +22,12 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/traveler2
-    username: traveler2
-    password: Lldj@123414!
-#  sql:
-#    init:
-#      mode: always
-#      continue-on-error: true
+    username: root
+    password: lldj123414
+  sql:
+    init:
+      mode: always
+      continue-on-error: true
 #      data-locations: classpath:sql/data.sql
   jpa:
     hibernate:
@@ -83,10 +83,8 @@ spring:
     logging:
       level:
         root: info
-#  logging:
-#    level:
-#      com.ll.eitcharge: DEBUG
-#      org.hibernate.SQL: DEBUG
+        com.ll.eitcharge: DEBUG
+        org.hibernate.SQL: DEBUG
 #      org.hibernate.orm.jdbc.bind: TRACE
 #      org.hibernate.orm.jdbc.extract: TRACE
 #      org.springframework.transaction.interceptor: TRACE
