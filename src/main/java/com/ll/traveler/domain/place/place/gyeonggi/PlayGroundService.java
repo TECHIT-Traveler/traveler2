@@ -33,7 +33,7 @@ public class PlayGroundService {
 
         List<Map<String, String>> targetValues = (List<Map<String, String>>) ((Map<String, List<Map<String, String>>>) ((List<Object>) dataMap.get("OTHERHALFANIENTPARK")).get(1)).get("row");
 
-        
+
 
         for (Map<String, String> val : targetValues ) {
 

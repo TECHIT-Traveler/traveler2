@@ -34,10 +34,10 @@ public class PlayGroundApiController {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
 
-        String retrunLine;
+        String returnLine;
 
-        while ((retrunLine = br.readLine()) !=null){
-            result.append(retrunLine + "\n\r");
+        while ((returnLine = br.readLine()) !=null){
+            result.append(returnLine + "\n\r");
         }
         con.disconnect();
 
