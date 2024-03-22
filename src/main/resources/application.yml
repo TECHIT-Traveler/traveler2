@@ -22,8 +22,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/traveler2
-    username: traveler2
-    password: Lldj@123414!
+    username: root
+    password: lldj123414
 #  sql:
 #    init:
 #      mode: always
@@ -31,7 +31,7 @@ spring:
 #      data-locations: classpath:sql/data.sql
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         naming:
