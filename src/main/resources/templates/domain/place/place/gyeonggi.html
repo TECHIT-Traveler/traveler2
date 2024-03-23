@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경기도 반려견 놀이공간 정보</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="mb-4">경기도 반려견 놀이공간 정보</h1>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+    </div>
+</div>
+
+
+<script>
+// 예제 JSON 데이터
+const dogParks = [
+{
+name: "수진동 탄천 반려견 놀이공간",
+address: "경기 성남시 수정구 수진동 4690-1",
+managingOrg: "성남시청",
+phoneNumber: "031-729-4343",
+operatingHours: "연중무휴",
+fee: "무료"
+},
+// 다른 반려견 놀이공간 데이터 추가 가능...
+];
+
+// 카드를 생성하고 페이지에 추가하는 함수
+function addCards(dogParks) {
+const container = document.querySelector('.row'); // 카드를 추가할 컨테이너
+
+dogParks.forEach(park => {
+const cardHTML = `
+<div class="col">
+<div class="card">
+<div class="card-body">
+<h5 class="card-title">${park.name}</h5>
+<p class="card-text">주소: ${park.address}</p>
+<p class="card-text">운영 기관: ${park.managingOrg}</p>
+<p class="card-text">전화번호: ${park.phoneNumber}</p>
+<p class="card-text">운영 시간: ${park.operatingHours}</p>
+<p class="card-text">비용: ${park.fee}</p>
+</div>
+</div>
+</div>
+`;
+
+container.innerHTML += cardHTML; // 생성된 카드 HTML을 컨테이너에 추가
+});
+}
+
+// 문서 로딩 완료 후 카드 추가
+document.addEventListener('DOMContentLoaded', () => {
+addCards(dogParks);
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

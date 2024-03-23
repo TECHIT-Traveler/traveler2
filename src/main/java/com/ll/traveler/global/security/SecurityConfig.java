@@ -19,6 +19,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Collections;
 
@@ -63,9 +65,9 @@ public class SecurityConfig {
                 .headers((headers) -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
+//        http.httpBasic( basic -> basic.disable());
                 // CSRF disable
                 .csrf(csrf -> csrf.disable())
-
                 // 경로별 인가 작업
                 .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/member/**").authenticated()
@@ -78,16 +80,6 @@ public class SecurityConfig {
 //                        .successHandler(customSuccessHandler)
 //                        .permitAll())
                 .formLogin(auth -> auth.disable())
-                // 로그아웃 관련 설정 추가
-//                .logout(logout -> logout
-//                        .logoutUrl("/member/logout")
-//                        .clearAuthentication(true)
-//                        .invalidateHttpSession(true)
-//                        .deleteCookies("JSESSIONID", "Authorization")// 삭제할 쿠키 목록
-//                        .addLogoutHandler((request, response, authentication) -> {
-//                            jwtUtil.invalidateJwt(request, response, "JSESSIONID");
-//                            jwtUtil.invalidateJwt(request, response, "Authorization");
-//                        }))
                 //LoginFilter 추가
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 //JWTFilter 추가
@@ -100,7 +92,21 @@ public class SecurityConfig {
                 )
                 //세션 설정
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // 세션을 사용하지 않고 각 요청을 독립적으로 처리하도록 함
-
         return http.build();
     }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
 }

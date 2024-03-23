@@ -21,11 +21,6 @@
   </div>
 </template>
 
-<script>
-export default {
-}
-</script>
-
 <style>
 .main-top-promotion-video {
   width: 100%;
@@ -36,6 +31,6 @@ export default {
   object-fit: cover;
 }
 .main-top-promotion > .container {
-  position: relative
+  position: relative;
 }
 </style>

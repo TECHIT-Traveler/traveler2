@@ -1,6 +1,6 @@
 <template>
   <div class="gyeonggido">
-  <h1>경기도</h1>
+    <h1>경기도</h1>
   </div>
 </template>
 

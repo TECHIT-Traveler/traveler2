@@ -1,4 +1,4 @@
-package com.ll.traveler.domain.place.place.repositiry;
+package com.ll.traveler.domain.place.place.repository;
 
 import com.ll.traveler.domain.place.place.entity.Place;
 import org.springframework.data.jpa.repository.JpaRepository;

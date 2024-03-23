@@ -10,17 +10,28 @@ spring:
     virtual:
       enabled: true
   mvc:
-    hiddenmethod:
-      filter:
-        enabled: true
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  springdoc:
+    default-consumes-media-type: application/json
+    default-produces-media-type: application/json
+    swagger-ui:
+      path: /swagger-ui.html
+      disable-swagger-default-url: true
+      display-query-params-without-oauth2: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/traveler2
     username: root
     password: lldj123414
+#  sql:
+#    init:
+#      mode: always
+#      continue-on-error: true
+#      data-locations: classpath:sql/data.sql
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         naming:
@@ -67,14 +78,11 @@ spring:
       dirPath: c:/temp/traveler2_dev
     api:
       serviceKey: ON_SECRET
-  # Redis configuration
-  redis:
-    host: localhost
-    port: 6379
-#  logging:
-#    level:
-#      com.ll.eitcharge: DEBUG
-#      org.hibernate.SQL: DEBUG
+    logging:
+      level:
+        root: info
+        com.ll.eitcharge: DEBUG
+        org.hibernate.SQL: DEBUG
 #      org.hibernate.orm.jdbc.bind: TRACE
 #      org.hibernate.orm.jdbc.extract: TRACE
 #      org.springframework.transaction.interceptor: TRACE

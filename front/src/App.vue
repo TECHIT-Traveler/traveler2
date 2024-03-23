@@ -14,8 +14,7 @@ export default {
   components: {
     'Header': Header,
     'Footer': Footer
-  },
-  name: 'App'
+  }
 }
 </script>
 
@@ -26,19 +25,22 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
+
 body {
   text-align: center;
   background-color: #F6F6F8;
 }
+
 input {
   border-style: groove;
   width: 200px;
 }
+
 button {
   border-style: groove;
 }
+
 .shadow {
   box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.03);
 }
