@@ -14,5 +14,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // SELECT * FROM user WHERE provider = ?1 and providerId = ?2
     Optional<Member> findByProviderAndProviderId(String provider, String providerId);
 
+    Boolean existsByUsername(String username);
+
+    Optional<Member> findByEmail(String email);
 }
 
