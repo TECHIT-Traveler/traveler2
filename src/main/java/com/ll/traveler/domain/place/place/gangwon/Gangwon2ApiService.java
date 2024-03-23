@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -44,7 +45,16 @@ public class Gangwon2ApiService {
 
         return gangwon2List;
     }
-    public List<Gangwon2> getAllGangwon2Data(){
+
+    public List<Gangwon2> getAllGangwon2Data() {
         return gangwon2ApiRepository.findAll();
+    }
+
+    public Gangwon2 getGangwon2DataById(Long id) {
+        Optional<Gangwon2> gangwon2Optional = gangwon2ApiRepository.findById(id);
+        if(gangwon2Optional.isPresent()) {
+            return gangwon2Optional.get();
+        }
+       return null;
     }
 }
