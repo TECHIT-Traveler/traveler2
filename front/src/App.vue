@@ -1,56 +1,21 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-link v-if="!isAuthenticated" to="/login">Login</router-link>
-    <router-link v-if="!isAuthenticated" to="/join">Join</router-link>
-    <button @click="logout" v-if="isAuthenticated">Logout</button>
-    <p v-if="isAuthenticated">
-      <strong>{{userInfo}}</strong>
-      <span>님 환영합니다.</span>
-    </p>
-    <router-view/>
+    <Header></Header>
+    <router-view></router-view>
+    <!-- <Footer></Footer> -->
   </div>
 </template>
 
 <script>
+import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
+
 export default {
-  name: 'App',
-  data () {
-    return {
-      isAuthenticated: false,
-      userInfo: null
-    }
+  components: {
+    'Header': Header,
+    'Footer': Footer
   },
-  created () {
-    this.checkLoginStatus()
-  },
-  methods: {
-    checkLoginStatus () {
-      const token = this.$cookies.get('Authorization')
-      if (token !== null) {
-        this.$axios.get('http://localhost:8090/member/login-info', {
-          withCredentials: true
-        }).then(response => {
-          this.isAuthenticated = true
-          this.userInfo = response.data
-        }).catch(error => {
-          console.log('로그인 사용자 정보 요청 실패', error)
-        })
-      }
-    },
-    logout () {
-      this.$axios.post('http://localhost:8090/member/logout')
-        .then(() => {
-          this.isAuthenticated = false
-          this.userInfo = null
-          this.$cookies.remove('Authorization')
-          this.$cookies.remove('JSESSIONID')
-        })
-        .catch(error => {
-          console.error('로그아웃 실패', error)
-        })
-    }
-  }
+  name: 'App'
 }
 </script>
 
@@ -62,5 +27,19 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+body {
+  text-align: center;
+  background-color: #F6F6F8;
+}
+input {
+  border-style: groove;
+  width: 200px;
+}
+button {
+  border-style: groove;
+}
+.shadow {
+  box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.03);
 }
 </style>

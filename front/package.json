@@ -15,12 +15,14 @@
   },
   "dependencies": {
     "axios": "^0.25.0",
+    "bootstrap-vue": "^2.23.1",
     "cookie-parser": "^1.4.6",
     "path": "^0.12.7",
     "request": "^2.88.2",
     "vue": "^2.5.2",
     "vue-cookies": "^1.8.3",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

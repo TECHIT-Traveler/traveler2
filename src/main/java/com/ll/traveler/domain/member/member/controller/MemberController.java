@@ -2,9 +2,9 @@ package com.ll.traveler.domain.member.member.controller;
 
 
 import com.ll.traveler.domain.member.member.dto.MemberDTO;
+import com.ll.traveler.domain.member.member.dto.MemberInfoDTO;
 import com.ll.traveler.domain.member.member.entity.Member;
 import com.ll.traveler.domain.member.member.service.MemberService;
-import com.ll.traveler.global.security.PrincipalDetails;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -71,15 +71,22 @@ public class MemberController {
 
     @GetMapping("/login-info")
     @ResponseBody
-    public ResponseEntity<?> getCurrentUser(Authentication authentication) {
+    public ResponseEntity<?> getUserInfo(Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         String username = userDetails.getUsername();
 
         Member member = memberService.findByUsername(username);
 
-        PrincipalDetails principalDetails = new PrincipalDetails(member);
-        return ResponseEntity.ok(principalDetails.getNickname());
+        MemberInfoDTO memberInfo = new MemberInfoDTO();
+        memberInfo.setId(member.getId());
+        memberInfo.setUsername(member.getUsername());
+        memberInfo.setNickname(member.getNickname());
+        memberInfo.setEmail(member.getEmail());
+        memberInfo.setRole(member.getRole());
+        memberInfo.setProvider(member.getProvider());
+
+        return ResponseEntity.ok(memberInfo);
     }
 
     @PostMapping("/logout")
