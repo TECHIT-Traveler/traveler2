@@ -4,6 +4,7 @@ import HelloWorld from "@/components/HelloWorld.vue";
 import Gyeonggi from "@/components/Gyeonggi.vue";
 import Gangwon from "@/components/Gangwon.vue";
 import Ulsan from "@/components/Ulsan.vue";
+import GangwonDetail from "@/components/GangwonDetail.vue";
 
 Vue.use(Router);
 
@@ -28,6 +29,11 @@ export default new Router({
       path: "/Ulsan",
       name: "Ulsan",
       component: Ulsan,
+    },
+    {
+      path: "/detail/:id",
+      name: "GangwonDetail",
+      component: GangwonDetail,
     },
   ],
 });
