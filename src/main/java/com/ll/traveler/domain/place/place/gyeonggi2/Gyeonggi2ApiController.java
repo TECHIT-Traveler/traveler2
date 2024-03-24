@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class Gyeonggi2ApiController {
 
         String returnLine;
 
-        while ((returnLine = br.readLine()) !=null){
+        while ((returnLine = br.readLine()) != null) {
             result.append(returnLine + "\n\r");
         }
         con.disconnect();
@@ -43,4 +44,10 @@ public class Gyeonggi2ApiController {
         return result.toString();
     }
 
+    @GetMapping("gyeonggi2")
+    public List<Gyeonggi2> showGyeonggi2() {
+        List<Gyeonggi2> gyeonggi2List = gyeonggi2ApiService.getAllGyeonggi2Data();
+        return gyeonggi2List;
+
+    }
 }

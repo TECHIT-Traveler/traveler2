@@ -44,5 +44,9 @@ public class Gyeonggi2ApiService {
 
         return gyeonggi2List;
     }
+
+    public List<Gyeonggi2> getAllGyeonggi2Data(){
+        return gyeonggi2ApiRepository.findAll();
+    }
 }
 
