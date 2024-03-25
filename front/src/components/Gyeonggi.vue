@@ -4,7 +4,7 @@
 		<div
 			v-for="(o, k) in gyeonggiData"
 			:key="k"
-      :to="'/gyeonggi/' + o.id"
+      		:to="'/gyeonggi/' + o.id"
 			class="card mb-4"
 			@click="goToDetailPage(o.id)"
 			style="cursor: pointer">
@@ -12,17 +12,10 @@
 			<h5 class="card-title">{{ o.PARK_NM}}</h5>
 			<hr>
 			<p class="card-text">
-			  <strong>시군구 명:</strong> {{ o.SIGNGU_NM  }} <br>
 			  <strong>읍면동명</strong> {{ o.EMD_NM }} <br>
-			  <strong>규모시설면적:</strong> {{ o.AR }} <br>
-			  <strong>출입허용시간:</strong> {{ o.CMGPERMSN_TM }} <br>
         <strong>출입허용일:</strong> {{ o.CMGPERMSN_DAY }} <br>
         <strong>운영기관명</strong> {{ o.OPERTINST_NM }} <br>
-        <strong>대표전화번호</strong> {{ o.REPRSNT_TELNO }} <br>
-        <strong>비용</strong> {{ o.EXPN }} <br>
-        <strong>이용요금</strong> {{ o.UTLZ_CHRG }} <br>
         <strong>특이사항</strong> {{ o.PARTCLR_MATR }} <br>
-        <strong>이미지</strong> {{ o.IMAGE_NM }} <br>
       </p>
 		  </div>
 		</div>
@@ -30,32 +23,34 @@
 	</div>
   </template>
 
-  <script>
-  export default {
-	mounted () {
-	  this.getGyeonggiData()()
-	},
-	name: 'Gyeonggi',
-	data () {
-	  return {
+<script>
+export default {
+  data() {
+    return {
       gyeonggiData: []
-	  }
-	},
-	methods: {
-	  getGyeonggiData() {
-		fetch('http://localhost:8090/gyeonggi')
-		  .then(resp => resp.json())
-		  .then(data => {
-			this.gyeonggiData = data
-		  }).catch(err => console.log(err))
-	  },
-	  goToDetailPage(id) {
-      	this.$router.push({ name: 'GyeonggiDetail', params: { id: id } })
-    	}
-	}
+    };
+  },
+  mounted() {
+    this.getGyeonggiData();
+  },
+  methods: {
+    getGyeonggiData() {
+      fetch('http://localhost:8090/gyeonggi')
+        .then(resp => resp.json())
+        .then(data => {
+          this.gyeonggiData = data;
+        })
+        .catch(err => {
+          console.error('데이터를 불러오는 중 에러 발생:', err);
+          // 오류 처리
+        });
+    },
+    goToDetailPage(id) {
+      this.$router.push({ name: 'GyeonggiDetail', params: { id: id } });
+    }
   }
-  </script>
-
+};
+</script>
   <style scoped>
   .card-deck {
 	display: flex;

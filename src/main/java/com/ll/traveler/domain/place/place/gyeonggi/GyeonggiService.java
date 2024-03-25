@@ -3,6 +3,7 @@ package com.ll.traveler.domain.place.place.gyeonggi;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ll.traveler.domain.place.place.gangwon.Gangwon2;
 import com.ll.traveler.domain.place.place.gyeonggi2.Gyeonggi2;
 import lombok.RequiredArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @Slf4j
@@ -38,7 +40,7 @@ public class GyeonggiService {
 
         for (Map<String, String> val : targetValues ) {
 
-            Gyeonggi entity = Gyeonggi.builder()
+            Gyeonggi gyeonggi = Gyeonggi.builder()
                     .PARK_NM(val.get("PARK_NM"))
                     .SIGNGU_NM(val.get("SIGNGU_NM"))
                     .EMD_NM(val.get("EMD_NM"))
@@ -53,12 +55,21 @@ public class GyeonggiService {
                     .IMAGE_NM(val.get("IMAGE_NM"))
                     .build();
 
-            gyeonggiRepository.save(entity);
+            gyeonggiList.add(gyeonggiRepository.save(gyeonggi));
 
         }
+
         return gyeonggiList;
     }
     public List<Gyeonggi> getAllGyeonggiData(){
         return gyeonggiRepository.findAll();
     }
+    public Gyeonggi getGyeonggiDataById(Long id) {
+        Optional<Gyeonggi> gyeonggiOptional = gyeonggiRepository.findById(id);
+        if(gyeonggiOptional.isPresent()) {
+            return gyeonggiOptional.get();
+        }
+        return null;
+    }
+
 }

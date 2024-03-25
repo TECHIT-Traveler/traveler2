@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     getGyeonggiData(id) {
-      fetch(`http://localhost:8090/gyeonggi/${id}`)
+      fetch(`http://localhost:8090/gyeonggi2/${id}`)
         .then(resp => resp.json())
         .then(data => {
           this.o = data
