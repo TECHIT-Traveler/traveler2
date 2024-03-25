@@ -1,5 +1,3 @@
-
-
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/Login'
@@ -9,7 +7,7 @@ import HelloWorld from '@/components/HelloWorld.vue'
 import Gyeonggi from '@/components/Gyeonggi.vue'
 import Gangwon from '@/components/Gangwon.vue'
 import Ulsan from '@/components/Ulsan.vue'
-import GangwonDetail from "@/components/GangwonDetail.vue";
+import GangwonDetail from '@/components/GangwonDetail.vue'
 import MyPage from '@/components/MyPage.vue'
 
 Vue.use(Router)
@@ -38,12 +36,11 @@ export default new Router({
       component: Ulsan
     },
     {
-      path: "/detail/:id",
-      name: "GangwonDetail",
-      component: GangwonDetail,
+      path: '/detail/:id',
+      name: 'GangwonDetail',
+      component: GangwonDetail
     },
-  ],
-  {
+    {
       path: '/Login',
       name: 'Login',
       component: Login
@@ -59,4 +56,4 @@ export default new Router({
       component: MyPage
     }
   ]
-});
+})
