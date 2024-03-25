@@ -1,12 +1,12 @@
 <template>
-    <div>
-        <input type="text" v-model="newItem" placeholder="Type what you have to do"
+  <div>
+    <input type="text" v-model="newItem" placeholder="Type what you have to do"
         v-on:keyup.enter="add">
-        <span class="addContainer" v-on:click="add">
-            <i class="addBtn fas fa-plus" aria-hidden="true"></i>
-        </span>
-        <button v-on:click="add">추가</button>
-    </div>
+    <span class="addContainer" v-on:click="add">
+      <i class="addBtn fas fa-plus" aria-hidden="true"></i>
+    </span>
+    <button v-on:click="add">추가</button>
+  </div>
 </template>
 
 <script>

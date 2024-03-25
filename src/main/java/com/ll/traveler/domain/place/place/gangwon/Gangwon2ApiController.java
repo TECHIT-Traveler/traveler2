@@ -3,6 +3,7 @@ package com.ll.traveler.domain.place.place.gangwon;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
@@ -17,6 +18,7 @@ import java.util.List;
 public class Gangwon2ApiController {
 
     private final Gangwon2ApiService gangwon2ApiService;
+    private final Gangwon2ApiRepository gangwon2ApiRepository;
 
 
     @GetMapping("/apiGangwon2")
@@ -49,5 +51,9 @@ public class Gangwon2ApiController {
         List<Gangwon2> gangwon2List = gangwon2ApiService.getAllGangwon2Data();
         return gangwon2List;
     }
-
+    @GetMapping("/gangwon2/{id}")
+    public Gangwon2 detail(@PathVariable("id") Long id) {
+        Gangwon2 detail = gangwon2ApiService.getGangwon2DataById(id);
+        return detail;
+    }
 }
