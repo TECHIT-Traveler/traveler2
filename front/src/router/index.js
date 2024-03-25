@@ -8,6 +8,7 @@ import Gyeonggi from '@/components/Gyeonggi.vue'
 import Gangwon from '@/components/Gangwon.vue'
 import Ulsan from '@/components/Ulsan.vue'
 import GangwonDetail from '@/components/GangwonDetail.vue'
+import GyeonggiDetail from '@/components/GyeonggiDetail.vue'
 import MyPage from '@/components/MyPage.vue'
 
 Vue.use(Router)
@@ -34,6 +35,11 @@ export default new Router({
       path: '/Ulsan',
       name: 'Ulsan',
       component: Ulsan
+    },
+    {
+      path: '/gyeonggi/:id',
+      name: 'GyeonggiDetail',
+      component: GyeonggiDetail
     },
     {
       path: '/gangwon2/:id',

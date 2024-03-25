@@ -7,8 +7,7 @@
         :to="'/gangwon2/' + o.id"
         class="card mb-4"
         @click="goToDetailPage(o.id)"
-        style="cursor: pointer"
-      >
+        style="cursor: pointer">
         <div class="card-body">
           <h5 class="card-title">{{ o.업체명 }}</h5>
           <hr>
@@ -43,7 +42,8 @@ export default {
         .then(resp => resp.json())
         .then(data => {
           this.gangwon2Data = data
-        }).catch(err => console.log(err))
+        })
+        .catch(err => console.log(err))
     },
     goToDetailPage (id) {
       this.$router.push({ name: 'GangwonDetail', params: { id: id } })
