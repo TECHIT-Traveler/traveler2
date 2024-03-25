@@ -1,6 +1,6 @@
 <template>
   <div class="ulsan">
-    <div v-for="(o, k) in ulsanData" :key="k">
+    <div v-for="(o, k) in ulsanData">
       <h1>{{ o.facility }}</h1>
       <hr>
       <span>
