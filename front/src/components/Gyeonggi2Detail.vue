@@ -1,6 +1,7 @@
 <template>
   <div class="detail-container">
     <div class="detail-header">
+
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
 
     </div>
