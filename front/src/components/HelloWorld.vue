@@ -21,6 +21,11 @@
   </div>
 </template>
 
+<script>
+export default {
+}
+</script>
+
 <style>
 .main-top-promotion-video {
   width: 100%;
