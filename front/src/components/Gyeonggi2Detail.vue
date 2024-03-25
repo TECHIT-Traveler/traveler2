@@ -3,28 +3,30 @@
     <div class="detail-header">
       <h1>{{ o.업체명 }}</h1>
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
+
     </div>
     <div class="detail-body">
       <div class="detail-info">
-        <p><strong>업체 구분:</strong> {{ o.업체구분 }}</p>
+        <p><strong>지역명:</strong> {{ o.지역명}}</p>
         <!-- 상세 이미지들 추가 -->
         <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
         </div>
-        <p><strong>지번 주소:</strong> {{ o.지번_주소 }}</p>
-        <p><strong>도로명 주소:</strong> {{ o.도로명_주소 }}</p>
-        <p><strong>위도:</strong> {{ o.위도 }}</p>
-        <p><strong>경도:</strong> {{ o.경도 }}</p>
-        <p><strong>연락처:</strong> {{ o.연락처 }}</p>
+        <strong>주소:</strong> {{ o.주소 }} <br>
+        <strong>전화번호:</strong> {{ o.전화번호 }} <br>
+        <strong>이용시간:</strong> {{ o.이용시간 }} <br>
+        <strong>홈페이지</strong> {{ o.홈페이지 }} <br>
+
       </div>
-      <div id="map" style="width: 100%; height: 400px;"></div>
     </div>
     <div class="detail-buttons">
       <button class="like-button"><i class="fas fa-heart"></i> 좋아요</button>
       <button class="save-button"><i class="fas fa-star"></i> 저장</button>
     </div>
     <div class="comment-form">
-      <textarea v-model="commentText" placeholder="댓글을 작성해주세요" id="summernote"></textarea>
+      <textarea v-model="commentText" placeholder="댓글을 작성해주세요" id="summernote">
+
+      </textarea>
       <input type="file" accept="image/*" @change="handleImageUpload">
       <button @click="submitComment">작성</button>
     </div>
@@ -33,8 +35,8 @@
 
 <script>
 export default {
-  name: 'GangwonDetail',
-  data () {
+  name: 'Gyeonggi2Detail',
+  data() {
     return {
       o: {},
       mainImageUrl: 'https://via.placeholder.com/500x300',
@@ -45,73 +47,54 @@ export default {
       ] // 상세 이미지 URL들
     }
   },
-  created () {
-    this.getGangwonData(this.$route.params.id)
+  created() {
+    this.getGyeonggi2Data(this.$route.params.id)
   },
   methods: {
-    initMap () {
-      const mapContainer = document.getElementById('map')
-      const mapOptions = {
-        center: new window.kakao.maps.LatLng(this.o.위도, this.o.경도),
-        level: 3
-      }
-      this.map = new window.kakao.maps.Map(mapContainer, mapOptions)
-      const markerPosition = new window.kakao.maps.LatLng(this.o.위도, this.o.경도)
-      const marker = new window.kakao.maps.Marker({ position: markerPosition })
-      marker.setMap(this.map)
-      window.kakao.maps.event.addListener(marker, 'click', () => {
-        const infoWindow = new window.kakao.maps.InfoWindow({
-          content: `<div>${this.o.업체명}</div>`
-        })
-        infoWindow.open(this.map, marker)
-      })
-    },
-    getGangwonData (id) {
-      fetch(`http://localhost:8090/gangwon2/${id}`)
+    getGyeonggiData(id) {
+      fetch(`http://localhost:8090/gyeonggi2/${id}`)
         .then(resp => resp.json())
         .then(data => {
           this.o = data
-          this.initMap()
         })
         .catch(err => console.error(err))
     },
-    handleImageUpload (event) {
-      const files = event.target.files
+    handleImageUpload(event) {
+      const files = event.target.files;
       if (files) {
         for (let i = 0; i < files.length; i++) {
-          const reader = new FileReader()
-          reader.readAsDataURL(files[i])
+          const reader = new FileReader();
+          reader.readAsDataURL(files[i]);
           reader.onload = (e) => {
-            this.uploadedImages.push(e.target.result)
+            this.uploadedImages.push(e.target.result);
           }
         }
       }
     },
-    submitComment () {
+    submitComment() {
       // 여기에 댓글을 서버에 저장하는 코드를 추가하세요.
       // 예시: fetch를 사용하여 서버로 댓글 데이터를 보낼 수 있습니다.
-      console.log('댓글 내용:', this.commentText)
-      console.log('첨부된 사진:', this.uploadedImages)
+      console.log('댓글 내용:', this.commentText);
+      console.log('첨부된 사진:', this.uploadedImages);
       // 저장 후 폼 초기화
-      this.commentText = ''
-      this.uploadedImages = []
+      this.commentText = '';
+      this.uploadedImages = [];
     },
-    mounted () {
+    mounted() {
       $('#summernote').summernote({
         tabsize: 2,
         height: 500
-      })
+      });
     },
-    beforeDestroy () {
+    beforeDestroy() {
       // Summernote 인스턴스 제거
       if ($('#summernote').summernote) {
-        $('#summernote').summernote('destroy')
+        $('#summernote').summernote('destroy');
       }
     }
   }
 }
 </script>
-
 <style scoped>
 .detail-container {
   margin: 50px auto;
@@ -163,6 +146,7 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
 }
+
 
 /* 나머지 스타일은 그대로 두고 버튼과 댓글 폼의 스타일을 추가합니다 */
 .detail-buttons {

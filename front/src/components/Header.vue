@@ -5,14 +5,18 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarContent">
+        <b-navbar-nav class="collapse navbar-collapse" id="navbarContent">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
               <router-link to="/" class="nav-link">Traveler</router-link>
             </li>
-            <li class="nav-item">
-              <router-link :to="{name: 'Gyeonggi'}" class="nav-link">경기</router-link>
-            </li>
+            <b-nav-item-dropdown  class="nav-item">
+              <template #button-content>
+              <strong>경기</strong>
+            </template>
+              <b-dropdown-item @click="$router.push('/Gyeonggi')">경기</b-dropdown-item>
+              <b-dropdown-item @click="$router.push('/Gyeonggi2')">경기2</b-dropdown-item>
+            </b-nav-item-dropdown>
             <li class="nav-item">
               <router-link :to="{name: 'Gangwon'}" class="nav-link">강원</router-link>
             </li>
@@ -20,7 +24,7 @@
               <router-link :to="{name: 'Ulsan'}" class="nav-link">울산</router-link>
             </li>
           </ul>
-        </div>
+        </b-navbar-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto" v-if="isAuthenticated">
           <b-nav-item-dropdown right>

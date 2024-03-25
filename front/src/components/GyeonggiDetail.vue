@@ -1,23 +1,28 @@
 <template>
   <div class="detail-container">
     <div class="detail-header">
-      <h1>{{ o.업체명 }}</h1>
+      <h1>{{ o.PARK_NM }}</h1>
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
     </div>
     <div class="detail-body">
       <div class="detail-info">
-        <p><strong>업체 구분:</strong> {{ o.업체구분 }}</p>
+        <p><strong>시군구 명:</strong> {{ o.SIGNGU_NM}}</p>
         <!-- 상세 이미지들 추가 -->
         <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
         </div>
-        <p><strong>지번 주소:</strong> {{ o.지번_주소 }}</p>
-        <p><strong>도로명 주소:</strong> {{ o.도로명_주소 }}</p>
-        <p><strong>위도:</strong> {{ o.위도 }}</p>
-        <p><strong>경도:</strong> {{ o.경도 }}</p>
-        <p><strong>연락처:</strong> {{ o.연락처 }}</p>
+        <strong>규모시설면적:</strong> {{ o.AR }} <br>
+        <strong>출입허용시간:</strong> {{ o.CMGPERMSN_TM }} <br>
+        <strong>출입허용일:</strong> {{ o.CMGPERMSN_DAY }} <br>
+        <strong>운영기관명</strong> {{ o.OPERTINST_NM }} <br>
+        <strong>대표전화번호</strong> {{ o.REPRSNT_TELNO }} <br>
+        <strong>비용</strong> {{ o.EXPN }} <br>
+        <strong>이용요금</strong> {{ o.UTLZ_CHRG }} <br>
+        <strong>특이사항</strong> {{ o.PARTCLR_MATR }} <br>
+        <strong>이미지</strong> {{ o.IMAGE_NM }} <br>
+        <strong>위도</strong> {{ o.REFINE_WGS84_LAT }} <br>
+        <strong>경도</strong> {{ o.REFINE_WGS84_LOGT }} <br>
       </div>
-      <div id="map" style="width: 100%; height: 400px;"></div>
     </div>
     <div class="detail-buttons">
       <button class="like-button"><i class="fas fa-heart"></i> 좋아요</button>
@@ -33,7 +38,7 @@
 
 <script>
 export default {
-  name: 'GangwonDetail',
+  name: 'GyeonggiDetail',
   data () {
     return {
       o: {},
@@ -46,32 +51,14 @@ export default {
     }
   },
   created () {
-    this.getGangwonData(this.$route.params.id)
+    this.getGyeonggiData(this.$route.params.id)
   },
   methods: {
-    initMap () {
-      const mapContainer = document.getElementById('map')
-      const mapOptions = {
-        center: new window.kakao.maps.LatLng(this.o.위도, this.o.경도),
-        level: 3
-      }
-      this.map = new window.kakao.maps.Map(mapContainer, mapOptions)
-      const markerPosition = new window.kakao.maps.LatLng(this.o.위도, this.o.경도)
-      const marker = new window.kakao.maps.Marker({ position: markerPosition })
-      marker.setMap(this.map)
-      window.kakao.maps.event.addListener(marker, 'click', () => {
-        const infoWindow = new window.kakao.maps.InfoWindow({
-          content: `<div>${this.o.업체명}</div>`
-        })
-        infoWindow.open(this.map, marker)
-      })
-    },
-    getGangwonData (id) {
-      fetch(`http://localhost:8090/gangwon2/${id}`)
+    getGyeonggiData (id) {
+      fetch(`http://localhost:8090/gyeonggi/${id}`)
         .then(resp => resp.json())
         .then(data => {
           this.o = data
-          this.initMap()
         })
         .catch(err => console.error(err))
     },
@@ -111,7 +98,6 @@ export default {
   }
 }
 </script>
-
 <style scoped>
 .detail-container {
   margin: 50px auto;
