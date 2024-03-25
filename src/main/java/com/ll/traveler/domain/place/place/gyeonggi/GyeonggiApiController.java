@@ -44,9 +44,9 @@ public class GyeonggiApiController {
 
         return result.toString();
     }
-//    @GetMapping("gyeonggi")
-//    public List<Gyeonggi> showGyeonggi() {
-//        List<Gyeonggi> gyeonggiList = gyeonggiService.getAllGyeonggiData();
-//        return gyeonggiList;
-//    }
+    @GetMapping("gyeonggi")
+    public List<Gyeonggi> showGyeonggi() {
+        List<Gyeonggi> gyeonggiList = gyeonggiService.getAllGyeonggiData();
+        return gyeonggiList;
+    }
 }

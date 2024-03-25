@@ -3,6 +3,7 @@ package com.ll.traveler.domain.place.place.gyeonggi;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ll.traveler.domain.place.place.gyeonggi2.Gyeonggi2;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -56,5 +57,8 @@ public class GyeonggiService {
 
         }
         return gyeonggiList;
+    }
+    public List<Gyeonggi> getAllGyeonggiData(){
+        return gyeonggiRepository.findAll();
     }
 }
