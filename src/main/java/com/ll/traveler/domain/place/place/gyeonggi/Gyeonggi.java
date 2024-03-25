@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class PlayGround extends IdEntity {
+public class Gyeonggi extends IdEntity {
     private String PARK_NM; // 공원명
     private String SIGNGU_NM; // 시군구 명
     private String EMD_NM; // 읍면동명

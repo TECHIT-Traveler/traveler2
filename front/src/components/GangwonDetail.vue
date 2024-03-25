@@ -24,7 +24,9 @@
         <button class="save-button"><i class="fas fa-star"></i> 저장</button>
       </div>
     <div class="comment-form">
-      <textarea v-model="commentText" placeholder="댓글을 작성해주세요"></textarea>
+      <textarea v-model="commentText" placeholder="댓글을 작성해주세요" id="summernote">
+
+      </textarea>
       <input type="file" accept="image/*" @change="handleImageUpload">
       <button @click="submitComment">작성</button>
     </div>
@@ -77,7 +79,19 @@ export default {
       // 저장 후 폼 초기화
       this.commentText = '';
       this.uploadedImages = [];
+    },
+    mounted() {
+      $('#summernote').summernote({
+      tabsize: 2,
+      height: 500
+    });
+    },
+    beforeDestroy() {
+    // Summernote 인스턴스 제거
+    if ($('#summernote').summernote) {
+      $('#summernote').summernote('destroy');
     }
+  }
   }
 }
 </script>

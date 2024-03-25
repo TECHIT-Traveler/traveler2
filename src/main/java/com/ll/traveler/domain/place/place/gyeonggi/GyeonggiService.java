@@ -19,14 +19,14 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor // 필드 주입을 위한 생성자 생성
 @Transactional(readOnly = true) // 읽기전용
-public class PlayGroundService {
+public class GyeonggiService {
 
-    private final PlayGroundRepository playGroundRepository;
+    private final GyeonggiRepository gyeonggiRepository;
 
     @Transactional
-    public List<PlayGround> mapJsonToPlayGroundList(String jsonData) throws IOException {
+    public List<Gyeonggi> mapJsonToGyeonggiList(String jsonData) throws IOException {
 
-        List<PlayGround> playGroundList = new ArrayList<>();
+        List<Gyeonggi> gyeonggiList = new ArrayList<>();
 
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> dataMap = objectMapper.readValue(jsonData, new TypeReference<Map<String, Object>>() {});
@@ -37,7 +37,7 @@ public class PlayGroundService {
 
         for (Map<String, String> val : targetValues ) {
 
-            PlayGround entity = PlayGround.builder()
+            Gyeonggi entity = Gyeonggi.builder()
                     .PARK_NM(val.get("PARK_NM"))
                     .SIGNGU_NM(val.get("SIGNGU_NM"))
                     .EMD_NM(val.get("EMD_NM"))
@@ -52,13 +52,9 @@ public class PlayGroundService {
                     .IMAGE_NM(val.get("IMAGE_NM"))
                     .build();
 
-            playGroundRepository.save(entity);
+            gyeonggiRepository.save(entity);
 
         }
-
-
-        return playGroundList;
+        return gyeonggiList;
     }
-
-
 }
