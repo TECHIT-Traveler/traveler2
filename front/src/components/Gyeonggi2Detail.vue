@@ -3,26 +3,26 @@
     <div class="detail-header">
       <h1>{{ o.업체명 }}</h1>
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
-      
+
     </div>
     <div class="detail-body">
       <div class="detail-info">
-        <p><strong>업체 구분:</strong> {{ o.업체구분 }}</p>
+        <p><strong>지역명:</strong> {{ o.지역명}}</p>
         <!-- 상세 이미지들 추가 -->
         <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
         </div>
-        <p><strong>지번 주소:</strong> {{ o.지번_주소 }}</p>
-        <p><strong>도로명 주소:</strong> {{ o.도로명_주소 }}</p>
-        <p><strong>위도:</strong> {{ o.위도 }}</p>
-        <p><strong>경도:</strong> {{ o.경도 }}</p>
-        <p><strong>연락처:</strong> {{ o.연락처 }}</p>
+        <strong>주소:</strong> {{ o.주소 }} <br>
+        <strong>전화번호:</strong> {{ o.전화번호 }} <br>
+        <strong>이용시간:</strong> {{ o.이용시간 }} <br>
+        <strong>홈페이지</strong> {{ o.홈페이지 }} <br>
+
       </div>
     </div>
     <div class="detail-buttons">
-        <button class="like-button"><i class="fas fa-heart"></i> 좋아요</button>
-        <button class="save-button"><i class="fas fa-star"></i> 저장</button>
-      </div>
+      <button class="like-button"><i class="fas fa-heart"></i> 좋아요</button>
+      <button class="save-button"><i class="fas fa-star"></i> 저장</button>
+    </div>
     <div class="comment-form">
       <textarea v-model="commentText" placeholder="댓글을 작성해주세요" id="summernote">
 
@@ -35,24 +35,24 @@
 
 <script>
 export default {
-  name: 'GangwonDetail',
+  name: 'Gyeonggi2Detail',
   data() {
     return {
       o: {},
       mainImageUrl: 'https://via.placeholder.com/500x300',
       detailImages: [
-          'https://via.placeholder.com/150x150',
-          'https://via.placeholder.com/150x150',
-          'https://via.placeholder.com/150x150'
-        ] // 상세 이미지 URL들
+        'https://via.placeholder.com/150x150',
+        'https://via.placeholder.com/150x150',
+        'https://via.placeholder.com/150x150'
+      ] // 상세 이미지 URL들
     }
   },
   created() {
-    this.getGangwonData(this.$route.params.id)
+    this.getGyeonggi2Data(this.$route.params.id)
   },
   methods: {
-    getGangwonData(id) {
-      fetch(`http://localhost:8090/gangwon2/${id}`)
+    getGyeonggiData(id) {
+      fetch(`http://localhost:8090/gyeonggi2/${id}`)
         .then(resp => resp.json())
         .then(data => {
           this.o = data
@@ -82,16 +82,16 @@ export default {
     },
     mounted() {
       $('#summernote').summernote({
-      tabsize: 2,
-      height: 500
-    });
+        tabsize: 2,
+        height: 500
+      });
     },
     beforeDestroy() {
-    // Summernote 인스턴스 제거
-    if ($('#summernote').summernote) {
-      $('#summernote').summernote('destroy');
+      // Summernote 인스턴스 제거
+      if ($('#summernote').summernote) {
+        $('#summernote').summernote('destroy');
+      }
     }
-  }
   }
 }
 </script>
@@ -155,7 +155,7 @@ export default {
   margin-top: 20px;
 }
 
-.like-button, 
+.like-button,
 .save-button {
   padding: 10px 20px;
   font-size: 16px;
