@@ -36,7 +36,7 @@ export default new Router({
       component: Ulsan
     },
     {
-      path: '/detail/:id',
+      path: '/gangwon2/:id',
       name: 'GangwonDetail',
       component: GangwonDetail
     },

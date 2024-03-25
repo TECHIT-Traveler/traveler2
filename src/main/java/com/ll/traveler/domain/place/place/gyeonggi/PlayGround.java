@@ -27,5 +27,4 @@ public class PlayGround extends IdEntity {
     // 추가적으로 위도와 경도 필드를 정의해야 합니다.
     private double REFINE_WGS84_LAT; // 위도
     private double REFINE_WGS84_LOGT; // 경도
-
 }
