@@ -24,6 +24,7 @@ public class Gyeonggi2ApiService {
         List<Gyeonggi2> gyeonggi2List = new ArrayList<>();
 
         ObjectMapper objectMapper = new ObjectMapper();
+        
         JsonNode rootNode = objectMapper.readTree(jsonData);
         JsonNode dataListNode = rootNode.get("data");
 
