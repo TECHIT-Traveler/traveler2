@@ -42,7 +42,6 @@ export default new Router({
       name: "GangwonDetail",
       component: GangwonDetail,
     },
-  ],
   {
       path: '/Login',
       name: 'Login',
