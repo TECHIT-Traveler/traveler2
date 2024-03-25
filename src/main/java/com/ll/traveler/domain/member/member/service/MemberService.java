@@ -9,6 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -31,6 +33,22 @@ public class MemberService {
                 .build();
 
         memberRepository.save(member);
+    }
+
+    public boolean isUsernameAvailable(String username) {
+        return !memberRepository.existsByUsername(username);
+    }
+
+    public Member findByEmail(String email) {
+        Optional<Member> memberOptional = memberRepository.findByEmail(email);
+        if(memberOptional.isPresent()) {
+            return memberOptional.get();
+        }
+        return null;
+    }
+
+    public Member findByUsername(String username) {
+        return memberRepository.findByUsername(username);
     }
 }
 

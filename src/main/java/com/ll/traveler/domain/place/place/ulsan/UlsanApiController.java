@@ -53,6 +53,7 @@ public class UlsanApiController {
         ulsanApiService.mapXmlToUlsanList(result.toString());
         return jsonData;
     }
+
     @GetMapping("/ulsan")
     public List<Ulsan> showUlsan() {
         List<Ulsan> ulsanList = ulsanApiService.getAllUlsanData();

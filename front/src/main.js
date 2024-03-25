@@ -3,8 +3,19 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import axios from 'axios'
+import BootstrapVue from 'bootstrap-vue'
 
 Vue.config.productionTip = false
+Vue.prototype.$axios = axios
+Vue.use(BootstrapVue)
+Vue.config.productionTip = false
+
+const instance = axios.create({
+  withCredentials: true
+})
+
+Vue.prototype.$axios = instance
 
 /* eslint-disable no-new */
 new Vue({
