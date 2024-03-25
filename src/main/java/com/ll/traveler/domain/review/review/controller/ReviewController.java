@@ -11,8 +11,4 @@ import org.springframework.web.bind.annotation.*;
 public class ReviewController {
     private final Gangwon2ApiService gangwon2ApiService;
     private final ReviewRepository reviewRepository;
-
-    // 신규 작성
-
-
 }
