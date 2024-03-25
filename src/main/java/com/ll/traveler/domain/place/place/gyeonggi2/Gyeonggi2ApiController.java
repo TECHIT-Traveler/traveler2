@@ -52,9 +52,7 @@ public class Gyeonggi2ApiController {
         return gyeonggi2List;
     }
     @GetMapping("/gyeonggi2/{id}")
-    public Gyeonggi2 detail(@PathVariable("id") Long id) {
-        Gyeonggi2 detail = gyeonggi2ApiService.getGyeonggi2DataById(id);
-        return detail;
+    public Gyeonggi2 detail2(@PathVariable("id") Long id) {
+        return gyeonggi2ApiService.getGyeonggi2DataById(id);
     }
-
 }

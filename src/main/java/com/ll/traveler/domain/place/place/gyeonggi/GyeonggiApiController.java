@@ -45,14 +45,13 @@ public class GyeonggiApiController {
 
         return result.toString();
     }
-    @GetMapping("gyeonggi")
+    @GetMapping("/gyeonggi")
     public List<Gyeonggi> showGyeonggi() {
         List<Gyeonggi> gyeonggiList = gyeonggiService.getAllGyeonggiData();
         return gyeonggiList;
     }
     @GetMapping("/gyeonggi/{id}")
-    public Gyeonggi detailGyeonggi(@PathVariable("id") Long id) {
-        Gyeonggi detailGyeonggi = gyeonggiService.getGyeonggiDataById(id);
-        return detailGyeonggi;
+    public Gyeonggi detail(@PathVariable("id") Long id) {
+        return gyeonggiService.getGyeonggiDataById(id);
     }
 }

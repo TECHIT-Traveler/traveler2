@@ -49,9 +49,6 @@ public class Gyeonggi2ApiService {
     }
     public Gyeonggi2 getGyeonggi2DataById(Long id) {
         Optional<Gyeonggi2> gyeonggi2Optional = gyeonggi2ApiRepository.findById(id);
-        if(gyeonggi2Optional.isPresent()) {
-            return gyeonggi2Optional.get();
-        }
-        return null;
+        return gyeonggi2Optional.orElse(null);
     }
 }

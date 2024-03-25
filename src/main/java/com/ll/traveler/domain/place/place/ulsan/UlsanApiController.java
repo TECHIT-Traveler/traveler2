@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
@@ -58,5 +59,9 @@ public class UlsanApiController {
     public List<Ulsan> showUlsan() {
         List<Ulsan> ulsanList = ulsanApiService.getAllUlsanData();
         return ulsanList;
+    }
+    @GetMapping("/ulsan/{id}")
+    public Ulsan detailUlsan(@PathVariable("id") Long id) {
+        return ulsanApiService.getUlsanDataById(id);
     }
 }

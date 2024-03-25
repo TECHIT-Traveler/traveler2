@@ -25,7 +25,7 @@
 	</div>
   </template>
   
-  <script>
+<script>
   export default {
 	mounted () {
 	  this.getGangwon2Data()
@@ -49,7 +49,7 @@
     	}
 	}
   }
-  </script>
+</script>
   
   <style scoped>
   .card-deck {
