@@ -1,27 +1,28 @@
 <template>
   <div class="detail-container">
     <div class="detail-header">
-      <h1>{{ o.PARK_NM }}</h1>
+      <h1>{{ o.park_NM }}</h1>
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
     </div>
     <div class="detail-body">
       <div class="detail-info">
-        <p><strong>시군구 명:</strong> {{ o.SIGNGU_NM}}</p>
+        <p><strong>시군구 명:</strong> {{ o.signgu_NM}}</p>
         <!-- 상세 이미지들 추가 -->
         <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
         </div>
-        <strong>규모시설면적:</strong> {{ o.AR }} <br>
-        <strong>출입허용시간:</strong> {{ o.CMGPERMSN_TM }} <br>
-        <strong>출입허용일:</strong> {{ o.CMGPERMSN_DAY }} <br>
-        <strong>운영기관명</strong> {{ o.OPERTINST_NM }} <br>
-        <strong>대표전화번호</strong> {{ o.REPRSNT_TELNO }} <br>
-        <strong>비용</strong> {{ o.EXPN }} <br>
-        <strong>이용요금</strong> {{ o.UTLZ_CHRG }} <br>
-        <strong>특이사항</strong> {{ o.PARTCLR_MATR }} <br>
-        <strong>이미지</strong> {{ o.IMAGE_NM }} <br>
-        <strong>위도</strong> {{ o.REFINE_WGS84_LAT }} <br>
-        <strong>경도</strong> {{ o.REFINE_WGS84_LOGT }} <br>
+        <strong>규모시설면적:</strong> {{ o.ar }} <br>
+        <strong>출입허용시간:</strong> {{ o.cmgpermsn_TM }} <br>
+        <strong>출입허용일:</strong> {{ o.cmgpermsn_DAY }} <br>
+        <strong>운영기관명</strong> {{ o.opertinst_NM }} <br>
+        <strong>대표전화번호</strong> {{ o.reprsnt_TELNO }} <br>
+        <strong>비용</strong> {{ o.expn }} <br>
+        <strong>이용요금</strong> {{ o.utlz_CHRG }} <br>
+        <strong>특이사항</strong> {{ o.partclr_MATR }} <br>
+        <strong>이미지</strong> {{ o.image_NM }} <br>
+        <strong>위도</strong> {{ o.refine_WGS84_LAT }} <br>
+        <strong>경도</strong> {{ o.refine_WGS84_LOGT }} <br>
+
       </div>
     </div>
     <div class="detail-buttons">

@@ -12,8 +12,8 @@
             </li>
             <b-nav-item-dropdown  class="nav-item">
               <template #button-content>
-              <strong>경기</strong>
-            </template>
+                <strong>경기</strong>
+              </template>
               <b-dropdown-item @click="$router.push('/Gyeonggi')">경기</b-dropdown-item>
               <b-dropdown-item @click="$router.push('/Gyeonggi2')">경기2</b-dropdown-item>
             </b-nav-item-dropdown>
