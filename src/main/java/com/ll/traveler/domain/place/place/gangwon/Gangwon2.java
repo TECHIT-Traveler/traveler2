@@ -22,5 +22,4 @@ public class Gangwon2 extends IdEntity {
     private String 경도;
     private String 연락처;
 
-
 } //엔티티

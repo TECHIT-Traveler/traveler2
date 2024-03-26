@@ -79,8 +79,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.0'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1' // JSON parsing을 위한 종속성
 
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
 }

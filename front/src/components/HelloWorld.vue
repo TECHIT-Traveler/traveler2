@@ -8,10 +8,10 @@
         <div class="col-sm-12 col-md-6 text-md-start">
           <div class="py-3 py-md-5">
             <h1 class="text-white fw-bold">
-              Welcome to Your <br>Vue.JS Application
+              Welcome to Traveler!
             </h1>
             <p class="text-white mb-4 fs-5">
-              당신의 이야기가 세상을 바꿉니다.
+              사랑하는 반려동물과 지금 당장 떠나보세요.
             </p>
             <router-link :to="{name:'BoardWrite'}" class="btn btn-success">나의 이야기 쓰기</router-link>
           </div>
