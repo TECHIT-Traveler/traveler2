@@ -20,8 +20,8 @@
       <div id="map" style="width: 100%; height: 400px;"></div>
     </div>
     <div class="detail-buttons">
-      <button class="like-button" v-if="isLiked === false" @click="like"><i class="fas fa-heart" style="color: grey"></i>{{ likeCount }}</button>
       <button class="like-button" v-if="isLiked === true" @click="cancelLike"><i class="fas fa-heart" style="color: red"></i>{{ likeCount }}</button>
+      <button class="like-button" v-else @click="like"><i class="fas fa-heart" style="color: grey"></i>{{ likeCount }}</button>
       <button class="save-button"><i class="fas fa-star"></i> 저장</button>
     </div>
     <div class="comment-form">
@@ -35,6 +35,7 @@
 <script>
 export default {
   name: 'GangwonDetail',
+  inject: ['isAuthenticated'],
   data () {
     return {
       o: {},
@@ -73,6 +74,8 @@ export default {
         })
         .catch(error => {
           console.error('좋아요 처리 중 오류 발생', error)
+                    alert('로그인이 필요합니다.')
+
         })
     },
     cancelLike () {
@@ -85,6 +88,7 @@ export default {
         })
         .catch(error => {
           console.error('좋아요 처리 중 오류 발생', error)
+          alert('로그인이 필요합니다.')
         })
     },
     updateLikeCount (postId) {
