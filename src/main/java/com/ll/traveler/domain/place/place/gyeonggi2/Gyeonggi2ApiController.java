@@ -50,4 +50,9 @@ public class Gyeonggi2ApiController {
         List<Gyeonggi2> gyeonggi2List = gyeonggi2ApiService.getAllGyeonggi2Data();
         return gyeonggi2List;
     }
+
+    @GetMapping("/gyeonggi2/{title}")
+    public List<Gyeonggi2> searchLocation(@PathVariable String title) {
+        return gyeonggi2ApiService.searchLocation(title);
+    }
 }

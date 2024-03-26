@@ -50,4 +50,8 @@ public class Gyeonggi2ApiService {
         return gyeonggi2ApiRepository.findAll();
     }
 
+    public List<Gyeonggi2> searchLocation(String title) {
+        return gyeonggi2ApiRepository.findAllBy지역명Containing(title);
+    }
+
 }
