@@ -8,4 +8,6 @@ public interface UlsanApiRepository extends JpaRepository<Ulsan, Long> {
 
     List<Ulsan> findAllByFacilityContaining(String facility);
 
+    List<Ulsan> findAllByCityContaining(String city);
+
 }

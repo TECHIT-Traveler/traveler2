@@ -62,9 +62,14 @@ public class UlsanApiController {
         return ulsanList;
     }
 
-    @GetMapping("/ulsan/{facility}")
+    @GetMapping("/ulsan/facility/{facility}")
     public List<Ulsan> searchFacility(@PathVariable String facility) {
         return ulsanApiService.searchFacility(facility);
+    }
+
+    @GetMapping("/ulsan/city/{city}")
+    public List<Ulsan> searchCity(@PathVariable String city) {
+        return ulsanApiService.searchCity(city);
     }
 
 }

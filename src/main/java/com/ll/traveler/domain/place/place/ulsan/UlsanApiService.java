@@ -65,4 +65,8 @@ public class UlsanApiService {
     public List<Ulsan> searchFacility(String facility) {
         return ulsanApiRepository.findAllByFacilityContaining(facility);
     }
+
+    public List<Ulsan> searchCity(String city) {
+        return ulsanApiRepository.findAllByCityContaining(city);
+    }
 }
