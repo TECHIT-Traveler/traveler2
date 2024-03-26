@@ -16,6 +16,7 @@ import Ulsan from "@/components/Ulsan.vue";
 import GangwonDetail from "@/components/GangwonDetail.vue";
 import GyeonggiDetail from "@/components/GyeonggiDetail.vue";
 import Gyeonggi2Detail from "@/components/Gyeonggi2Detail.vue";
+import UlsanDetail from "@/components/UlsanDetail.vue";
 
 import MyPage from "@/components/MyPage.vue";
 
@@ -65,6 +66,11 @@ export default new Router({
       path: "/gangwon2/:id",
       name: "GangwonDetail",
       component: GangwonDetail,
+    },
+    {
+      path: "/ulsan/:id",
+      name: "UlsanDetail",
+      component: UlsanDetail,
     },
     {
       path: '/Login',
