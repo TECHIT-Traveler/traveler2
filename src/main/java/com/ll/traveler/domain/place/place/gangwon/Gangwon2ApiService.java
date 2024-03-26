@@ -2,6 +2,7 @@ package com.ll.traveler.domain.place.place.gangwon;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ll.traveler.domain.member.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,15 @@ public class Gangwon2ApiService {
             return gangwon2Optional.get();
         }
        return null;
+    }
+
+    @Transactional
+    public void like(Gangwon2 gangwon2, Member member) {
+        gangwon2.like(member);
+    }
+
+    @Transactional
+    public void cancelLike(Gangwon2 gangwon2, Member member) {
+        gangwon2.cancelLike(member);
     }
 }

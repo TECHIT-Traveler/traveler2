@@ -1,9 +1,14 @@
 package com.ll.traveler.domain.place.place.gangwon;
 
 
+import com.ll.traveler.domain.member.member.entity.Member;
+import com.ll.traveler.domain.member.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
@@ -19,7 +24,7 @@ public class Gangwon2ApiController {
 
     private final Gangwon2ApiService gangwon2ApiService;
     private final Gangwon2ApiRepository gangwon2ApiRepository;
-
+    private final MemberService memberService;
 
     @GetMapping("/apiGangwon2")
     public String callApi() throws IOException {
@@ -36,7 +41,7 @@ public class Gangwon2ApiController {
 
         String returnLine;
 
-        while ((returnLine = br.readLine()) !=null){
+        while ((returnLine = br.readLine()) != null) {
             result.append(returnLine + "\n\r");
         }
         con.disconnect();
@@ -51,9 +56,46 @@ public class Gangwon2ApiController {
         List<Gangwon2> gangwon2List = gangwon2ApiService.getAllGangwon2Data();
         return gangwon2List;
     }
+
     @GetMapping("/gangwon2/{id}")
     public Gangwon2 detail(@PathVariable("id") Long id) {
         Gangwon2 detail = gangwon2ApiService.getGangwon2DataById(id);
         return detail;
+    }
+
+    @GetMapping("/gangwon2/checkLike/{id}")
+    public boolean checkLikeStatus(@PathVariable("id") Long id, Authentication authentication) {
+        Gangwon2 gangwon2 = gangwon2ApiService.getGangwon2DataById(id);
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        Member member = memberService.findByUsername(username);
+
+        if (gangwon2.hasLike(member)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @PostMapping("/gangwon2/like/{id}")
+    public void like(@PathVariable("id") Long id,Authentication authentication) {
+        Gangwon2 gangwon2 = gangwon2ApiService.getGangwon2DataById(id);
+        Member member = memberService.findByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
+
+        gangwon2ApiService.like(gangwon2, member);
+    }
+
+    @PostMapping("/gangwon2/cancelLike/{id}")
+    public void cancelLike(@PathVariable("id") Long id,Authentication authentication) {
+        Gangwon2 gangwon2 = gangwon2ApiService.getGangwon2DataById(id);
+        Member member = memberService.findByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
+
+        gangwon2ApiService.cancelLike(gangwon2, member);
+    }
+
+    @GetMapping("/gangwon2/getLikeCount/{id}")
+    public int getLikeCount(@PathVariable("id") Long id) {
+        Gangwon2 gangwon2 = gangwon2ApiService.getGangwon2DataById(id);
+
+        return gangwon2.getLikes().size();
     }
 }
