@@ -81,15 +81,15 @@ export default {
       this.uploadedImages = [];
     },
     mounted() {
-      $('#summernote').summernote({
+      global.$('#summernote').summernote({
         tabsize: 2,
         height: 500
       });
     },
     beforeDestroy() {
       // Summernote 인스턴스 제거
-      if ($('#summernote').summernote) {
-        $('#summernote').summernote('destroy');
+      if (global.$('#summernote').summernote) {
+        global.$('#summernote').summernote('destroy');
       }
     }
   }

@@ -34,6 +34,7 @@ export default {
       }
       if (this.password.trim().length === 0) {
         alert('비밀번호를 입력해주세요')
+        return
       }
       formData.append('username', this.username)
       formData.append('password', this.password)

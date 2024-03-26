@@ -20,7 +20,8 @@
       <div id="map" style="width: 100%; height: 400px;"></div>
     </div>
     <div class="detail-buttons">
-      <button class="like-button"><i class="fas fa-heart"></i> 좋아요</button>
+      <button class="like-button" v-if="isLiked === false" @click="like"><i class="fas fa-heart" style="color: grey"></i>{{ likeCount }}</button>
+      <button class="like-button" v-if="isLiked === true" @click="cancelLike"><i class="fas fa-heart" style="color: red"></i>{{ likeCount }}</button>
       <button class="save-button"><i class="fas fa-star"></i> 저장</button>
     </div>
     <div class="comment-form">
@@ -42,13 +43,59 @@ export default {
         'https://via.placeholder.com/150x150',
         'https://via.placeholder.com/150x150',
         'https://via.placeholder.com/150x150'
-      ] // 상세 이미지 URL들
+      ],
+      isLiked: null,
+      likeCount: 0
     }
   },
   created () {
     this.getGangwonData(this.$route.params.id)
+    this.checkLikeStatus(this.$route.params.id)
   },
   methods: {
+    checkLikeStatus (postId) {
+      this.$axios.get(`http://localhost:8090/gangwon2/checkLike/${postId}`)
+        .then(response => {
+          this.isLiked = response.data
+          console.log('isLiked: ', this.isLiked)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    like () {
+      const postId = this.o.id
+      this.$axios.post(`http://localhost:8090/gangwon2/like/${postId}`)
+        .then(response => {
+          console.log('좋아요 처리 성공')
+          this.isLiked = true
+          this.updateLikeCount(postId)
+        })
+        .catch(error => {
+          console.error('좋아요 처리 중 오류 발생', error)
+        })
+    },
+    cancelLike () {
+      const postId = this.o.id
+      this.$axios.post(`http://localhost:8090/gangwon2/cancelLike/${postId}`)
+        .then(response => {
+          console.log('좋아요 취소 처리 성공')
+          this.isLiked = false
+          this.updateLikeCount(postId)
+        })
+        .catch(error => {
+          console.error('좋아요 처리 중 오류 발생', error)
+        })
+    },
+    updateLikeCount (postId) {
+      this.$axios.get(`http://localhost:8090/gangwon2/getLikeCount/${postId}`)
+        .then(response => {
+          this.likeCount = response.data
+        })
+        .catch(error => {
+          console.log('좋아요 수 업데이트 중 오류 발생', error)
+        })
+    },
     initMap () {
       const mapContainer = document.getElementById('map')
       const mapOptions = {
@@ -72,6 +119,7 @@ export default {
         .then(data => {
           this.o = data
           this.initMap()
+          this.likeCount = this.o.likes.length
         })
         .catch(err => console.error(err))
     },
@@ -95,18 +143,18 @@ export default {
       // 저장 후 폼 초기화
       this.commentText = ''
       this.uploadedImages = []
-    },
-    mounted () {
-      $('#summernote').summernote({
-        tabsize: 2,
-        height: 500
-      })
-    },
-    beforeDestroy () {
-      // Summernote 인스턴스 제거
-      if ($('#summernote').summernote) {
-        $('#summernote').summernote('destroy')
-      }
+    }
+  },
+  mounted () {
+    global.$('#summernote').summernote({
+      tabsize: 2,
+      height: 500
+    })
+  },
+  beforeDestroy () {
+    // Summernote 인스턴스 제거
+    if (global.$('#summernote').summernote) {
+      global.$('#summernote').summernote('destroy')
     }
   }
 }
@@ -171,7 +219,16 @@ export default {
   margin-top: 20px;
 }
 
-.like-button,
+.like-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
 .save-button {
   padding: 10px 20px;
   font-size: 16px;
@@ -183,7 +240,10 @@ export default {
   transition: background-color 0.3s ease;
 }
 
-.like-button:hover,
+.like-button:hover {
+  border: 0.5px solid black;
+}
+
 .save-button:hover {
   background-color: #0056b3;
 }
