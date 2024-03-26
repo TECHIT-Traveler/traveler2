@@ -61,4 +61,5 @@ public class GyeonggiService {
     public List<Gyeonggi> getAllGyeonggiData(){
         return gyeonggiRepository.findAll();
     }
+
 }

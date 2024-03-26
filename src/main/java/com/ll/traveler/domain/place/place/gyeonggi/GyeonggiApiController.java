@@ -1,7 +1,9 @@
 package com.ll.traveler.domain.place.place.gyeonggi;
 
+import com.ll.traveler.domain.place.place.gangwon.Gangwon2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
@@ -44,9 +46,5 @@ public class GyeonggiApiController {
 
         return result.toString();
     }
-    @GetMapping("gyeonggi")
-    public List<Gyeonggi> showGyeonggi() {
-        List<Gyeonggi> gyeonggiList = gyeonggiService.getAllGyeonggiData();
-        return gyeonggiList;
-    }
+
 }

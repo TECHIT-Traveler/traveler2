@@ -3,8 +3,10 @@ package com.ll.traveler.domain.place.place.ulsan;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.ll.traveler.domain.place.place.gangwon.Gangwon2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
@@ -59,4 +61,10 @@ public class UlsanApiController {
         List<Ulsan> ulsanList = ulsanApiService.getAllUlsanData();
         return ulsanList;
     }
+
+    @GetMapping("/ulsan/{facility}")
+    public List<Ulsan> searchFacility(@PathVariable String facility) {
+        return ulsanApiService.searchFacility(facility);
+    }
+
 }

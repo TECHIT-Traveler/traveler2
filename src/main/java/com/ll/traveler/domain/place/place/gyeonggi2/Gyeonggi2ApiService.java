@@ -2,6 +2,7 @@ package com.ll.traveler.domain.place.place.gyeonggi2;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ll.traveler.domain.place.place.gangwon.Gangwon2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -48,4 +49,5 @@ public class Gyeonggi2ApiService {
     public List<Gyeonggi2> getAllGyeonggi2Data(){
         return gyeonggi2ApiRepository.findAll();
     }
+
 }

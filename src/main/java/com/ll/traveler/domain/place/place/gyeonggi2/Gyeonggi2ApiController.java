@@ -1,8 +1,10 @@
 package com.ll.traveler.domain.place.place.gyeonggi2;
 
 
+import com.ll.traveler.domain.place.place.gangwon.Gangwon2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
@@ -17,7 +19,6 @@ import java.util.List;
 public class Gyeonggi2ApiController {
 
     private final Gyeonggi2ApiService gyeonggi2ApiService;
-
 
     @GetMapping("/apiGyeonggi2")
     public String callApi() throws IOException {
@@ -48,6 +49,5 @@ public class Gyeonggi2ApiController {
     public List<Gyeonggi2> showGyeonggi2() {
         List<Gyeonggi2> gyeonggi2List = gyeonggi2ApiService.getAllGyeonggi2Data();
         return gyeonggi2List;
-
     }
 }

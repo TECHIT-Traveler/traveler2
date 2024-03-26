@@ -74,5 +74,4 @@ public class Gangwon2ApiController {
     public List<Gangwon2> searchLocation(@PathVariable String location) {
         return gangwon2ApiService.searchLocation(location);
     }
-
 }
