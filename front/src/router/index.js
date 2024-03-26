@@ -19,6 +19,8 @@ import Gyeonggi2Detail from "@/components/Gyeonggi2Detail.vue";
 
 import MyPage from "@/components/MyPage.vue";
 
+Vue.use(Router); // ?? 이게 왜 추가 안되어있죠 :0 ...
+Vue.use(cookies);
 
 export default new Router({
   routes: [
