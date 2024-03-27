@@ -47,7 +47,7 @@ public class Gangwon2ApiService {
     }
 
     public List<Gangwon2> getAllGangwon2Data() {
-        return gangwon2ApiRepository.findAll();
+        return gangwon2ApiRepository.findAllByIdLessThan(11);
     }
 
     public Gangwon2 getGangwon2DataById(Long id) {

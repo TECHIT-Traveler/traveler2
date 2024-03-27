@@ -77,7 +77,7 @@ export default {
 }
 
 .image-container {
-  width: 600px;
+  width: calc(100% - 0px);
   height: 500px;
   overflow: hidden;
   position: relative;

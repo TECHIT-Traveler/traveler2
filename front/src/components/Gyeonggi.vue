@@ -9,6 +9,10 @@
         @click="goToDetailPage(o.id)"
         style="cursor: pointer">
         <div class="card-body">
+          <div class="image-container">
+            <img :src="getImageUrl(o.id)" class="card-img-top image" alt="Image" />
+          </div>
+          <hr>
           <h5 class="card-title">{{ o.park_NM}}</h5>
           <hr>
           <p class="card-text">
@@ -56,24 +60,43 @@ export default {
     goToDetailPage(id) {
       // 상세 페이지로 이동하는 메서드
       this.$router.push({ name: 'GyeonggiDetail', params: { id: id } });
+    },
+    getImageUrl(id) {
+      return require(`@/assets/gyeonggi/${id}.jpg`);
     }
   }
 };
 </script>
   <style scoped>
   .card-deck {
-	display: flex;
-	flex-wrap: wrap;
-	margin-right: -15px;
-	margin-left: -15px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
   }
 
   .card {
-	flex: 0 0 33.333333%;
-	max-width: 33.333333%;
-	padding-right: 15px;
-	padding-left: 15px;
-	cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것을 나타냅니다. */
+    flex: 0 0 100%; /* Allow the card to expand to 100% of its container */
+    max-width: calc(600px + 30px); /* Limit the maximum width of the card */
+    margin-right: 15px;
+    margin-left: 15px;
+    cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것을 나타냅니다. */
+  }
+
+  .image-container {
+    width: calc(100% - 0px);
+    height: 500px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .card-body {
