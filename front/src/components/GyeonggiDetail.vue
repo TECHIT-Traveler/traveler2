@@ -1,35 +1,38 @@
 <template>
   <div class="detail-container">
     <div class="detail-header">
-      <h1>{{ o.PARK_NM }}</h1>
+      <h1>{{ o.park_NM }}</h1>
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
+
     </div>
     <div class="detail-body">
       <div class="detail-info">
-        <p><strong>시군구 명:</strong> {{ o.SIGNGU_NM}}</p>
+        <p><strong>시군구 명:</strong> {{ o.signgu_NM}}</p>
         <!-- 상세 이미지들 추가 -->
         <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
         </div>
-        <strong>규모시설면적:</strong> {{ o.AR }} <br>
-        <strong>출입허용시간:</strong> {{ o.CMGPERMSN_TM }} <br>
-        <strong>출입허용일:</strong> {{ o.CMGPERMSN_DAY }} <br>
-        <strong>운영기관명</strong> {{ o.OPERTINST_NM }} <br>
-        <strong>대표전화번호</strong> {{ o.REPRSNT_TELNO }} <br>
-        <strong>비용</strong> {{ o.EXPN }} <br>
-        <strong>이용요금</strong> {{ o.UTLZ_CHRG }} <br>
-        <strong>특이사항</strong> {{ o.PARTCLR_MATR }} <br>
-        <strong>이미지</strong> {{ o.IMAGE_NM }} <br>
-        <strong>위도</strong> {{ o.REFINE_WGS84_LAT }} <br>
-        <strong>경도</strong> {{ o.REFINE_WGS84_LOGT }} <br>
+        <strong>규모시설면적:</strong> {{ o.ar }} <br>
+        <strong>출입허용시간:</strong> {{ o.cmgpermsn_TM }} <br>
+        <strong>출입허용일:</strong> {{ o.cmgpermsn_DAY }} <br>
+        <strong>운영기관명</strong> {{ o.opertinst_NM }} <br>
+        <strong>대표전화번호</strong> {{ o.reprsnt_TELNO }} <br>
+        <strong>비용</strong> {{ o.expn }} <br>
+        <strong>이용요금</strong> {{ o.utlz_CHRG }} <br>
+        <strong>특이사항</strong> {{ o.partclr_MATR }} <br>
+        <strong>이미지</strong> {{ o.image_NM }} <br>
+        <strong>위도</strong> {{ o.refine_WGS84_LAT }} <br>
+        <strong>경도</strong> {{ o.refine_WGS84_LOGT }} <br>
       </div>
     </div>
     <div class="detail-buttons">
-      <button class="like-button"><i class="fas fa-heart"></i> 좋아요</button>
-      <button class="save-button"><i class="fas fa-star"></i> 저장</button>
-    </div>
+        <button class="like-button"><i class="fas fa-heart"></i> 좋아요</button>
+        <button class="save-button"><i class="fas fa-star"></i> 저장</button>
+      </div>
     <div class="comment-form">
-      <textarea v-model="commentText" placeholder="댓글을 작성해주세요" id="summernote"></textarea>
+      <textarea v-model="commentText" placeholder="댓글을 작성해주세요" id="summernote">
+
+      </textarea>
       <input type="file" accept="image/*" @change="handleImageUpload">
       <button @click="submitComment">작성</button>
     </div>
@@ -39,22 +42,22 @@
 <script>
 export default {
   name: 'GyeonggiDetail',
-  data () {
+  data() {
     return {
       o: {},
       mainImageUrl: 'https://via.placeholder.com/500x300',
       detailImages: [
-        'https://via.placeholder.com/150x150',
-        'https://via.placeholder.com/150x150',
-        'https://via.placeholder.com/150x150'
-      ] // 상세 이미지 URL들
+          'https://via.placeholder.com/150x150',
+          'https://via.placeholder.com/150x150',
+          'https://via.placeholder.com/150x150'
+        ] // 상세 이미지 URL들
     }
   },
-  created () {
+  created() {
     this.getGyeonggiData(this.$route.params.id)
   },
   methods: {
-    getGyeonggiData (id) {
+    getGyeonggiData(id) {
       fetch(`http://localhost:8090/gyeonggi/${id}`)
         .then(resp => resp.json())
         .then(data => {
@@ -62,39 +65,39 @@ export default {
         })
         .catch(err => console.error(err))
     },
-    handleImageUpload (event) {
-      const files = event.target.files
+    handleImageUpload(event) {
+      const files = event.target.files;
       if (files) {
         for (let i = 0; i < files.length; i++) {
-          const reader = new FileReader()
-          reader.readAsDataURL(files[i])
+          const reader = new FileReader();
+          reader.readAsDataURL(files[i]);
           reader.onload = (e) => {
-            this.uploadedImages.push(e.target.result)
+            this.uploadedImages.push(e.target.result);
           }
         }
       }
     },
-    submitComment () {
+    submitComment() {
       // 여기에 댓글을 서버에 저장하는 코드를 추가하세요.
       // 예시: fetch를 사용하여 서버로 댓글 데이터를 보낼 수 있습니다.
-      console.log('댓글 내용:', this.commentText)
-      console.log('첨부된 사진:', this.uploadedImages)
+      console.log('댓글 내용:', this.commentText);
+      console.log('첨부된 사진:', this.uploadedImages);
       // 저장 후 폼 초기화
-      this.commentText = ''
-      this.uploadedImages = []
+      this.commentText = '';
+      this.uploadedImages = [];
     },
-    mounted () {
+    mounted() {
       $('#summernote').summernote({
-        tabsize: 2,
-        height: 500
-      })
+      tabsize: 2,
+      height: 500
+    });
     },
-    beforeDestroy () {
-      // Summernote 인스턴스 제거
-      if ($('#summernote').summernote) {
-        $('#summernote').summernote('destroy')
-      }
+    beforeDestroy() {
+    // Summernote 인스턴스 제거
+    if ($('#summernote').summernote) {
+      $('#summernote').summernote('destroy');
     }
+  }
   }
 }
 </script>
@@ -149,6 +152,7 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
 }
+
 
 /* 나머지 스타일은 그대로 두고 버튼과 댓글 폼의 스타일을 추가합니다 */
 .detail-buttons {
