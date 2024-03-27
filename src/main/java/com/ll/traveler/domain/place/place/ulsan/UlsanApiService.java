@@ -2,7 +2,6 @@ package com.ll.traveler.domain.place.place.ulsan;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.ll.traveler.domain.place.place.gyeonggi.Gyeonggi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -65,5 +64,13 @@ public class UlsanApiService {
     public Ulsan getUlsanDataById(Long id) {
         Optional<Ulsan> ulsanOptional = ulsanApiRepository.findById(id);
         return ulsanOptional.orElse(null);
+    }
+
+    public List<Ulsan> searchFacility(String facility) {
+        return ulsanApiRepository.findAllByFacilityContaining(facility);
+    }
+
+    public List<Ulsan> searchCity(String city) {
+        return ulsanApiRepository.findAllByCityContaining(city);
     }
 }

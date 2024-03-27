@@ -17,6 +17,7 @@ module.exports = {
     proxy: "http://localhost:8090",
   },
 };
+
 module.exports = {
   pwa: {
     name: '앱이름',

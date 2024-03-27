@@ -60,8 +60,19 @@ public class UlsanApiController {
         List<Ulsan> ulsanList = ulsanApiService.getAllUlsanData();
         return ulsanList;
     }
+
     @GetMapping("/ulsan/{id}")
     public Ulsan detailUlsan(@PathVariable("id") Long id) {
         return ulsanApiService.getUlsanDataById(id);
+    }
+
+    @GetMapping("/ulsan/facility/{facility}")
+    public List<Ulsan> searchFacility(@PathVariable String facility) {
+        return ulsanApiService.searchFacility(facility);
+    }
+
+    @GetMapping("/ulsan/city/{city}")
+    public List<Ulsan> searchCity(@PathVariable String city) {
+        return ulsanApiService.searchCity(city);
     }
 }
