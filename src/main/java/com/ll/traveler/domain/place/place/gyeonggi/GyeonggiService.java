@@ -52,6 +52,8 @@ public class GyeonggiService {
                         .UTLZ_CHRG(node.get("UTLZ_CHRG").asText())
                         .PARTCLR_MATR(node.get("PARTCLR_MATR").asText())
                         .IMAGE_NM(node.get("IMAGE_NM").asText())
+                        .REFINE_WGS84_LAT(node.get("REFINE_WGS84_LAT").asText())
+                        .REFINE_WGS84_LOGT(node.get("REFINE_WGS84_LOGT").asText())
                         .build();
 
                 gyeonggiList.add(gyeonggiRepository.save(gyeonggi)); // 데이터베이스에 저장 후 리스트에 추가

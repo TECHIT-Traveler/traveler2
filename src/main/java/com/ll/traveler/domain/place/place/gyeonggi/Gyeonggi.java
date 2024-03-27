@@ -25,6 +25,6 @@ public class Gyeonggi extends IdEntity {
     private String IMAGE_NM; // 이미지
 
     // 추가적으로 위도와 경도 필드를 정의해야 합니다.
-    private double REFINE_WGS84_LAT; // 위도
-    private double REFINE_WGS84_LOGT; // 경도
+    private String REFINE_WGS84_LAT; // 위도
+    private String REFINE_WGS84_LOGT; // 경도
 }
