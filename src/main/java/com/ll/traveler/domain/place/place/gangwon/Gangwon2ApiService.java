@@ -61,4 +61,9 @@ public class Gangwon2ApiService {
     public List<Gangwon2> searchLocation(String location) {
         return gangwon2ApiRepository.findAllBy업체명Containing(location);
     }
+
+//    public List<Gangwon2> searchAddress(String address) {
+//        return gangwon2ApiRepository.findAllBy도로명_주소Containing(address);
+//    }
+
 }

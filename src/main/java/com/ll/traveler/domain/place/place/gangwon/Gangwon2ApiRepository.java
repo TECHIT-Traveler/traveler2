@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface Gangwon2ApiRepository extends JpaRepository<Gangwon2, Long> {
     List<Gangwon2> findAllBy업체명Containing(String location);
+
+//    List<Gangwon2> findAllBy도로명_주소Containing(String address);
 }

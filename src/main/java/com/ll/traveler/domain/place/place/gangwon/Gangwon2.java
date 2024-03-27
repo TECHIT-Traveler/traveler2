@@ -12,7 +12,7 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor(access = PROTECTED)
 @Getter
 @Setter
-public class Gangwon2 extends IdEntity {
+public class Gangwon2 extends IdEntity { // 엔티티
 
     private String 업체구분;
     private String 업체명;
@@ -22,4 +22,4 @@ public class Gangwon2 extends IdEntity {
     private String 경도;
     private String 연락처;
 
-} //엔티티
+}

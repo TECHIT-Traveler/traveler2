@@ -39,18 +39,18 @@ public class GyeonggiService {
         for (Map<String, String> val : targetValues ) {
 
             Gyeonggi entity = Gyeonggi.builder()
-                    .PARK_NM(val.get("PARK_NM"))
-                    .SIGNGU_NM(val.get("SIGNGU_NM"))
-                    .EMD_NM(val.get("EMD_NM"))
-                    .AR(val.get("AR"))
-                    .CMGPERMSN_TM(val.get("CMGPERMSN_TM"))
-                    .CMGPERMSN_DAY(val.get("CMGPERMSN_DAY"))
-                    .OPERTINST_NM(val.get("OPERTINST_NM"))
-                    .REPRSNT_TELNO(val.get("REPRSNT_TELNO"))
-                    .EXPN(val.get("EXPN"))
-                    .UTLZ_CHRG(val.get("UTLZ_CHRG"))
-                    .PARTCLR_MATR(val.get("PARTCLR_MATR"))
-                    .IMAGE_NM(val.get("IMAGE_NM"))
+                    .parkNm(val.get("PARK_NM"))
+                    .signguNm(val.get("SIGNGU_NM"))
+                    .emdNm(val.get("EMD_NM"))
+                    .ar(val.get("AR"))
+                    .cmgpermsnTm(val.get("CMGPERMSN_TM"))
+                    .cmgpermsnDay(val.get("CMGPERMSN_DAY"))
+                    .opertinstNm(val.get("OPERTINST_NM"))
+                    .reprsntTelNo(val.get("REPRSNT_TELNO"))
+                    .expn(val.get("EXPN"))
+                    .utlzChrg(val.get("UTLZ_CHRG"))
+                    .partclrMatr(val.get("PARTCLR_MATR"))
+                    .imageNm(val.get("IMAGE_NM"))
                     .build();
 
             gyeonggiRepository.save(entity);
@@ -60,6 +60,18 @@ public class GyeonggiService {
     }
     public List<Gyeonggi> getAllGyeonggiData(){
         return gyeonggiRepository.findAll();
+    }
+
+    public List<Gyeonggi> searchPark(String park) {
+        return gyeonggiRepository.findAllByParkNmContaining(park);
+    }
+
+    public List<Gyeonggi> searchSigngu(String signgu) {
+        return gyeonggiRepository.findAllBySignguNmContaining(signgu);
+    }
+
+    public List<Gyeonggi> searchEmd(String emd) {
+        return gyeonggiRepository.findAllByEmdNmContaining(emd);
     }
 
 }
