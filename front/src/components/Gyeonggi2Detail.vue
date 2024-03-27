@@ -1,7 +1,7 @@
 <template>
   <div class="detail-container">
     <div class="detail-header">
-      <h1>{{ o.업체명 }}</h1>
+
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
 
     </div>
@@ -51,7 +51,7 @@ export default {
     this.getGyeonggi2Data(this.$route.params.id)
   },
   methods: {
-    getGyeonggiData(id) {
+    getGyeonggi2Data(id) {
       fetch(`http://localhost:8090/gyeonggi2/${id}`)
         .then(resp => resp.json())
         .then(data => {

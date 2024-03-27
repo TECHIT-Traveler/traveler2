@@ -1,65 +1,89 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Login from '@/components/Login'
-import cookies from 'vue-cookies'
-import Join from '@/components/Join'
-import HelloWorld from '@/components/HelloWorld.vue'
-import Gyeonggi from '@/components/Gyeonggi.vue'
-import Gangwon from '@/components/Gangwon.vue'
-import Ulsan from '@/components/Ulsan.vue'
-import GangwonDetail from '@/components/GangwonDetail.vue'
-import GyeonggiDetail from '@/components/GyeonggiDetail.vue'
-import MyPage from '@/components/MyPage.vue'
 
-Vue.use(Router)
-Vue.use(cookies)
+import Vue from "vue";
+import Router from "vue-router";
+
+import Login from "@/components/Login";
+import cookies from "vue-cookies";
+import Join from "@/components/Join";
+
+import HelloWorld from "@/components/HelloWorld.vue";
+
+import Gyeonggi from "@/components/Gyeonggi.vue";
+import Gyeonggi2 from "@/components/Gyeonggi2.vue";
+import Gangwon from "@/components/Gangwon.vue";
+import Ulsan from "@/components/Ulsan.vue";
+
+import GangwonDetail from "@/components/GangwonDetail.vue";
+import GyeonggiDetail from "@/components/GyeonggiDetail.vue";
+import Gyeonggi2Detail from "@/components/Gyeonggi2Detail.vue";
+import UlsanDetail from "@/components/UlsanDetail.vue";
+
+import MyPage from "@/components/MyPage.vue";
+
+Vue.use(Router);
+Vue.use(cookies);
 
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      path: "/",
+      name: "HelloWorld",
+      component: HelloWorld,
     },
     {
-      path: '/Gyeonggi',
-      name: 'Gyeonggi',
-      component: Gyeonggi
+      path: "/Gyeonggi",
+      name: "Gyeonggi",
+      component: Gyeonggi,
     },
     {
-      path: '/Gangwon',
-      name: 'Gangwon',
-      component: Gangwon
+      path: "/Gyeonggi2",
+      name: "Gyeonggi2",
+      component: Gyeonggi2,
     },
     {
-      path: '/Ulsan',
-      name: 'Ulsan',
-      component: Ulsan
+      path: "/Gangwon",
+      name: "Gangwon",
+      component: Gangwon,
     },
     {
-      path: '/gyeonggi/:id',
-      name: 'GyeonggiDetail',
-      component: GyeonggiDetail
+      path: "/Ulsan",
+      name: "Ulsan",
+      component: Ulsan,
     },
     {
-      path: '/gangwon2/:id',
-      name: 'GangwonDetail',
-      component: GangwonDetail
+      path: "/gyeonggi/:id",
+      name: "GyeonggiDetail",
+      component: GyeonggiDetail,
     },
     {
-      path: '/Login',
-      name: 'Login',
-      component: Login
+      path: "/gyeonggi2/:id",
+      name: "Gyeonggi2Detail",
+      component: Gyeonggi2Detail,
     },
     {
-      path: '/Join',
-      name: 'Join',
-      component: Join
+      path: "/gangwon2/:id",
+      name: "GangwonDetail",
+      component: GangwonDetail,
     },
     {
-      path: '/MyPage',
-      name: 'MyPage',
-      component: MyPage
-    }
-  ]
-})
+      path: "/ulsan/:id",
+      name: "UlsanDetail",
+      component: UlsanDetail,
+    },
+    {
+      path: "/Login",
+      name: "Login",
+      component: Login,
+    },
+    {
+      path: "/Join",
+      name: "Join",
+      component: Join,
+    },
+    {
+      path: "/MyPage",
+      name: "MyPage",
+      component: MyPage,
+    },
+  ],
+});

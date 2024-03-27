@@ -2,7 +2,6 @@ package com.ll.traveler.domain.place.place.ulsan;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.ll.traveler.domain.place.place.gangwon.Gangwon2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -59,7 +59,11 @@ public class UlsanApiService {
     }
 
     public List<Ulsan> getAllUlsanData() {
-        return ulsanApiRepository.findAll();
+        return ulsanApiRepository.findAllByIdLessThan(30);
+    }
+    public Ulsan getUlsanDataById(Long id) {
+        Optional<Ulsan> ulsanOptional = ulsanApiRepository.findById(id);
+        return ulsanOptional.orElse(null);
     }
 
     public List<Ulsan> searchFacility(String facility) {

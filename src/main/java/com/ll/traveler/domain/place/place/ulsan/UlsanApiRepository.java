@@ -10,4 +10,5 @@ public interface UlsanApiRepository extends JpaRepository<Ulsan, Long> {
 
     List<Ulsan> findAllByCityContaining(String city);
 
+    List<Ulsan> findAllByIdLessThan(long id);
 }

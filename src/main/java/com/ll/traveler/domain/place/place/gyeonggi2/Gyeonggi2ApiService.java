@@ -2,7 +2,6 @@ package com.ll.traveler.domain.place.place.gyeonggi2;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ll.traveler.domain.place.place.gangwon.Gangwon2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -37,11 +37,8 @@ public class Gyeonggi2ApiService {
                     .homePage(node.get("홈페이지").asText())
                     .build();
 
-            gyeonggi2List.add(gyeonggi2);
+            gyeonggi2List.add(gyeonggi2ApiRepository.save(gyeonggi2));
         }
-
-        // 데이터베이스에 저장
-        gyeonggi2List.forEach(gyeonggi2ApiRepository::save);
 
         return gyeonggi2List;
     }
@@ -50,8 +47,12 @@ public class Gyeonggi2ApiService {
         return gyeonggi2ApiRepository.findAll();
     }
 
+    public Gyeonggi2 getGyeonggi2DataById(Long id) {
+        Optional<Gyeonggi2> gyeonggi2Optional = gyeonggi2ApiRepository.findById(id);
+        return gyeonggi2Optional.orElse(null);
+    }
+
     public List<Gyeonggi2> searchAddress(String address) {
         return gyeonggi2ApiRepository.findAllByAddressContaining(address);
     }
-
 }

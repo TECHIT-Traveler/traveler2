@@ -1,9 +1,7 @@
 package com.ll.traveler.domain.place.place.gyeonggi;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ll.traveler.domain.place.place.gyeonggi2.Gyeonggi2;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 
 @Slf4j
@@ -29,37 +27,48 @@ public class GyeonggiService {
 
         List<Gyeonggi> gyeonggiList = new ArrayList<>();
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> dataMap = objectMapper.readValue(jsonData, new TypeReference<Map<String, Object>>() {});
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(jsonData);
 
-        List<Map<String, String>> targetValues = (List<Map<String, String>>) ((Map<String, List<Map<String, String>>>) ((List<Object>) dataMap.get("OTHERHALFANIENTPARK")).get(1)).get("row");
+            // "OTHERHALFANIENTPARK" 노드 찾기
+            JsonNode dataListNode = rootNode.get("OTHERHALFANIENTPARK");
 
+            // "row" 노드 찾기
+            JsonNode rowNode = dataListNode.get(1).get("row");
 
+        for (JsonNode val : rowNode ) {
 
-        for (Map<String, String> val : targetValues ) {
-
-            Gyeonggi entity = Gyeonggi.builder()
-                    .parkNm(val.get("PARK_NM"))
-                    .signguNm(val.get("SIGNGU_NM"))
-                    .emdNm(val.get("EMD_NM"))
-                    .ar(val.get("AR"))
-                    .cmgpermsnTm(val.get("CMGPERMSN_TM"))
-                    .cmgpermsnDay(val.get("CMGPERMSN_DAY"))
-                    .opertinstNm(val.get("OPERTINST_NM"))
-                    .reprsntTelNo(val.get("REPRSNT_TELNO"))
-                    .expn(val.get("EXPN"))
-                    .utlzChrg(val.get("UTLZ_CHRG"))
-                    .partclrMatr(val.get("PARTCLR_MATR"))
-                    .imageNm(val.get("IMAGE_NM"))
+            Gyeonggi gyeonggi = Gyeonggi.builder()
+                    .parkNm(val.get("PARK_NM").asText())
+                    .signguNm(val.get("SIGNGU_NM").asText())
+                    .emdNm(val.get("EMD_NM").asText())
+                    .ar(val.get("AR").asText())
+                    .cmgpermsnTm(val.get("CMGPERMSN_TM").asText())
+                    .cmgpermsnDay(val.get("CMGPERMSN_DAY").asText())
+                    .opertinstNm(val.get("OPERTINST_NM").asText())
+                    .reprsntTelNo(val.get("REPRSNT_TELNO").asText())
+                    .expn(val.get("EXPN").asText())
+                    .utlzChrg(val.get("UTLZ_CHRG").asText())
+                    .partclrMatr(val.get("PARTCLR_MATR").asText())
+                    .imageNm(val.get("IMAGE_NM").asText())
                     .build();
 
-            gyeonggiRepository.save(entity);
-
+                gyeonggiList.add(gyeonggiRepository.save(gyeonggi)); // 데이터베이스에 저장 후 리스트에 추가
+            }
+        } catch (Exception e) {
+            log.error("Failed to save database", e);
         }
+
         return gyeonggiList;
     }
     public List<Gyeonggi> getAllGyeonggiData(){
         return gyeonggiRepository.findAll();
+    }
+
+    public Gyeonggi getGyeonggiDataById(Long id) {
+        Optional<Gyeonggi> gyeonggiOptional = gyeonggiRepository.findById(id);
+        return gyeonggiOptional.orElse(null);
     }
 
     public List<Gyeonggi> searchPark(String park) {
@@ -73,5 +82,4 @@ public class GyeonggiService {
     public List<Gyeonggi> searchEmd(String emd) {
         return gyeonggiRepository.findAllByEmdNmContaining(emd);
     }
-
 }
