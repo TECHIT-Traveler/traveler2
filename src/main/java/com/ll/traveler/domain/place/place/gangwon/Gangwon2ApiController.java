@@ -70,13 +70,13 @@ public class Gangwon2ApiController {
         return detail;
     }
 
-    @GetMapping("/apiGangwon2/location/{location}")
-    public List<Gangwon2> searchLocation(@PathVariable String location) {
-        return gangwon2ApiService.searchLocation(location);
+    @GetMapping("/apiGangwon2/name/{name}")
+    public List<Gangwon2> searchName(@PathVariable String name) {
+        return gangwon2ApiService.searchName(name);
     }
 
-//    @GetMapping("/apiGangwon2/address/{address}")
-//    public List<Gangwon2> searchAddress(@PathVariable String address) {
-//        return gangwon2ApiService.searchAddress(address);
-//    }
+    @GetMapping("/apiGangwon2/address/{address}")
+    public List<Gangwon2> searchAddress(@PathVariable String address) {
+        return gangwon2ApiService.searchAddress(address);
+    }
 }
