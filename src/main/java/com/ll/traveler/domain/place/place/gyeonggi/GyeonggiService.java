@@ -1,11 +1,9 @@
 package com.ll.traveler.domain.place.place.gyeonggi;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ll.traveler.domain.place.place.gyeonggi2.Gyeonggi2;
+import com.ll.traveler.domain.member.member.entity.Member;
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @Slf4j
@@ -51,6 +50,8 @@ public class GyeonggiService {
                     .UTLZ_CHRG(val.get("UTLZ_CHRG"))
                     .PARTCLR_MATR(val.get("PARTCLR_MATR"))
                     .IMAGE_NM(val.get("IMAGE_NM"))
+                    .REFINE_WGS84_LAT(val.get("REFINE_WGS84_LAT"))
+                    .REFINE_WGS84_LOGT(val.get("REFINE_WGS84_LOGT"))
                     .build();
 
             gyeonggiRepository.save(entity);
@@ -61,4 +62,22 @@ public class GyeonggiService {
     public List<Gyeonggi> getAllGyeonggiData(){
         return gyeonggiRepository.findAll();
     }
+
+    public Gyeonggi getGyeonggiDataById(Long id) {
+        Optional<Gyeonggi> gyeonggiOptional = gyeonggiRepository.findById(id);
+        if(gyeonggiOptional.isPresent()) {
+            return gyeonggiOptional.get();
+        }
+        return null;
+    }
+    @Transactional
+    public void like(Gyeonggi gyeonggi, Member member) {
+        gyeonggi.like(member);
+    }
+
+    @Transactional
+    public void cancelLike(Gyeonggi gyeonggi, Member member) {
+        gyeonggi.cancelLike(member);
+    }
+
 }

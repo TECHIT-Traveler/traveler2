@@ -1,8 +1,16 @@
 package com.ll.traveler.domain.place.place.gyeonggi;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ll.traveler.domain.member.member.entity.Member;
 import com.ll.traveler.global.jpa.IdEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static jakarta.persistence.CascadeType.ALL;
 
 @Entity
 @Builder
@@ -25,6 +33,29 @@ public class Gyeonggi extends IdEntity {
     private String IMAGE_NM; // 이미지
 
     // 추가적으로 위도와 경도 필드를 정의해야 합니다.
-    private double REFINE_WGS84_LAT; // 위도
-    private double REFINE_WGS84_LOGT; // 경도
+    private String REFINE_WGS84_LAT; // 위도
+    private String REFINE_WGS84_LOGT; // 경도
+
+    @OneToMany(mappedBy = "post", cascade =  ALL, orphanRemoval = true)
+    @Builder.Default
+    @JsonManagedReference
+    private List<GyeonggiLike> likes = new ArrayList<>();
+
+    public boolean hasLike(Member member) {
+        return likes.stream()
+                .anyMatch(like -> like.getMember().equals(member));
+    }
+
+    public void like(Member member) {
+        likes.add(
+                GyeonggiLike.builder()
+                        .member(member)
+                        .post(this)
+                        .build()
+        );
+    }
+
+    public void cancelLike(Member member) {
+        likes.removeIf(like -> like.getMember().equals(member));
+    }
 }

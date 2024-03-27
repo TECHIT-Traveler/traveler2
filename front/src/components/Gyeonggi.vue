@@ -9,20 +9,12 @@
         @click="goToDetailPage(o.id)"
         style="cursor: pointer">
         <div class="card-body">
-          <h5 class="card-title">{{ o.PARK_NM}}</h5>
+          <h5 class="card-title">{{ o.park_NM}}</h5>
           <hr>
           <p class="card-text">
-            <strong>시군구 명:</strong> {{ o.SIGNGU_NM }} <br>
-            <strong>읍면동명</strong> {{ o.EMD_NM }} <br>
-            <strong>규모시설면적:</strong> {{ o.AR }} <br>
-            <strong>출입허용시간:</strong> {{ o.CMGPERMSN_TM }} <br>
-            <strong>출입허용일:</strong> {{ o.CMGPERMSN_DAY }} <br>
-            <strong>운영기관명</strong> {{ o.OPERTINST_NM }} <br>
-            <strong>대표전화번호</strong> {{ o.REPRSNT_TELNO }} <br>
-            <strong>비용</strong> {{ o.EXPN }} <br>
-            <strong>이용요금</strong> {{ o.UTLZ_CHRG }} <br>
-            <strong>특이사항</strong> {{ o.PARTCLR_MATR }} <br>
-            <strong>이미지</strong> {{ o.IMAGE_NM }} <br>
+            <strong>주소:</strong>{{ o.signgu_NM}} {{ o.emd_NM }}<br>
+            <strong>출입허용일:</strong> {{ o.cmgpermsn_DAY }} <br>
+            <strong>전화번호:</strong> {{ o.reprsnt_TELNO }} <br>
           </p>
         </div>
       </div>
@@ -33,24 +25,36 @@
 <script>
 export default {
   mounted () {
+  // API에서 데이터를 가져오는 메서드 호출
     this.getGyeonggiData()
   },
   name: 'Gyeonggi',
   data () {
     return {
-      gyeonggiData: []
+      gyeonggiData: [] // gyeonggi 데이터를 저장할 배열
     }
   },
   methods: {
     getGyeonggiData () {
+      // API에서 데이터를 가져오는 메서드
       fetch('http://localhost:8090/gyeonggi')
-        .then(resp => resp.json())
+        .then(resp => {
+          if (!resp.ok) {
+            throw new Error('API 호출 중 오류 발생')
+          }
+          return resp.json() // 응답 데이터를 JSON 형식으로 변환
+        })
         .then(data => {
+          // 가져온 데이터를 gyeonggiData 배열에 할당
           this.gyeonggiData = data
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          console.error('데이터를 불러오는 중 에러 발생:', err)
+          // API 호출 중 오류가 발생한 경우 처리
+        })
     },
     goToDetailPage (id) {
+      // 상세 페이지로 이동하는 메서드
       this.$router.push({ name: 'GyeonggiDetail', params: { id: id } })
     }
   }
@@ -59,29 +63,29 @@ export default {
 
 <style scoped>
 .card-deck {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
+display: flex;
+flex-wrap: wrap;
+margin-right: -15px;
+margin-left: -15px;
 }
 
 .card {
-  flex: 0 0 33.333333%;
-  max-width: 33.333333%;
-  padding-right: 15px;
-  padding-left: 15px;
-  cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것을 나타냅니다. */
+flex: 0 0 33.333333%;
+max-width: 33.333333%;
+padding-right: 15px;
+padding-left: 15px;
+cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것을 나타냅니다. */
 }
 
 .card-body {
-  flex: 1 1 auto;
+flex: 1 1 auto;
 }
 
 .card-title {
-  margin-bottom: 0.75rem;
+margin-bottom: 0.75rem;
 }
 
 .card-text {
-  margin-bottom: 1rem;
+margin-bottom: 1rem;
 }
 </style>

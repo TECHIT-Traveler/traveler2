@@ -35,7 +35,6 @@
 <script>
 export default {
   name: 'GangwonDetail',
-  inject: ['isAuthenticated'],
   data () {
     return {
       o: {},
@@ -65,34 +64,33 @@ export default {
         })
     },
     like () {
-      const postId = this.o.id
-      this.$axios.post(`http://localhost:8090/gangwon2/like/${postId}`)
+      const id = this.o.id
+      this.$axios.post(`http://localhost:8090/gangwon2/like/${id}`)
         .then(response => {
           console.log('좋아요 처리 성공')
           this.isLiked = true
-          this.updateLikeCount(postId)
-        })
-        .catch(error => {
-          console.error('좋아요 처리 중 오류 발생', error)
-                    alert('로그인이 필요합니다.')
-
-        })
-    },
-    cancelLike () {
-      const postId = this.o.id
-      this.$axios.post(`http://localhost:8090/gangwon2/cancelLike/${postId}`)
-        .then(response => {
-          console.log('좋아요 취소 처리 성공')
-          this.isLiked = false
-          this.updateLikeCount(postId)
+          this.updateLikeCount(id)
         })
         .catch(error => {
           console.error('좋아요 처리 중 오류 발생', error)
           alert('로그인이 필요합니다.')
         })
     },
-    updateLikeCount (postId) {
-      this.$axios.get(`http://localhost:8090/gangwon2/getLikeCount/${postId}`)
+    cancelLike () {
+      const id = this.o.id
+      this.$axios.post(`http://localhost:8090/gangwon2/cancelLike/${id}`)
+        .then(response => {
+          console.log('좋아요 취소 처리 성공')
+          this.isLiked = false
+          this.updateLikeCount(id)
+        })
+        .catch(error => {
+          console.error('좋아요 처리 중 오류 발생', error)
+          alert('로그인이 필요합니다.')
+        })
+    },
+    updateLikeCount (id) {
+      this.$axios.get(`http://localhost:8090/gangwon2/getLikeCount/${id}`)
         .then(response => {
           this.likeCount = response.data
         })

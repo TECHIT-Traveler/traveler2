@@ -1,35 +1,39 @@
 <template>
   <div class="detail-container">
     <div class="detail-header">
-      <h1>{{ o.PARK_NM }}</h1>
+      <h1>{{ o.park_NM }}</h1>
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
     </div>
     <div class="detail-body">
       <div class="detail-info">
-        <p><strong>시군구 명:</strong> {{ o.SIGNGU_NM}}</p>
+        <p><strong>시군구 명:</strong> {{ o.signgu_NM}}</p>
         <!-- 상세 이미지들 추가 -->
         <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
         </div>
-        <strong>규모시설면적:</strong> {{ o.AR }} <br>
-        <strong>출입허용시간:</strong> {{ o.CMGPERMSN_TM }} <br>
-        <strong>출입허용일:</strong> {{ o.CMGPERMSN_DAY }} <br>
-        <strong>운영기관명</strong> {{ o.OPERTINST_NM }} <br>
-        <strong>대표전화번호</strong> {{ o.REPRSNT_TELNO }} <br>
-        <strong>비용</strong> {{ o.EXPN }} <br>
-        <strong>이용요금</strong> {{ o.UTLZ_CHRG }} <br>
-        <strong>특이사항</strong> {{ o.PARTCLR_MATR }} <br>
-        <strong>이미지</strong> {{ o.IMAGE_NM }} <br>
-        <strong>위도</strong> {{ o.REFINE_WGS84_LAT }} <br>
-        <strong>경도</strong> {{ o.REFINE_WGS84_LOGT }} <br>
+        <strong>규모시설면적:</strong> {{ o.ar }} <br>
+        <strong>출입허용시간:</strong> {{ o.cmgpermsn_TM }} <br>
+        <strong>출입허용일:</strong> {{ o.cmgpermsn_DAY }} <br>
+        <strong>운영기관명</strong> {{ o.opertinst_NM }} <br>
+        <strong>대표전화번호</strong> {{ o.reprsnt_TELNO }} <br>
+        <strong>비용</strong> {{ o.expn }} <br>
+        <strong>이용요금</strong> {{ o.utlz_CHRG }} <br>
+        <strong>특이사항</strong> {{ o.partclr_MATR }} <br>
+        <strong>이미지</strong> {{ o.image_NM }} <br>
+        <strong>위도</strong> {{ o.refine_WGS84_LAT }} <br>
+        <strong>경도</strong> {{ o.refine_WGS84_LOGT }} <br>
       </div>
+      <div id="map" style="width: 100%; height: 400px;"></div>
     </div>
     <div class="detail-buttons">
-      <button class="like-button"><i class="fas fa-heart"></i> 좋아요</button>
-      <button class="save-button"><i class="fas fa-star"></i> 저장</button>
-    </div>
+        <button class="like-button" v-if="isLiked === true" @click="cancelLike"><i class="fas fa-heart" style="color: red"></i>{{ likeCount }}</button>
+      <button class="like-button" v-else @click="like"><i class="fas fa-heart" style="color: grey"></i>{{ likeCount }}</button>
+        <button class="save-button"><i class="fas fa-star"></i> 저장</button>
+      </div>
     <div class="comment-form">
-      <textarea v-model="commentText" placeholder="댓글을 작성해주세요" id="summernote"></textarea>
+      <textarea v-model="commentText" placeholder="댓글을 작성해주세요" id="summernote">
+
+      </textarea>
       <input type="file" accept="image/*" @change="handleImageUpload">
       <button @click="submitComment">작성</button>
     </div>
@@ -47,18 +51,84 @@ export default {
         'https://via.placeholder.com/150x150',
         'https://via.placeholder.com/150x150',
         'https://via.placeholder.com/150x150'
-      ] // 상세 이미지 URL들
+      ], // 상세 이미지 URL들
+      isLiked: null,
+      likeCount: 0
     }
   },
   created () {
     this.getGyeonggiData(this.$route.params.id)
+    this.checkLikeStatus(this.$route.params.id)
   },
   methods: {
+    checkLikeStatus (id) {
+      this.$axios.get(`http://localhost:8090/gyeonggi/checkLike/${id}`)
+        .then(response => {
+          this.isLiked = response.data
+          console.log('isLiked: ', this.isLiked)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    like () {
+      const id = this.o.id
+      this.$axios.post(`http://localhost:8090/gyeonggi/like/${id}`)
+        .then(response => {
+          console.log('좋아요 처리 성공')
+          this.isLiked = true
+          this.updateLikeCount(id)
+        })
+        .catch(error => {
+          console.error('좋아요 처리 중 오류 발생', error)
+          alert('로그인이 필요합니다.')
+        })
+    },
+    cancelLike () {
+      const id = this.o.id
+      this.$axios.post(`http://localhost:8090/gyeonggi/cancelLike/${id}`)
+        .then(response => {
+          console.log('좋아요 취소 처리 성공')
+          this.isLiked = false
+          this.updateLikeCount(id)
+        })
+        .catch(error => {
+          console.error('좋아요 처리 중 오류 발생', error)
+          alert('로그인이 필요합니다.')
+        })
+    },
+    updateLikeCount (id) {
+      this.$axios.get(`http://localhost:8090/gyeonggi/getLikeCount/${id}`)
+        .then(response => {
+          this.likeCount = response.data
+        })
+        .catch(error => {
+          console.log('좋아요 수 업데이트 중 오류 발생', error)
+        })
+    },
+    initMap () {
+      const mapContainer = document.getElementById('map')
+      const mapOptions = {
+        center: new window.kakao.maps.LatLng(this.o.refine_WGS84_LAT, this.o.refine_WGS84_LOGT),
+        level: 3
+      }
+      this.map = new window.kakao.maps.Map(mapContainer, mapOptions)
+      const markerPosition = new window.kakao.maps.LatLng(this.o.refine_WGS84_LAT, this.o.refine_WGS84_LOGT)
+      const marker = new window.kakao.maps.Marker({ position: markerPosition })
+      marker.setMap(this.map)
+      window.kakao.maps.event.addListener(marker, 'click', () => {
+        const infoWindow = new window.kakao.maps.InfoWindow({
+          content: `<div>${this.o.park_NM}</div>`
+        })
+        infoWindow.open(this.map, marker)
+      })
+    },
     getGyeonggiData (id) {
       fetch(`http://localhost:8090/gyeonggi/${id}`)
         .then(resp => resp.json())
         .then(data => {
           this.o = data
+          this.initMap()
         })
         .catch(err => console.error(err))
     },
@@ -157,7 +227,16 @@ export default {
   margin-top: 20px;
 }
 
-.like-button,
+.like-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
 .save-button {
   padding: 10px 20px;
   font-size: 16px;
@@ -169,7 +248,10 @@ export default {
   transition: background-color 0.3s ease;
 }
 
-.like-button:hover,
+.like-button:hover {
+  border: 0.5px solid black;
+}
+
 .save-button:hover {
   background-color: #0056b3;
 }

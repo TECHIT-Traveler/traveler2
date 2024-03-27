@@ -1,8 +1,14 @@
 package com.ll.traveler.domain.place.place.gyeonggi2;
 
 
+import com.ll.traveler.domain.member.member.entity.Member;
+import com.ll.traveler.domain.member.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
@@ -17,7 +23,7 @@ import java.util.List;
 public class Gyeonggi2ApiController {
 
     private final Gyeonggi2ApiService gyeonggi2ApiService;
-
+    private final MemberService memberService;
 
     @GetMapping("/apiGyeonggi2")
     public String callApi() throws IOException {
@@ -44,10 +50,50 @@ public class Gyeonggi2ApiController {
         return result.toString();
     }
 
-    @GetMapping("gyeonggi2")
+    @GetMapping("/gyeonggi2")
     public List<Gyeonggi2> showGyeonggi2() {
         List<Gyeonggi2> gyeonggi2List = gyeonggi2ApiService.getAllGyeonggi2Data();
         return gyeonggi2List;
 
+    }
+
+    @GetMapping("/gyeonggi2/{id}")
+    public Gyeonggi2 detail(@PathVariable("id") Long id) {
+        return gyeonggi2ApiService.getGyeonggi2DataById(id);
+    }
+    @GetMapping("/gyeonggi2/checkLike/{id}")
+    public boolean checkLikeStatus(@PathVariable("id") Long id, Authentication authentication) {
+        Gyeonggi2 gyeonggi2 = gyeonggi2ApiService.getGyeonggi2DataById(id);
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        Member member = memberService.findByUsername(username);
+
+        if (gyeonggi2.hasLike(member)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @PostMapping("/gyeonggi2/like/{id}")
+    public void like(@PathVariable("id") Long id,Authentication authentication) {
+        Gyeonggi2 gyeonggi2 = gyeonggi2ApiService.getGyeonggi2DataById(id);
+        Member member = memberService.findByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
+
+        gyeonggi2ApiService.like(gyeonggi2, member);
+    }
+
+    @PostMapping("/gyeonggi2/cancelLike/{id}")
+    public void cancelLike(@PathVariable("id") Long id,Authentication authentication) {
+        Gyeonggi2 gyeonggi2 = gyeonggi2ApiService.getGyeonggi2DataById(id);
+        Member member = memberService.findByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
+
+        gyeonggi2ApiService.cancelLike(gyeonggi2, member);
+    }
+
+    @GetMapping("/gyeonggi2/getLikeCount/{id}")
+    public int getLikeCount(@PathVariable("id") Long id) {
+        Gyeonggi2 gyeonggi2 = gyeonggi2ApiService.getGyeonggi2DataById(id);
+
+        return gyeonggi2.getLikes().size();
     }
 }

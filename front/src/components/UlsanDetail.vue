@@ -1,32 +1,30 @@
 <template>
   <div class="detail-container">
     <div class="detail-header">
-      <h1>{{ o.업체명 }}</h1>
+      <h1>{{ o.facility }}</h1>
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
-
     </div>
     <div class="detail-body">
       <div class="detail-info">
-        <p><strong>지역명:</strong> {{ o.지역명}}</p>
+<!--        <p><strong>업체 구분:</strong> {{ o.업체구분 }}</p>-->
         <!-- 상세 이미지들 추가 -->
         <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
         </div>
-        <strong>주소:</strong> {{ o.주소 }} <br>
-        <strong>전화번호:</strong> {{ o.전화번호 }} <br>
-        <strong>이용시간:</strong> {{ o.이용시간 }} <br>
-        <strong>홈페이지</strong> {{ o.홈페이지 }} <br>
+        <p><strong>지번 주소:</strong> {{ o.address }}</p>
+        <p><strong>도로명 주소:</strong> {{ o.streetNameAddress }}</p>
+        <p><strong>위도:</strong> {{ o.lat }}</p>
+        <p><strong>경도:</strong> {{ o.lng }}</p>
+        <p><strong>연락처:</strong> {{ o.tel }}</p>
       </div>
       <div id="map" style="width: 100%; height: 400px;"></div>
     </div>
     <div class="detail-buttons">
-      <button class="like-button" v-if="isLiked === true" @click="cancelLike"><i class="fas fa-heart" style="color: red"></i>{{ likeCount }}</button>
-      <button class="like-button" v-else @click="like"><i class="fas fa-heart" style="color: grey"></i>{{ likeCount }}</button>
+      <button class="like-button"><i class="fas fa-heart"></i> 좋아요</button>
       <button class="save-button"><i class="fas fa-star"></i> 저장</button>
     </div>
     <div class="comment-form">
-      <textarea v-model="commentText" placeholder="댓글을 작성해주세요" id="summernote">
-      </textarea>
+      <textarea v-model="commentText" placeholder="댓글을 작성해주세요" id="summernote"></textarea>
       <input type="file" accept="image/*" @change="handleImageUpload">
       <button @click="submitComment">작성</button>
     </div>
@@ -35,104 +33,45 @@
 
 <script>
 export default {
-  name: 'Gyeonggi2Detail',
+  name: 'UlsanDetail',
   data () {
     return {
       o: {},
-      mainImageUrl: 'https://via.placeholder.com/500x300',
+      mainImageUrl: '',
       detailImages: [
         'https://via.placeholder.com/150x150',
         'https://via.placeholder.com/150x150',
         'https://via.placeholder.com/150x150'
-      ], // 상세 이미지 URL들
-      isLiked: null,
-      likeCount: 0
+      ] // 상세 이미지 URL들
     }
   },
   created () {
-    this.getGyeonggi2Data(this.$route.params.id)
-    this.checkLikeStatus(this.$route.params.id)
+    this.getUlsanData(this.$route.params.id)
   },
   methods: {
-    checkLikeStatus (id) {
-      this.$axios.get(`http://localhost:8090/gyeonggi2/checkLike/${id}`)
-        .then(response => {
-          this.isLiked = response.data
-          console.log('isLiked: ', this.isLiked)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
-    like () {
-      const id = this.o.id
-      this.$axios.post(`http://localhost:8090/gyeonggi2/like/${id}`)
-        .then(response => {
-          console.log('좋아요 처리 성공')
-          this.isLiked = true
-          this.updateLikeCount(id)
-        })
-        .catch(error => {
-          console.error('좋아요 처리 중 오류 발생', error)
-          alert('로그인이 필요합니다.')
-        })
-    },
-    cancelLike () {
-      const id = this.o.id
-      this.$axios.post(`http://localhost:8090/gyeonggi2/cancelLike/${id}`)
-        .then(response => {
-          console.log('좋아요 취소 처리 성공')
-          this.isLiked = false
-          this.updateLikeCount(id)
-        })
-        .catch(error => {
-          console.error('좋아요 처리 중 오류 발생', error)
-          alert('로그인이 필요합니다.')
-        })
-    },
-    updateLikeCount (id) {
-      this.$axios.get(`http://localhost:8090/gyeonggi2/getLikeCount/${id}`)
-        .then(response => {
-          this.likeCount = response.data
-        })
-        .catch(error => {
-          console.log('좋아요 수 업데이트 중 오류 발생', error)
-        })
-    },
     initMap () {
       const mapContainer = document.getElementById('map')
       const mapOptions = {
-        center: new window.kakao.maps.LatLng(37.5, 127),
+        center: new window.kakao.maps.LatLng(this.o.위도, this.o.경도),
         level: 3
       }
       this.map = new window.kakao.maps.Map(mapContainer, mapOptions)
-      var geocoder = new window.kakao.maps.services.Geocoder()
-
-      geocoder.addressSearch(this.o.주소, (result, status) => {
-        if (status === window.kakao.maps.sevices.Status.OK) {
-          var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x)
-
-          var marker = new window.kakao.Marker({
-            map: this.map,
-            position: coords
-          })
-
-          marker.setMap(this.map)
-
-          window.kakao.maps.event.addListener(marker, 'click', () => {
-            const infoWindow = new window.kakao.maps.InfoWindow({
-              content: `<div style="width:150px;text-align:center;padding:6px 0;">${this.o.업체명}</div>`
-            })
-            infoWindow.open(this.map, marker)
-          })
-        }
+      const markerPosition = new window.kakao.maps.LatLng(this.o.위도, this.o.경도)
+      const marker = new window.kakao.maps.Marker({ position: markerPosition })
+      marker.setMap(this.map)
+      window.kakao.maps.event.addListener(marker, 'click', () => {
+        const infoWindow = new window.kakao.maps.InfoWindow({
+          content: `<div>${this.o.업체명}</div>`
+        })
+        infoWindow.open(this.map, marker)
       })
     },
-    getGyeonggi2Data (id) {
-      fetch(`http://localhost:8090/gyeonggi2/${id}`)
+    getUlsanData (id) {
+      fetch(`http://localhost:8090/ulsan/${id}`)
         .then(resp => resp.json())
         .then(data => {
           this.o = data
+          this.mainImageUrl = require(`@/assets/ulsan/${id}.jpg`);
           this.initMap()
         })
         .catch(err => console.error(err))
@@ -159,20 +98,21 @@ export default {
       this.uploadedImages = []
     },
     mounted () {
-      global.$('#summernote').summernote({
+      $('#summernote').summernote({
         tabsize: 2,
         height: 500
       })
     },
     beforeDestroy () {
       // Summernote 인스턴스 제거
-      if (global.$('#summernote').summernote) {
-        global.$('#summernote').summernote('destroy')
+      if ($('#summernote').summernote) {
+        $('#summernote').summernote('destroy')
       }
     }
   }
 }
 </script>
+
 <style scoped>
 .detail-container {
   margin: 50px auto;
@@ -205,7 +145,7 @@ export default {
 
 .main-image {
   width: 100%;
-  height: 300px;
+  height: 500px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -232,16 +172,7 @@ export default {
   margin-top: 20px;
 }
 
-.like-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  color: black;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
+.like-button,
 .save-button {
   padding: 10px 20px;
   font-size: 16px;
@@ -253,10 +184,7 @@ export default {
   transition: background-color 0.3s ease;
 }
 
-.like-button:hover {
-  border: 0.5px solid black;
-}
-
+.like-button:hover,
 .save-button:hover {
   background-color: #0056b3;
 }

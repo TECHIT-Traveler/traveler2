@@ -2,6 +2,7 @@ package com.ll.traveler.domain.place.place.gyeonggi2;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ll.traveler.domain.member.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -47,5 +49,23 @@ public class Gyeonggi2ApiService {
 
     public List<Gyeonggi2> getAllGyeonggi2Data(){
         return gyeonggi2ApiRepository.findAll();
+    }
+
+    public Gyeonggi2 getGyeonggi2DataById(Long id) {
+        Optional<Gyeonggi2> gyeonggi2Optional = gyeonggi2ApiRepository.findById(id);
+        if(gyeonggi2Optional.isPresent()) {
+            return gyeonggi2Optional.get();
+        }
+        return null;
+    }
+
+    @Transactional
+    public void like(Gyeonggi2 gyeonggi2, Member member) {
+        gyeonggi2.like(member);
+    }
+
+    @Transactional
+    public void cancelLike(Gyeonggi2 gyeonggi2, Member member) {
+        gyeonggi2.cancelLike(member);
     }
 }
