@@ -1,35 +1,30 @@
 <template>
   <div class="detail-container">
     <div class="detail-header">
-      <h1>{{ o.PARK_NM }}</h1>
+      <h1>{{ o.업체명 }}</h1>
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
+
     </div>
     <div class="detail-body">
       <div class="detail-info">
-        <p><strong>시군구 명:</strong> {{ o.SIGNGU_NM}}</p>
+        <p><strong>업체 구분:</strong> {{ o.업체구분 }}</p>
         <!-- 상세 이미지들 추가 -->
         <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
         </div>
-        <strong>규모시설면적:</strong> {{ o.AR }} <br>
-        <strong>출입허용시간:</strong> {{ o.CMGPERMSN_TM }} <br>
-        <strong>출입허용일:</strong> {{ o.CMGPERMSN_DAY }} <br>
-        <strong>운영기관명</strong> {{ o.OPERTINST_NM }} <br>
-        <strong>대표전화번호</strong> {{ o.REPRSNT_TELNO }} <br>
-        <strong>비용</strong> {{ o.EXPN }} <br>
-        <strong>이용요금</strong> {{ o.UTLZ_CHRG }} <br>
-        <strong>특이사항</strong> {{ o.PARTCLR_MATR }} <br>
-        <strong>이미지</strong> {{ o.IMAGE_NM }} <br>
-        <strong>위도</strong> {{ o.REFINE_WGS84_LAT }} <br>
-        <strong>경도</strong> {{ o.REFINE_WGS84_LOGT }} <br>
+        <p><strong>지번 주소:</strong> {{ o.지번_주소 }}</p>
+        <p><strong>도로명 주소:</strong> {{ o.도로명_주소 }}</p>
+        <p><strong>위도:</strong> {{ o.위도 }}</p>
+        <p><strong>경도:</strong> {{ o.경도 }}</p>
+        <p><strong>연락처:</strong> {{ o.연락처 }}</p>
       </div>
     </div>
     <div class="detail-buttons">
-      <button class="like-button"><i class="fas fa-heart"></i> 좋아요</button>
-      <button class="save-button"><i class="fas fa-star"></i> 저장</button>
-    </div>
+        <button class="like-button"><i class="fas fa-heart"></i> 좋아요</button>
+        <button class="save-button"><i class="fas fa-star"></i> 저장</button>
+      </div>
     <div class="comment-form">
-      <textarea v-model="commentText" placeholder="댓글을 작성해주세요" id="summernote"></textarea>
+      <textarea v-model="commentText" placeholder="댓글을 작성해주세요"></textarea>
       <input type="file" accept="image/*" @change="handleImageUpload">
       <button @click="submitComment">작성</button>
     </div>
@@ -38,7 +33,7 @@
 
 <script>
 export default {
-  name: 'GyeonggiDetail',
+  name: 'GangwonDetail',
   data () {
     return {
       o: {},
@@ -51,11 +46,11 @@ export default {
     }
   },
   created () {
-    this.getGyeonggiData(this.$route.params.id)
+    this.getGangwonData(this.$route.params.id)
   },
   methods: {
-    getGyeonggiData (id) {
-      fetch(`http://localhost:8090/gyeonggi/${id}`)
+    getGangwonData (id) {
+      fetch(`http://localhost:8090/gangwon2/${id}`)
         .then(resp => resp.json())
         .then(data => {
           this.o = data
@@ -82,18 +77,6 @@ export default {
       // 저장 후 폼 초기화
       this.commentText = ''
       this.uploadedImages = []
-    },
-    mounted () {
-      $('#summernote').summernote({
-        tabsize: 2,
-        height: 500
-      })
-    },
-    beforeDestroy () {
-      // Summernote 인스턴스 제거
-      if ($('#summernote').summernote) {
-        $('#summernote').summernote('destroy')
-      }
     }
   }
 }

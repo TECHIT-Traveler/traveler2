@@ -14,12 +14,6 @@ module.exports = {
     '^.+\\.js$': '<rootDir>/node_modules/babel-jest',
     '.*\\.(vue)$': '<rootDir>/node_modules/vue-jest'
   },
-<<<<<<< HEAD
-  testPathIgnorePatterns: [
-    '<rootDir>/test/e2e'
-  ],
-=======
->>>>>>> main
   snapshotSerializers: ['<rootDir>/node_modules/jest-serializer-vue'],
   setupFiles: ['<rootDir>/test/unit/setup'],
   mapCoverage: true,

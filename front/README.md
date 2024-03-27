@@ -20,12 +20,6 @@ npm run build --report
 # run unit tests
 npm run unit
 
-<<<<<<< HEAD
-# run e2e tests
-npm run e2e
-
-=======
->>>>>>> main
 # run all tests
 npm test
 ```

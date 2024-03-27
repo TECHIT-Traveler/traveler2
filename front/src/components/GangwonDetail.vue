@@ -49,6 +49,7 @@ export default {
     this.getGangwonData(this.$route.params.id)
   },
   methods: {
+
     initMap () {
       const mapContainer = document.getElementById('map')
       const mapOptions = {

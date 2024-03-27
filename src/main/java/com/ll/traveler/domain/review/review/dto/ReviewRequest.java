@@ -14,4 +14,5 @@ public class ReviewRequest {
     private Long id;
     private String body;
     private Member author;
+    private int scope;
 }

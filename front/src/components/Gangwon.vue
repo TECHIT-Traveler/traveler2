@@ -1,5 +1,5 @@
 <template>
-  <div class="gangwon">
+<div class="gangwon">
     <div class="card-deck justify-content-center">
       <div
         v-for="(o, k) in gangwon2Data"
@@ -50,7 +50,7 @@ export default {
     }
   }
 }
-</script>
+  </script>
 
 <style scoped>
 .card-deck {
@@ -80,4 +80,3 @@ export default {
   margin-bottom: 1rem;
 }
 </style>
-
