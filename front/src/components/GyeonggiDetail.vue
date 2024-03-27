@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       o: {},
-      mainImageUrl: 'https://via.placeholder.com/500x300',
+      mainImageUrl: '',
       detailImages: [
           'https://via.placeholder.com/150x150',
           'https://via.placeholder.com/150x150',
@@ -57,11 +57,30 @@ export default {
     this.getGyeonggiData(this.$route.params.id)
   },
   methods: {
-    getGyeonggiData(id) {
+    initMap () {
+      const mapContainer = document.getElementById('map')
+      const mapOptions = {
+        center: new window.kakao.maps.LatLng(this.o.refine_wgs84_lat, this.o.refine_wgs84_logt),
+        level: 3
+      }
+      this.map = new window.kakao.maps.Map(mapContainer, mapOptions)
+      const markerPosition = new window.kakao.maps.LatLng(this.o.refine_wgs84_lat , this.o.refine_wgs84_logt)
+      const marker = new window.kakao.maps.Marker({ position: markerPosition })
+      marker.setMap(this.map)
+      window.kakao.maps.event.addListener(marker, 'click', () => {
+        const infoWindow = new window.kakao.maps.InfoWindow({
+          content: `<div>${this.o.park_NM}</div>`
+        })
+        infoWindow.open(this.map, marker)
+      })
+    },
+    getGyeonggiData (id) {
       fetch(`http://localhost:8090/gyeonggi/${id}`)
         .then(resp => resp.json())
         .then(data => {
           this.o = data
+          this.mainImageUrl = require(`@/assets/gyeonggi/${id}.jpg`);
+          this.initMap()
         })
         .catch(err => console.error(err))
     },

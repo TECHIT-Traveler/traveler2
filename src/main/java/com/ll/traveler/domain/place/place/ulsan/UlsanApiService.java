@@ -60,7 +60,7 @@ public class UlsanApiService {
     }
 
     public List<Ulsan> getAllUlsanData() {
-        return ulsanApiRepository.findAll();
+        return ulsanApiRepository.findAllByIdLessThan(30);
     }
     public Ulsan getUlsanDataById(Long id) {
         Optional<Ulsan> ulsanOptional = ulsanApiRepository.findById(id);
