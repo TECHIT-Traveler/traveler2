@@ -20,7 +20,6 @@ public class Gyeonggi2ApiController {
 
     private final Gyeonggi2ApiService gyeonggi2ApiService;
 
-
     @GetMapping("/apiGyeonggi2")
     public String callApi() throws IOException {
         StringBuilder result = new StringBuilder();
@@ -54,5 +53,10 @@ public class Gyeonggi2ApiController {
     @GetMapping("/gyeonggi2/{id}")
     public Gyeonggi2 detail2(@PathVariable("id") Long id) {
         return gyeonggi2ApiService.getGyeonggi2DataById(id);
+    }
+
+    @GetMapping("/gyeonggi2/search")
+    public List<Gyeonggi2> searchAllGyeonggi(){
+        return gyeonggi2ApiService.getAllGyeonggi2Data();
     }
 }

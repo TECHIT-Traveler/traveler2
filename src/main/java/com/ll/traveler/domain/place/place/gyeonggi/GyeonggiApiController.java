@@ -37,7 +37,7 @@ public class GyeonggiApiController {
         String returnLine;
 
         while ((returnLine = br.readLine()) != null) {
-            result.append(returnLine).append("\n\r");
+            result.append(returnLine).append("\n");
         }
         con.disconnect();
 
@@ -45,13 +45,20 @@ public class GyeonggiApiController {
 
         return result.toString();
     }
+
     @GetMapping("/gyeonggi")
     public List<Gyeonggi> showGyeonggi() {
         List<Gyeonggi> gyeonggiList = gyeonggiService.getAllGyeonggiData();
         return gyeonggiList;
     }
+
     @GetMapping("/gyeonggi/{id}")
     public Gyeonggi detail(@PathVariable("id") Long id) {
         return gyeonggiService.getGyeonggiDataById(id);
+    }
+
+    @GetMapping("/gyeonggi/search")
+    public List<Gyeonggi> searchAllGyeonggi(){
+        return gyeonggiService.getAllGyeonggiData();
     }
 }

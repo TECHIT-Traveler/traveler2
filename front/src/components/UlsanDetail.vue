@@ -6,15 +6,11 @@
     </div>
     <div class="detail-body">
       <div class="detail-info">
-<!--        <p><strong>업체 구분:</strong> {{ o.업체구분 }}</p>-->
-        <!-- 상세 이미지들 추가 -->
-        <div class="detail-images">
+        <!-- <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
-        </div>
+        </div> -->
         <p><strong>지번 주소:</strong> {{ o.address }}</p>
         <p><strong>도로명 주소:</strong> {{ o.streetNameAddress }}</p>
-        <p><strong>위도:</strong> {{ o.lat }}</p>
-        <p><strong>경도:</strong> {{ o.lng }}</p>
         <p><strong>연락처:</strong> {{ o.tel }}</p>
       </div>
       <div id="map" style="width: 100%; height: 400px;"></div>

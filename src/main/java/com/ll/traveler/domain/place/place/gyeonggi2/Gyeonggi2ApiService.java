@@ -2,7 +2,6 @@ package com.ll.traveler.domain.place.place.gyeonggi2;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ll.traveler.domain.place.place.gyeonggi.Gyeonggi;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,11 +30,11 @@ public class Gyeonggi2ApiService {
 
         for (JsonNode node : dataListNode) {
             Gyeonggi2 gyeonggi2 = Gyeonggi2.builder()
-                    .지역명(node.get("지역명").asText())
-                    .주소(node.get("주소").asText())
-                    .전화번호(node.get("전화번호").asText())
-                    .이용시간(node.get("이용시간").asText())
-                    .홈페이지(node.get("홈페이지").asText())
+                    .location(getStringValue(node, "지역명"))
+                    .address(getStringValue(node, "주소"))
+                    .contact(getStringValue(node, "전화번호"))
+                    .time(getStringValue(node, "이용시간"))
+                    .homePage(getStringValue(node, "홈페이지"))
                     .build();
 
             gyeonggi2List.add(gyeonggi2ApiRepository.save(gyeonggi2));
@@ -44,11 +43,18 @@ public class Gyeonggi2ApiService {
         return gyeonggi2List;
     }
 
+    private String getStringValue(JsonNode node, String fieldName) {
+        JsonNode fieldValue = node.get(fieldName);
+        return fieldValue != null && !fieldValue.isNull() ? fieldValue.asText() : "-";
+    }
+
     public List<Gyeonggi2> getAllGyeonggi2Data(){
         return gyeonggi2ApiRepository.findAll();
     }
+
     public Gyeonggi2 getGyeonggi2DataById(Long id) {
         Optional<Gyeonggi2> gyeonggi2Optional = gyeonggi2ApiRepository.findById(id);
         return gyeonggi2Optional.orElse(null);
     }
+
 }
