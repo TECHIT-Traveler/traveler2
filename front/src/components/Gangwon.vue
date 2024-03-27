@@ -29,14 +29,17 @@
 export default {
   mounted () {
     this.getGangwon2Data()
+    this.getBoardList(1)
   },
   name: 'Gangwon',
   data () {
     return {
-      gangwon2Data: []
+      gangwon2Data: [],
+      boardList : [],
+      boardPagination : {}
     }
   },
-  methods: {
+  methods: { // 이걸 호출해서 Gangwon2 데이터를 가져온다
     getGangwon2Data () {
       fetch('http://localhost:8090/gangwon2')
         .then(resp => resp.json())
@@ -48,6 +51,8 @@ export default {
     goToDetailPage (id) {
       this.$router.push({ name: 'GangwonDetail', params: { id: id } })
     }
+
+
   }
 }
 </script>

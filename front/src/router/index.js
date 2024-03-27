@@ -18,8 +18,9 @@ import GyeonggiDetail from "@/components/GyeonggiDetail.vue";
 import Gyeonggi2Detail from "@/components/Gyeonggi2Detail.vue";
 
 import MyPage from "@/components/MyPage.vue";
-Vue.use(Router);
-Vue.use(cookies);
+
+Vue.use(Router); // Vue Router를 Vue 애플리케이션에 등록하는 역할
+Vue.use(cookies); // vue-cookies라는 플로그인을 Vue 애플리케이션에 등록하는 역할
 
 export default new Router({
   routes: [
@@ -80,5 +81,7 @@ export default new Router({
       name: 'MyPage',
       component: MyPage
     }
+
+
   ]
 })
