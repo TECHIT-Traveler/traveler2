@@ -1,13 +1,13 @@
 <template>
   <div class="detail-container">
     <div class="detail-header">
-      <h1>{{ o.PARK_NM }}</h1>
+      <h1>{{ o.park_NM }}</h1>
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
 
     </div>
     <div class="detail-body">
       <div class="detail-info">
-        <p><strong>시군구 명:</strong> {{ o.SIGNGU_NM}}</p>
+        <p><strong>시군구 명:</strong> {{ o.signgu_NM}}</p>
         <!-- 상세 이미지들 추가 -->
         <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>

@@ -15,6 +15,7 @@ import Ulsan from "@/components/Ulsan.vue";
 import GangwonDetail from "@/components/GangwonDetail.vue";
 import GyeonggiDetail from "@/components/GyeonggiDetail.vue";
 import Gyeonggi2Detail from "@/components/Gyeonggi2Detail.vue";
+import UlsanDetail from "@/components/UlsanDetail.vue";
 
 import MyPage from "@/components/MyPage.vue";
 
@@ -24,33 +25,36 @@ Vue.use(cookies);
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      path: "/",
+      name: "HelloWorld",
+      component: HelloWorld,
     },
     {
-      path: '/Gyeonggi',
-      name: 'Gyeonggi',
-      component: Gyeonggi
+      path: "/Gyeonggi",
+      name: "Gyeonggi",
+      component: Gyeonggi,
+    },
+    {
+      path: "/Gyeonggi2",
+      name: "Gyeonggi2",
+      component: Gyeonggi2,
     },
     {
       path: "/Gangwon",
       name: "Gangwon",
       component: Gangwon,
-
     },
     {
-      path: '/Ulsan',
-      name: 'Ulsan',
-      component: Ulsan
+      path: "/Ulsan",
+      name: "Ulsan",
+      component: Ulsan,
     },
     {
-      path: '/gyeonggi/:id',
-      name: 'GyeonggiDetail',
-      component: GyeonggiDetail
+      path: "/gyeonggi/:id",
+      name: "GyeonggiDetail",
+      component: GyeonggiDetail,
     },
     {
-
       path: "/gyeonggi2/:id",
       name: "Gyeonggi2Detail",
       component: Gyeonggi2Detail,
@@ -61,19 +65,24 @@ export default new Router({
       component: GangwonDetail,
     },
     {
-      path: '/Login',
-      name: 'Login',
-      component: Login
+      path: "/ulsan/:id",
+      name: "UlsanDetail",
+      component: UlsanDetail,
     },
     {
-      path: '/Join',
-      name: 'Join',
-      component: Join
+      path: "/Login",
+      name: "Login",
+      component: Login,
     },
     {
-      path: '/MyPage',
-      name: 'MyPage',
-      component: MyPage
-    }
-  ]
-})
+      path: "/Join",
+      name: "Join",
+      component: Join,
+    },
+    {
+      path: "/MyPage",
+      name: "MyPage",
+      component: MyPage,
+    },
+  ],
+});

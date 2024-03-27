@@ -1,51 +1,51 @@
 <template>
   <header>
-    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg bg-light">
       <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <router-link to="/" class="navbar-brand">Traveler</router-link>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"
+          aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <b-navbar-nav class="collapse navbar-collapse" id="navbarContent">
+        <div class="navbar-collapse collapse show" id="navbarColor03">
+          <!-- 네비게이션 메뉴 -->
           <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <router-link to="/" class="nav-link">Traveler</router-link>
-            </li>
-            <b-nav-item-dropdown  class="nav-item">
+            <b-nav-item-dropdown  class="nav-item active mr-auto">
               <template #button-content>
-                <strong>경기</strong>
+                <b>경기</b>
               </template>
               <b-dropdown-item @click="$router.push('/Gyeonggi')">경기</b-dropdown-item>
               <b-dropdown-item @click="$router.push('/Gyeonggi2')">경기2</b-dropdown-item>
             </b-nav-item-dropdown>
             <li class="nav-item">
-              <router-link :to="{name: 'Gangwon'}" class="nav-link">강원</router-link>
+              <router-link to="/Gangwon" class="nav-link active">강원</router-link>
             </li>
             <li class="nav-item">
-              <router-link :to="{name: 'Ulsan'}" class="nav-link">울산</router-link>
+              <router-link to="/Ulsan" class="nav-link active">울산</router-link>
             </li>
           </ul>
-        </b-navbar-nav>
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto" v-if="isAuthenticated">
-          <b-nav-item-dropdown right>
-            <!-- Using 'button-content' slot -->
-            <template #button-content>
-              <em>{{userInfo.nickname}}</em>
-            </template>
-            <b-dropdown-item @click="$router.push('/MyPage')">Profile</b-dropdown-item>
-            <b-dropdown-item @click="logout">Sign Out</b-dropdown-item>
-          </b-nav-item-dropdown>
-        </b-navbar-nav>
-        <b-navbar-nav class="ml-auto" v-if="!isAuthenticated">
-          <b-nav-item-dropdown right>
-            <!-- Using 'button-content' slot -->
-            <template #button-content>
-              <em>로그인 해주세요.</em>
-            </template>
-            <b-dropdown-item v-if="!isAuthenticated" @click="$router.push('/Login')">Login</b-dropdown-item>
-            <b-dropdown-item v-if="!isAuthenticated" @click="$router.push('/Join')">Join</b-dropdown-item>
-          </b-nav-item-dropdown>
-        </b-navbar-nav>
+            <!-- dropdown -->
+            <li class="nav-item dropdown d-flex" v-if="isAuthenticated">
+              <b-nav-item-dropdown right>
+                <!-- Using 'button-content' slot -->
+                <template #button-content>
+                  <em>{{userInfo.nickname}}</em>
+                </template>
+                <b-dropdown-item @click="$router.push('/MyPage')">Profile</b-dropdown-item>
+                <b-dropdown-item @click="logout">Sign Out</b-dropdown-item>
+              </b-nav-item-dropdown>
+            </li>
+            <li class="nav-item dropdown d-flex" v-if="!isAuthenticated">
+              <b-nav-item-dropdown right>
+                <!-- Using 'button-content' slot -->
+                <template #button-content>
+                  <strong>로그인 해주세요.</strong>
+                </template>
+                <b-dropdown-item v-if="!isAuthenticated" @click="$router.push('/Login')">Login</b-dropdown-item>
+                <b-dropdown-item v-if="!isAuthenticated" @click="$router.push('/Join')">Join</b-dropdown-item>
+              </b-nav-item-dropdown>
+            </li>
+        </div>
       </div>
     </nav>
   </header>
@@ -95,18 +95,29 @@ export default {
 </script>
 
 <style scoped>
-.header {
-  font-weight: 900;
+.nav {
+  font-weight: 500;
   margin : 2.5rem 0 1.5rem;
   z-index: 1;
 }
-nav .navbar-nav a.nav-link {
-  font-weight: bold;
-  color: #2c3e50 !important;
-  text-align:initial;
+.nav-item {
+  font-size: 16px;
 }
-.navbar-info a { font-weight:bold; color:#2c3e50 !important; text-decoration:none; }
-.navbar-info span { font-weight:bold; color:#2c3e50; cursor:pointer; }
+.nav-item.dropdown{
+  list-style-type: none; 
+  padding-left: 0; 
+}
+.navbar-brand {
+  margin-left: 8px;
+}
+.nav-item b {
+  font-weight: 500;
+  margin-left: 8px;
+}
+.nav-link {
+  margin-left: 8px;
+  text-align: left;
+}
 @media (max-width: 576px) {
   .navbar-info { background-color:#eee; padding:10px 10px; }
 }

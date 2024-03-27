@@ -14,9 +14,6 @@
           <p class="card-text">
             <strong>업체 구분:</strong> {{ o.업체구분 }} <br>
             <strong>지번 주소:</strong> {{ o.지번_주소 }} <br>
-            <strong>도로명 주소:</strong> {{ o.도로명_주소 }} <br>
-            <strong>위도:</strong> {{ o.위도 }} <br>
-            <strong>경도:</strong> {{ o.경도 }} <br>
             <strong>연락처:</strong> {{ o.연락처 }} <br>
           </p>
         </div>
