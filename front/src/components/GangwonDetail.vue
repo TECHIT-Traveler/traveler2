@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'GangwonDetail',
   data () {
@@ -89,13 +91,33 @@ export default {
       }
     },
     submitComment () {
+       // 댓글 내용 확인
+      if (!this.commentText.trim()) {
+      alert("댓글 내용을 입력해주세요.");
+      return;
+    }
       // 여기에 댓글을 서버에 저장하는 코드를 추가하세요.
       // 예시: fetch를 사용하여 서버로 댓글 데이터를 보낼 수 있습니다.
       console.log('댓글 내용:', this.commentText)
       console.log('첨부된 사진:', this.uploadedImages)
+
       // 저장 후 폼 초기화
       this.commentText = ''
       this.uploadedImages = []
+
+      // 댓글을 서버에 전송
+      axios.post('/reviews', { comment: this.commentText })
+        .then(response => {
+          // 성공 처리
+          this.commentText = ''; // 입력란 초기화
+          this.uploadedImages = []; // 이미지 배열 초기화
+          // 댓글 목록 갱신 로직
+        })
+        .catch(error => {
+          console.error('댓글 저장 중 에러 발생', error);
+    });
+
+
     },
     mounted () {
       $('#summernote').summernote({

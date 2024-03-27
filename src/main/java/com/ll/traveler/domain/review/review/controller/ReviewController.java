@@ -1,40 +1,39 @@
 package com.ll.traveler.domain.review.review.controller;
 
 import com.ll.traveler.domain.review.review.dto.ReviewRequest;
-import com.ll.traveler.domain.review.review.entity.Review;
+import com.ll.traveler.domain.review.review.dto.ReviewResponse;
 import com.ll.traveler.domain.review.review.service.ReviewService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/reviews")
 public class ReviewController {
     private final ReviewService reviewService;
 
-    @Autowired
-    public ReviewController(ReviewService reviewService) {
-        this.reviewService = reviewService;
-    }
-
     @PostMapping
-    public ResponseEntity<Review> createReview(@RequestBody ReviewRequest reviewRequest) {
-        // ReviewRequest DTO를 Review 엔티티로 변환
-        Review review = convertToEntity(reviewRequest);
-        Review createdReview = reviewService.createReview(review);
-        return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
+    public ResponseEntity<Long> createReview(@RequestBody ReviewRequest dto) {
+        Long reviewId = reviewService.saveReview(dto);
+        return ResponseEntity.ok(reviewId);
     }
 
-    private Review convertToEntity(ReviewRequest reviewRequest) {
-        Review review = new Review();
-        review.setBody(reviewRequest.getBody());
-        // 이하 필요한 변환 로직 구현, author 및 place 설정 등
-        return review;
+    @GetMapping("/{id}")
+    public ResponseEntity<ReviewResponse> getReview(@PathVariable Long id) {
+        ReviewResponse dto = reviewService.getReview(id);
+        return ResponseEntity.ok(dto);
     }
 
-    // 기타 엔드포인트들...
+    @PutMapping("/{id}")
+    public ResponseEntity<ReviewResponse> updateReview(@PathVariable Long id, @RequestBody ReviewRequest dto) {
+        ReviewResponse updatedDto = reviewService.updateReview(id, dto);
+        return ResponseEntity.ok(updatedDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
+        reviewService.deleteReview(id);
+        return ResponseEntity.ok().build();
+    }
 }

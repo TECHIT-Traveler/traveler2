@@ -4,41 +4,39 @@ import com.ll.traveler.domain.member.member.entity.Member;
 import com.ll.traveler.domain.place.place.entity.Place;
 import com.ll.traveler.global.jpa.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static jakarta.persistence.CascadeType.ALL;
-import static lombok.AccessLevel.PROTECTED;
-import static lombok.AccessLevel.PUBLIC;
+import java.util.Date;
 
 @Entity
-@SuperBuilder
-@AllArgsConstructor(access = PROTECTED) // 클래스의 모든 필드 값을 파라미터로 받는 생성자를 자동으로 생성
-@NoArgsConstructor(access = PUBLIC) // 파라미터가 없는 디폴트 생성자를 자동으로 생성
+@Table(name = "reviews")
 @Getter
 @Setter
-@ToString(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
 public class Review extends BaseEntity {
 
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String body; // 내용
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String body; // 리뷰 내용
 
     private int scope; // 별점
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member author; // 작성자
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "place_id")
     private Place place; // 여행 장소
 
-    @OneToMany(mappedBy = "review", cascade = ALL, orphanRemoval = true)
-
-    @Builder.Default
-    private List<ReviewLike> likes = new ArrayList<>();
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
 }

@@ -1,6 +1,7 @@
 package com.ll.traveler.domain.review.review.dto;
 
 import com.ll.traveler.domain.member.member.entity.Member;
+import com.ll.traveler.domain.review.review.entity.Review;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,11 @@ public class ReviewResponse {
     private Boolean delete;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
+
+    public ReviewResponse(Review review) {
+        this.id = review.getId();
+        this.body = review.getBody();
+        this.scope = review.getScope();
+    }
 }
+
