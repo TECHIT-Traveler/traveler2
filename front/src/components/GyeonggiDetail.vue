@@ -1,28 +1,22 @@
 <template>
   <div class="detail-container">
     <div class="detail-header">
-      <h1>{{ o.park_NM }}</h1>
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
-
     </div>
+      <h1>{{ o.parkNm }}</h1>
     <div class="detail-body">
       <div class="detail-info">
-        <p><strong>시군구 명:</strong> {{ o.signgu_NM}}</p>
-        <!-- 상세 이미지들 추가 -->
-        <div class="detail-images">
+        <!-- <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
-        </div>
-        <strong>규모시설면적:</strong> {{ o.ar }} <br>
-        <strong>출입허용시간:</strong> {{ o.cmgpermsn_TM }} <br>
-        <strong>출입허용일:</strong> {{ o.cmgpermsn_DAY }} <br>
-        <strong>운영기관명</strong> {{ o.opertinst_NM }} <br>
-        <strong>대표전화번호</strong> {{ o.reprsnt_TELNO }} <br>
-        <strong>비용</strong> {{ o.expn }} <br>
-        <strong>이용요금</strong> {{ o.utlz_CHRG }} <br>
-        <strong>특이사항</strong> {{ o.partclr_MATR }} <br>
-        <strong>이미지</strong> {{ o.image_NM }} <br>
-        <strong>위도</strong> {{ o.refine_WGS84_LAT }} <br>
-        <strong>경도</strong> {{ o.refine_WGS84_LOGT }} <br>
+        </div> -->
+        <div class="detail-item">주소:{{ o.signguNm}} {{ o.emdNm }}</div>
+        <div class="detail-item">규모시설면적: {{ o.ar }} </div>
+        <div class="detail-item">출입허용시간: {{ o.cmgpermsnTm }} </div>
+        <div class="detail-item">출입허용일: {{ o.cmgpermsnDay }} </div>
+        <div class="detail-item">운영기관명: {{ o.opertinstNm }} </div>
+        <div class="detail-item">대표전화번호: {{ o.reprsntTelNo }} </div> 
+        <div class="detail-item">비용: {{ o.expn }} {{ o.utlzChrg }}</div>
+        <div class="detail-item">특이사항: {{ o.partclrMatr }}</div>
       </div>
     </div>
     <div class="detail-buttons">
@@ -173,6 +167,13 @@ export default {
 }
 
 
+.detail-item {
+  font-size: 18px;
+  text-align: left;
+  font-weight: 500;
+  margin-bottom: 10px;
+  padding: 10px;
+}
 /* 나머지 스타일은 그대로 두고 버튼과 댓글 폼의 스타일을 추가합니다 */
 .detail-buttons {
   display: flex;

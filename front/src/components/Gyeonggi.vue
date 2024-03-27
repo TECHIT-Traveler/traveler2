@@ -1,8 +1,11 @@
 <template>
   <div class="gyeonggi">
+     <!-- 검색어 입력 상자 -->
+     <input type="text" v-model="searchQuery" @keyup.enter="performSearch" placeholder="시설 이름, 도시 이름을 입력하세요" class="form-control mx-auto mb-4">
+
     <div class="card-deck justify-content-center">
       <div
-        v-for="(o, k) in gyeonggiData"
+        v-for="(o, k) in filteredGyeonggiData"
         :key="k"
         :to="'/gyeonggi/' + o.id"
         class="card mb-4"
@@ -13,12 +16,12 @@
             <img :src="getImageUrl(o.id)" class="card-img-top image" alt="Image" />
           </div>
           <hr>
-          <h5 class="card-title">{{ o.park_NM}}</h5>
+          <h5 class="card-title">{{ o.parkNm}}</h5>
           <hr>
           <p class="card-text">
-            <strong>주소:</strong>{{ o.signgu_NM}} {{ o.emd_NM }}<br>
-            <strong>출입허용일:</strong> {{ o.cmgpermsn_DAY }} <br>
-            <strong>전화번호:</strong> {{ o.reprsnt_TELNO }} <br>
+            <strong>주소:</strong>{{ o.signguNm}} {{ o.emdNm }}<br>
+            <strong>출입허용일:</strong> {{ o.cmgpermsnDay }} <br>
+            <strong>전화번호:</strong> {{ o.reprsntTelNo }} <br>
           </p>
         </div>
       </div>
@@ -29,14 +32,31 @@
 <script>
 export default {
   mounted() {
-  // API에서 데이터를 가져오는 메서드 호출
   this.getGyeonggiData();
   },
   name: 'Gyeonggi',
   data() {
     return {
-      gyeonggiData: [] // gyeonggi 데이터를 저장할 배열
+      gyeonggiData: [], // gyeonggi 데이터를 저장할 배열
+      searchQuery: '', // 검색어를 저장하는 데이터 추가
+      searchResult: [] // 검색 결과를 저장하는 데이터 추가
     };
+  },
+  computed: {
+    filteredGyeonggiData() {
+      if (!this.searchQuery) {
+        return this.gyeonggiData;
+      } else {
+        return this.gyeonggiData.filter(item => {
+          return Object.values(item).some(field => {
+            if (typeof field === 'string') {
+              return field.toLowerCase().includes(this.searchQuery.toLowerCase());
+            }
+            return false;
+          });
+        });
+      }
+    }
   },
   methods: {
     getGyeonggiData() {
@@ -63,6 +83,14 @@ export default {
     },
     getImageUrl(id) {
       return require(`@/assets/gyeonggi/${id}.jpg`);
+    },
+    performSearch() {
+      fetch(`http://localhost:8090/gyeonggi/search`)
+        .then(resp => resp.json())
+        .then(data => {
+          this.searchResult = data;
+        })
+        .catch(err => console.log(err));
     }
   }
 };
@@ -109,5 +137,8 @@ export default {
 
   .card-text {
 	margin-bottom: 1rem;
+  }
+  .form-control {
+    width: 1280px;
   }
   </style>
