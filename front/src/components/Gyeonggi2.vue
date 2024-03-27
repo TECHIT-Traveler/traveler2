@@ -1,25 +1,22 @@
 <template>
-  <div class="gyeonggi2">
-    <div class="card-deck justify-content-center">
-      <div
-        v-for="(o, k) in gyeonggi2Data"
-        :key="k"
-        class="card mb-4"
-        @click="goToDetailPage(o.id)"
-        style="cursor: pointer">
-        <div class="card-body">
-          <h5 class="card-title">{{ o.지역명 }}</h5>
-          <hr>
-          <p class="card-text">
-            <strong>주소:</strong> {{ o.주소 }} <br>
-            <strong>전화번호:</strong> {{ o.전화번호 }} <br>
-            <strong>이용시간:</strong> {{ o.이용시간 }} <br>
-            <strong>홈페이지:</strong> {{ o.홈페이지 }} <br>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="gyeonggi2">
+		<div class="card-deck justify-content-center">
+			<div v-for="(o, k) in gyeonggi2Data" :key="k" class="card mb-4" @click="goToDetailPage(o.id)"
+				style="cursor: pointer">
+				<div class="card-body">
+					<h5 class="card-title">{{ o.업체명 }}</h5>
+					<hr>
+					<p class="card-text">
+						<strong>주소:</strong> {{ o.주소 }} <br>
+						<strong>지역명:</strong> {{ o.지역명 }} <br>
+						<strong>전화번호:</strong> {{ o.전화번호 }} <br>
+						<strong>이용시간:</strong> {{ o.이용시간 }} <br>
+						<strong>홈페이지:</strong> {{ o.홈페이지 }} <br>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>

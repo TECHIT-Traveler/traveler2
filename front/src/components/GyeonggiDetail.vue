@@ -27,7 +27,7 @@
     </div>
     <div class="detail-buttons">
         <button class="like-button" v-if="isLiked === true" @click="cancelLike"><i class="fas fa-heart" style="color: red"></i>{{ likeCount }}</button>
-      <button class="like-button" v-else @click="like"><i class="fas fa-heart" style="color: grey"></i>{{ likeCount }}</button>
+        <button class="like-button" v-else @click="like"><i class="fas fa-heart" style="color: grey"></i>{{ likeCount }}</button>
         <button class="save-button"><i class="fas fa-star"></i> 저장</button>
       </div>
     <div class="comment-form">
@@ -46,7 +46,7 @@ export default {
   data () {
     return {
       o: {},
-      mainImageUrl: 'https://via.placeholder.com/500x300',
+      mainImageUrl: '',
       detailImages: [
         'https://via.placeholder.com/150x150',
         'https://via.placeholder.com/150x150',
@@ -128,6 +128,7 @@ export default {
         .then(resp => resp.json())
         .then(data => {
           this.o = data
+          this.mainImageUrl = require(`@/assets/gyeonggi/${id}.jpg`);
           this.initMap()
         })
         .catch(err => console.error(err))
@@ -153,18 +154,18 @@ export default {
       this.commentText = ''
       this.uploadedImages = []
     },
-    mounted () {
-      global.$('#summernote').summernote({
-        tabsize: 2,
-        height: 500
-      })
+    mounted() {
+      $('#summernote').summernote({
+      tabsize: 2,
+      height: 500
+    });
     },
-    beforeDestroy () {
-      // Summernote 인스턴스 제거
-      if (global.$('#summernote').summernote) {
-        global.$('#summernote').summernote('destroy')
-      }
+    beforeDestroy() {
+    // Summernote 인스턴스 제거
+    if ($('#summernote').summernote) {
+      $('#summernote').summernote('destroy');
     }
+  }
   }
 }
 </script>

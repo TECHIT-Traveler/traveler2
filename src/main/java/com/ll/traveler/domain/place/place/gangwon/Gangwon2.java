@@ -21,13 +21,14 @@ import static lombok.AccessLevel.PROTECTED;
 @Setter
 public class Gangwon2 extends IdEntity {
 
-    private String 업체구분;
-    private String 업체명;
-    private String 지번_주소;
-    private String 도로명_주소;
-    private String 위도;
-    private String 경도;
-    private String 연락처;
+    private String division;
+    private String name;
+    private String lotAddress;
+    private String streetAddress;
+    private String latitude;
+    private String longitude;
+    private String contact;
+
     @OneToMany(mappedBy = "post", cascade =  ALL, orphanRemoval = true)
     @Builder.Default
     @JsonManagedReference

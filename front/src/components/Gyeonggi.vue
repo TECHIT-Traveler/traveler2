@@ -9,6 +9,10 @@
         @click="goToDetailPage(o.id)"
         style="cursor: pointer">
         <div class="card-body">
+          <div class="image-container">
+            <img :src="getImageUrl(o.id)" class="card-img-top image" alt="Image" />
+          </div>
+          <hr>
           <h5 class="card-title">{{ o.park_NM}}</h5>
           <hr>
           <p class="card-text">
@@ -24,9 +28,9 @@
 
 <script>
 export default {
-  mounted () {
+  mounted() {
   // API에서 데이터를 가져오는 메서드 호출
-    this.getGyeonggiData()
+  this.getGyeonggiData();
   },
   name: 'Gyeonggi',
   data () {
@@ -53,39 +57,57 @@ export default {
           // API 호출 중 오류가 발생한 경우 처리
         })
     },
-    goToDetailPage (id) {
+    goToDetailPage(id) {
       // 상세 페이지로 이동하는 메서드
-      this.$router.push({ name: 'GyeonggiDetail', params: { id: id } })
+      this.$router.push({ name: 'GyeonggiDetail', params: { id: id } });
+    },
+    getImageUrl(id) {
+      return require(`@/assets/gyeonggi/${id}.jpg`);
     }
   }
 }
 </script>
+  <style scoped>
+  .card-deck {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+  }
 
-<style scoped>
-.card-deck {
-display: flex;
-flex-wrap: wrap;
-margin-right: -15px;
-margin-left: -15px;
-}
+  .card {
+    flex: 0 0 100%; /* Allow the card to expand to 100% of its container */
+    max-width: calc(600px + 30px); /* Limit the maximum width of the card */
+    margin-right: 15px;
+    margin-left: 15px;
+    cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것을 나타냅니다. */
+  }
 
-.card {
-flex: 0 0 33.333333%;
-max-width: 33.333333%;
-padding-right: 15px;
-padding-left: 15px;
-cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것을 나타냅니다. */
-}
+  .image-container {
+    width: calc(100% - 0px);
+    height: 500px;
+    overflow: hidden;
+    position: relative;
+  }
 
-.card-body {
-flex: 1 1 auto;
-}
+  .image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-.card-title {
-margin-bottom: 0.75rem;
-}
+  .card-body {
+	flex: 1 1 auto;
+  }
 
-.card-text {
-margin-bottom: 1rem;
-}
-</style>
+  .card-title {
+	margin-bottom: 0.75rem;
+  }
+
+  .card-text {
+	margin-bottom: 1rem;
+  }
+  </style>

@@ -1,4 +1,5 @@
 const bootstrapSassAbstractsImports = require("vue-cli-plugin-bootstrap-vue/sassAbstractsImports.js");
+
 module.exports = {
   css: {
     loaderOptions: {
@@ -10,8 +11,6 @@ module.exports = {
       },
     },
   },
-};
-module.exports = {
   devServer: {
     proxy: "http://localhost:8090",
   },

@@ -9,14 +9,15 @@
         @click="goToDetailPage(o.id)"
         style="cursor: pointer">
         <div class="card-body">
+          <div class="image-container">
+          <img :src="getImageUrl(o.id)" class="card-img-top image" alt="Image" />
+          </div>
+          <hr>
           <h5 class="card-title">{{ o.업체명 }}</h5>
           <hr>
           <p class="card-text">
             <strong>업체 구분:</strong> {{ o.업체구분 }} <br>
             <strong>지번 주소:</strong> {{ o.지번_주소 }} <br>
-            <strong>도로명 주소:</strong> {{ o.도로명_주소 }} <br>
-            <strong>위도:</strong> {{ o.위도 }} <br>
-            <strong>경도:</strong> {{ o.경도 }} <br>
             <strong>연락처:</strong> {{ o.연락처 }} <br>
           </p>
         </div>
@@ -47,12 +48,16 @@ export default {
     },
     goToDetailPage (id) {
       this.$router.push({ name: 'GangwonDetail', params: { id: id } })
+    },
+    getImageUrl(id) {
+      return require(`@/assets/gangwon/${id}.png`);
     }
   }
 }
 </script>
 
 <style scoped>
+
 .card-deck {
   display: flex;
   flex-wrap: wrap;
@@ -61,11 +66,27 @@ export default {
 }
 
 .card {
-  flex: 0 0 33.333333%;
-  max-width: 33.333333%;
-  padding-right: 15px;
-  padding-left: 15px;
-  cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것을 나타냅니다. */
+  flex: 0 0 100%; /* Allow the card to expand to 100% of its container */
+  max-width: calc(600px + 30px); /* Limit the maximum width of the card */
+  margin-right: 15px;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.image-container {
+  width: calc(100% - 0px);
+  height: 500px;
+  overflow: hidden;
+  position: relative;
+}
+
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .card-body {
@@ -80,3 +101,4 @@ export default {
   margin-bottom: 1rem;
 }
 </style>
+

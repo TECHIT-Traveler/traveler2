@@ -56,10 +56,6 @@ public class GyeonggiApiController {
         List<Gyeonggi> gyeonggiList = gyeonggiService.getAllGyeonggiData();
         return gyeonggiList;
     }
-    @GetMapping("/gyeonggi/{id}")
-    public Gyeonggi detail(@PathVariable("id") Long id) {
-        return gyeonggiService.getGyeonggiDataById(id);
-    }
 
     @GetMapping("/gyeonggi/checkLike/{id}")
     public boolean checkLikeStatus(@PathVariable("id") Long id, Authentication authentication) {
@@ -95,5 +91,20 @@ public class GyeonggiApiController {
         Gyeonggi gyeonggi = gyeonggiService.getGyeonggiDataById(id);
 
         return gyeonggi.getLikes().size();
+    }
+
+    @GetMapping("/gyeonggi/{id}")
+    public Gyeonggi detail(@PathVariable("id") Long id) {
+        return gyeonggiService.getGyeonggiDataById(id);
+    }
+
+    @GetMapping("/gyeonggi/signgu/{signgu}")
+    public List<Gyeonggi> searchSigngu(@PathVariable String signgu) {
+        return gyeonggiService.searchSigngu(signgu);
+    }
+
+    @GetMapping("/gyeonggi/emd/{emd}")
+    public List<Gyeonggi> searchEmd(@PathVariable String emd) {
+        return gyeonggiService.searchEmd(emd);
     }
 }

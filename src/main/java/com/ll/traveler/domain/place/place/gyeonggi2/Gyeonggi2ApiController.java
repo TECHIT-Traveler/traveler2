@@ -61,6 +61,7 @@ public class Gyeonggi2ApiController {
     public Gyeonggi2 detail(@PathVariable("id") Long id) {
         return gyeonggi2ApiService.getGyeonggi2DataById(id);
     }
+
     @GetMapping("/gyeonggi2/checkLike/{id}")
     public boolean checkLikeStatus(@PathVariable("id") Long id, Authentication authentication) {
         Gyeonggi2 gyeonggi2 = gyeonggi2ApiService.getGyeonggi2DataById(id);
@@ -95,5 +96,10 @@ public class Gyeonggi2ApiController {
         Gyeonggi2 gyeonggi2 = gyeonggi2ApiService.getGyeonggi2DataById(id);
 
         return gyeonggi2.getLikes().size();
+    }
+
+    @GetMapping("/gyeonggi2/address/{address}")
+    public List<Gyeonggi2> searchAddress(@PathVariable String address) {
+        return gyeonggi2ApiService.searchAddress(address);
     }
 }

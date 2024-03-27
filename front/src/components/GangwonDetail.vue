@@ -38,7 +38,7 @@ export default {
   data () {
     return {
       o: {},
-      mainImageUrl: 'https://via.placeholder.com/500x300',
+      mainImageUrl: '',
       detailImages: [
         'https://via.placeholder.com/150x150',
         'https://via.placeholder.com/150x150',
@@ -120,6 +120,7 @@ export default {
         .then(resp => resp.json())
         .then(data => {
           this.o = data
+          this.mainImageUrl = require(`@/assets/gangwon/${id}.png`);
           this.initMap()
           this.likeCount = this.o.likes.length
         })
@@ -194,7 +195,7 @@ export default {
 
 .main-image {
   width: 100%;
-  height: 300px;
+  height: 500px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

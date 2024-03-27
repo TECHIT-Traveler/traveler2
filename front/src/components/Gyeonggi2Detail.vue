@@ -158,16 +158,16 @@ export default {
       this.commentText = ''
       this.uploadedImages = []
     },
-    mounted () {
-      global.$('#summernote').summernote({
+    mounted() {
+      $('#summernote').summernote({
         tabsize: 2,
         height: 500
       })
     },
     beforeDestroy () {
       // Summernote 인스턴스 제거
-      if (global.$('#summernote').summernote) {
-        global.$('#summernote').summernote('destroy')
+      if ($('#summernote').summernote) {
+        $('#summernote').summernote('destroy');
       }
     }
   }

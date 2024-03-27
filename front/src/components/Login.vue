@@ -1,19 +1,29 @@
 <template>
-  <div class="login">
-    <h2>로그인</h2>
-    <form @submit.prevent="login">
-      <div>
-        <label for="username">아이디</label>
-        <input type="text" id="username" name="username" v-model="username" placeholder="아이디를 입력해주세요">
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow">
+          <div class="card-body">
+            <h2 class="card-title text-center">로그인</h2>
+            <form @submit.prevent="login">
+              <div class="mb-3">
+                <label for="username" class="form-label sr-only">아이디</label>
+                <input type="text" class="form-control" id="username" name="username" v-model="username"
+                  placeholder="아이디를 입력해주세요">
+              </div>
+              <div class="mb-4">
+                <label for="password" class="form-label sr-only">비밀번호</label>
+                <input type="password" class="form-control" id="password" name="password" v-model="password"
+                  placeholder="비밀번호를 입력해주세요">
+              </div>
+              <button type="submit" class="btn btn-primary w-100 mb-2">로그인</button>
+              <button type="button" @click="naverLogin" class="btn btn-success w-100 mb-2">네이버 로그인</button>
+              <button type="button" @click="googleLogin" class="btn btn-secondary w-100">구글 로그인</button>
+            </form>
+          </div>
+        </div>
       </div>
-      <div>
-        <label for="password">비밀번호</label>
-        <input type="password" id="password" name="password" v-model="password" placeholder="비밀번호를 입력해주세요">
-      </div>
-      <button type="submit" class="login-button">로그인</button>
-      <button type="button" @click="naverLogin" class="social-login-button naver">네이버 로그인</button>
-      <button type="button" @click="googleLogin" class="social-login-button google">구글 로그인</button>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -60,58 +70,9 @@ export default {
 </script>
 
 <style scoped>
-.login {
-  max-width: 300px;
-  margin: 20px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.login form {
-  display: flex;
-  flex-direction: column;
-}
-
-.login input {
-  margin-bottom: 10px;
-  padding: 5px;
-}
-
-.login button {
-  margin-bottom: 10px;
-  padding: 8px;
-  cursor: pointer;
-}
-
-.login button.login-button {
-  background-color: #71C4EE;
-  color: white;
-  border: none;
-}
-
-.login button.login-button:hover {
-  background-color: #1F7BEC;
-}
-
-.login button.social-login-button {
-  color: white;
-  border: none;
-}
-
-.login button.naver {
-  background-color: #1ec800;
-}
-
-.login button.naver:hover {
-  background-color: #049326;
-}
-
-.login button.google {
-  background-color: #4285f4;
-}
-
-.login button.google:hover {
-  background-color: #422CC1;
+button {
+  font-size: 16px;
 }
 </style>
+
+

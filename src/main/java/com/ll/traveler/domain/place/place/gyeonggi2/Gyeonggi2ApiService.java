@@ -31,18 +31,15 @@ public class Gyeonggi2ApiService {
 
         for (JsonNode node : dataListNode) {
             Gyeonggi2 gyeonggi2 = Gyeonggi2.builder()
-                    .지역명(node.get("지역명").asText())
-                    .주소(node.get("주소").asText())
-                    .전화번호(node.get("전화번호").asText())
-                    .이용시간(node.get("이용시간").asText())
-                    .홈페이지(node.get("홈페이지").asText())
+                    .location(node.get("지역명").asText())
+                    .address(node.get("주소").asText())
+                    .contact(node.get("전화번호").asText())
+                    .time(node.get("이용시간").asText())
+                    .homePage(node.get("홈페이지").asText())
                     .build();
 
-            gyeonggi2List.add(gyeonggi2);
+            gyeonggi2List.add(gyeonggi2ApiRepository.save(gyeonggi2));
         }
-
-        // 데이터베이스에 저장
-        gyeonggi2List.forEach(gyeonggi2ApiRepository::save);
 
         return gyeonggi2List;
     }
@@ -53,10 +50,11 @@ public class Gyeonggi2ApiService {
 
     public Gyeonggi2 getGyeonggi2DataById(Long id) {
         Optional<Gyeonggi2> gyeonggi2Optional = gyeonggi2ApiRepository.findById(id);
-        if(gyeonggi2Optional.isPresent()) {
-            return gyeonggi2Optional.get();
-        }
-        return null;
+        return gyeonggi2Optional.orElse(null);
+    }
+
+    public List<Gyeonggi2> searchAddress(String address) {
+        return gyeonggi2ApiRepository.findAllByAddressContaining(address);
     }
 
     @Transactional
