@@ -13,10 +13,10 @@ import static lombok.AccessLevel.PROTECTED;
 @Setter
 public class Gyeonggi2 extends IdEntity {
 
-    private String 지역명; // 등록일자
-    private String 주소; // 등록일자
-    private String 전화번호; // 등록일자
-    private String 이용시간; // 등록일자
-    private String 홈페이지; // 등록일자
+    private String location;
+    private String address;
+    private String contact;
+    private String time; // 이용시간
+    private String homePage; // 홈페이지
 
 }

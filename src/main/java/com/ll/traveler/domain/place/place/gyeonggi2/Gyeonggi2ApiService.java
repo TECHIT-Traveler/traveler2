@@ -30,11 +30,11 @@ public class Gyeonggi2ApiService {
 
         for (JsonNode node : dataListNode) {
             Gyeonggi2 gyeonggi2 = Gyeonggi2.builder()
-                    .지역명(node.get("지역명").asText())
-                    .주소(node.get("주소").asText())
-                    .전화번호(node.get("전화번호").asText())
-                    .이용시간(node.get("이용시간").asText())
-                    .홈페이지(node.get("홈페이지").asText())
+                    .location(node.get("지역명").asText())
+                    .address(node.get("주소").asText())
+                    .contact(node.get("전화번호").asText())
+                    .time(node.get("이용시간").asText())
+                    .homePage(node.get("홈페이지").asText())
                     .build();
 
             gyeonggi2List.add(gyeonggi2);
@@ -51,7 +51,7 @@ public class Gyeonggi2ApiService {
     }
 
     public List<Gyeonggi2> searchAddress(String address) {
-        return gyeonggi2ApiRepository.findAllBy주소Containing(address);
+        return gyeonggi2ApiRepository.findAllByAddressContaining(address);
     }
 
 }

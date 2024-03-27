@@ -5,6 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface Gyeonggi2ApiRepository extends JpaRepository<Gyeonggi2, Long> {
-    List<Gyeonggi2> findAllBy주소Containing(String address);
-
+    List<Gyeonggi2> findAllByAddressContaining(String address);
 }
