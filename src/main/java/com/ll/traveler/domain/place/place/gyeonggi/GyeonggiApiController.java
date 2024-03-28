@@ -1,8 +1,13 @@
 package com.ll.traveler.domain.place.place.gyeonggi;
 
+import com.ll.traveler.domain.member.member.entity.Member;
+import com.ll.traveler.domain.member.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
@@ -17,6 +22,7 @@ import java.util.List;
 public class GyeonggiApiController {
 
     private final GyeonggiService gyeonggiService;
+    private final MemberService memberService;
 
     @GetMapping("/apiGyeonggi")
     public String showApi() throws IOException {
@@ -54,6 +60,36 @@ public class GyeonggiApiController {
     @GetMapping("/gyeonggi/{id}")
     public Gyeonggi detail(@PathVariable("id") Long id) {
         return gyeonggiService.getGyeonggiDataById(id);
+    }
+
+
+    @GetMapping("/gyeonggi/checkSave/{id}")
+    public boolean checkSaveStatus(@PathVariable("id") Long id, Authentication authentication) {
+        Gyeonggi gyeonggi = gyeonggiService.getGyeonggiDataById(id);
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        Member member = memberService.findByUsername(username);
+
+        if (gyeonggi.hasSave(member)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @PostMapping("/gyeonggi/save/{id}")
+    public void save(@PathVariable("id") Long id,Authentication authentication) {
+        Gyeonggi gyeonggi = gyeonggiService.getGyeonggiDataById(id);
+        Member member = memberService.findByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
+
+        gyeonggiService.save(gyeonggi, member);
+    }
+
+    @PostMapping("/gyeonggi/cancelSave/{id}")
+    public void cancelSave(@PathVariable("id") Long id,Authentication authentication) {
+        Gyeonggi gyeonggi = gyeonggiService.getGyeonggiDataById(id);
+        Member member = memberService.findByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
+
+        gyeonggiService.cancelSave(gyeonggi, member);
     }
 
 }

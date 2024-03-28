@@ -1,8 +1,15 @@
 package com.ll.traveler.domain.place.place.gyeonggi;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ll.traveler.domain.member.member.entity.Member;
 import com.ll.traveler.global.jpa.IdEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -27,4 +34,27 @@ public class Gyeonggi extends IdEntity {
     // 추가적으로 위도와 경도 필드를 정의해야 합니다.
     private String REFINE_WGS84_LAT; // 위도
     private String REFINE_WGS84_LOGT; // 경도
+
+    @OneToMany(mappedBy = "gyeonggi", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    @JsonManagedReference
+    private List<GyeonggiSave> saves = new ArrayList<>();
+
+    public boolean hasSave(Member member) {
+        return saves.stream()
+                .anyMatch(save -> save.getMember().equals(member));
+    }
+
+    public void save(Member member) {
+        saves.add(
+                GyeonggiSave.builder()
+                        .member(member)
+                        .gyeonggi(this)
+                        .build()
+        );
+    }
+
+    public void cancelSave(Member member) {
+        saves.removeIf(Save -> Save.getMember().equals(member));
+    }
 }

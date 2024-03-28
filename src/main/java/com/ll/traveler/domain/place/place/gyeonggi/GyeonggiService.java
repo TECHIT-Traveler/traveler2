@@ -2,8 +2,8 @@ package com.ll.traveler.domain.place.place.gyeonggi;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ll.traveler.domain.member.member.entity.Member;
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,4 +71,15 @@ public class GyeonggiService {
         Optional<Gyeonggi> gyeonggiOptional = gyeonggiRepository.findById(id);
         return gyeonggiOptional.orElse(null);
     }
+
+    @Transactional
+    public void save(Gyeonggi gyeonggi, Member member) {
+        gyeonggi.save(member);
+    }
+
+    @Transactional
+    public void cancelSave(Gyeonggi gyeonggi, Member member) {
+        gyeonggi.cancelSave(member);
+    }
+
 }

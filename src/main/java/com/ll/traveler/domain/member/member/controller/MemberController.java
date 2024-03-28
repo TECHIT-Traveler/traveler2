@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+    //private final GyeonggiPostService gyeonggiPostService;
 
     @GetMapping("/join")
     public String showJoin(MemberDTO memberDTO) {
@@ -85,6 +86,10 @@ public class MemberController {
         memberInfo.setEmail(member.getEmail());
         memberInfo.setRole(member.getRole());
         memberInfo.setProvider(member.getProvider());
+        memberInfo.setGyeonggiSave(member.getGyeonggiSave());
+        // 저장된 게시물 목록을 가져와서 DTO에 추가
+        /*List<GyeonggiPostDTO> savedPosts = gyeonggiPostService.getSavedPosts(username);
+        memberInfo.setSavedPosts(savedPosts);*/
 
         return ResponseEntity.ok(memberInfo);
     }

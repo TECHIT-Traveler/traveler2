@@ -12,4 +12,5 @@ public class MemberInfoDTO {
     private String email;
     private String role;
     private String provider;
+    private String gyeonggiSave;
 }

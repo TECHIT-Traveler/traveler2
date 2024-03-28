@@ -24,6 +24,10 @@
                       <th>이메일</th>
                       <td>{{ userInfo.email }}</td>
                     </tr>
+                    <tr>
+                      <th>경기저장</th>
+                      <td>{{ userInfo.email }}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>

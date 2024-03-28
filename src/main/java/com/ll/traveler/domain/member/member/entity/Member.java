@@ -5,13 +5,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -38,6 +31,7 @@ public class Member extends BaseEntity {
     // OAuth를 위해 구성한 추가 필드 2개
     private String provider;
     private String providerId;
+    private String gyeonggiSave;
 
 }
 
