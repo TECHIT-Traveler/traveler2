@@ -14,24 +14,29 @@
     </div>
     <!-- detail-buttons -->
     <div class="detail-buttons">
-      <button class="btn btn-outline-danger"><i class="fas fa-heart"></i> 좋아요</button>
-      <button class="btn btn-outline-warning"><i class="fas fa-star"></i> 저장</button>
+      <button class="btn btn-outline-danger" v-if="isLiked === true" @click="cancelLike"><i class="fas fa-heart"
+          style="color: red"></i>{{ likeCount }}</button>
+      <button class="btn btn-outline-danger" v-else @click="like"><i class="fas fa-heart"></i>{{ likeCount
+        }}</button>
     </div>
-    <div class="reviews">
+   <!--  <div class="reviews">
       <h2>리뷰 목록</h2>
       <div v-if="reviews.length === 0">리뷰가 없습니다.</div>
       <div v-else>
-        <!-- 리뷰 목록을 폼 형식으로 표시 -->
-        <!-- 리뷰 목록을 폼 형식으로 표시 -->
-        <form v-for="(review, index) in reviews" :key="index" class="review-form">
-          <div class="review-content">
-            <!-- 리뷰 내용 표시 -->
-            <p><strong>{{ review.author.nickname }}</strong>: {{ review.body }}</p>
-          </div>
-        </form>
+        <! 리뷰 목록을 폼 형식으로 표시
+        <div v-for="(review, index) in reviews" :key="index" class="review-form">
+          <table class="table table-hover">
+            <tr>
+              <th class="author" scope="col">작성자:{{ review.nickname }}</th>
+              <th scope="col">{{ review.body }}</th>
+            </tr>
+            <! 리뷰 내용 표시 
+
+          </table>
+        </div>
       </div>
     </div>
-    <!-- 등록폼 -->
+    <! 등록폼 
     <div class="review-form mt-3">
       <form @submit.prevent="submitReview">
         <div class="form-group">
@@ -44,8 +49,8 @@
           <button type="submit" class="btn btn-lg btn-primary">작성</button>
         </div>
       </form>
+  </div> -->
     </div>
-  </div>
 </template>
 
 <script>
@@ -58,27 +63,75 @@ export default {
       reviewText: '', // 리뷰 텍스트
       reviews: [], // 리뷰 목록
       uploadedImages: [], // 업로드된 이미지들
-      userInfo: { id: null, nickname: null } // 사용자 정보 객체 추가
+      userInfo: null, // 사용자 정보 객체 추가
+      isLiked: null,
+      likeCount: 0
     }
   },
   created() {
     this.getUlsanData(this.$route.params.id)
     this.getUserInfoAndReviews() // 사용자 정보 및 리뷰 목록 가져오기
+    this.checkLikeStatus(this.$route.params.id)
   },
   methods: {
+    checkLikeStatus (id) {
+      this.$axios.get(`http://localhost:8090/ulsan/checkLike/${id}`)
+        .then(response => {
+          this.isLiked = response.data
+          console.log('isLiked: ', this.isLiked)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    like () {
+      const id = this.o.id
+      this.$axios.post(`http://localhost:8090/ulsan/like/${id}`)
+        .then(response => {
+          console.log('좋아요 처리 성공')
+          this.isLiked = true
+          this.updateLikeCount(id)
+        })
+        .catch(error => {
+          console.error('좋아요 처리 중 오류 발생', error)
+          alert('로그인이 필요합니다.')
+        })
+    },
+    cancelLike () {
+      const id = this.o.id
+      this.$axios.post(`http://localhost:8090/ulsan/cancelLike/${id}`)
+        .then(response => {
+          console.log('좋아요 취소 처리 성공')
+          this.isLiked = false
+          this.updateLikeCount(id)
+        })
+        .catch(error => {
+          console.error('좋아요 처리 중 오류 발생', error)
+          alert('로그인이 필요합니다.')
+        })
+    },
+    updateLikeCount (id) {
+      this.$axios.get(`http://localhost:8090/ulsan/getLikeCount/${id}`)
+        .then(response => {
+          this.likeCount = response.data
+        })
+        .catch(error => {
+          console.log('좋아요 수 업데이트 중 오류 발생', error)
+        })
+    },
     initMap () {
       const mapContainer = document.getElementById('map')
       const mapOptions = {
-        center: new window.kakao.maps.LatLng(this.o.위도, this.o.경도),
+        center: new window.kakao.maps.LatLng(this.o.lat, this.o.lng),
         level: 3
       }
       this.map = new window.kakao.maps.Map(mapContainer, mapOptions)
-      const markerPosition = new window.kakao.maps.LatLng(this.o.위도, this.o.경도)
+      const markerPosition = new window.kakao.maps.LatLng(this.o.lat, this.o.lng)
       const marker = new window.kakao.maps.Marker({ position: markerPosition })
       marker.setMap(this.map)
       window.kakao.maps.event.addListener(marker, 'click', () => {
         const infoWindow = new window.kakao.maps.InfoWindow({
-          content: `<div>${this.o.업체명}</div>`
+          content: `<div>${this.o.pafacility}</div>`
         })
         infoWindow.open(this.map, marker)
       })
@@ -105,63 +158,66 @@ export default {
         }
       }
     },
-    async getUserInfoAndReviews() {
-      try {
-        await this.getUserInfo();
-        await this.getReviews();
-        // 여기서 submitReview 메소드 호출
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    // 사용자 정보 가져오기
-    async getUserInfo() {
-      try {
-        const response = await this.$axios.get('http://localhost:8090/member/login-info', {
-          withCredentials: true
-        });
-        this.userInfo.id = response.data.id;
-        this.userInfo.nickname = response.data.nickname;
-      } catch (error) {
-        console.error('사용자 정보 요청 실패:', error);
-      }
-    },
-    // 리뷰 목록 가져오기
-    async getReviews() {
-      try {
-        const response = await fetch('http://localhost:8090/api/reviews/all');
-        const data = await response.json();
-        this.reviews = data;
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    // 리뷰 작성 및 업로드
-    submitReview() {
-      const reviewRequest = {
-        body: this.reviewText,
-        author: {
-          id : this.userInfo.id,
-          nickname: this.userInfo.nickname
-        }
-      };
-      fetch(`http://localhost:8090/api/reviews/create`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(reviewRequest),
-      })
-        .then(resp => resp.json())
-        .then(data => {
-          console.log('Review added successfully');
-          this.getReviews(); // 리뷰 목록을 새로고침
-          this.reviewText = ''; 
-        })
-        .catch(error => {
-          console.error('Error adding review:', error);
-        });
-    },
+//     async getUserInfoAndReviews() {
+//       try {
+//         await this.getUserInfo();
+//         await this.getReviews();
+//         // 여기서 submitReview 메소드 호출
+//       } catch (error) {
+//         console.error(error);
+//       }
+//     },
+//     // 사용자 정보 가져오기
+//     async getUserInfo() {
+//       try {
+//         const response = await this.$axios.get('http://localhost:8090/member/login-info', {
+//           withCredentials: true
+//         });
+//         this.userInfo.id = response.data.id;
+//         this.userInfo.nickname = response.data.nickname;
+//       } catch (error) {
+//         console.error('사용자 정보 요청 실패:', error);
+//       }
+//     },
+//     // 리뷰 목록 가져오기
+//     async getReviews() {
+//       try {
+//         const response = await fetch('http://localhost:8090/api/reviews/all');
+//         const data = await response.json();
+//         this.reviews = data;
+//       } catch (error) {
+//         console.error(error);
+//       }
+//     },
+//     // 리뷰 작성 및 업로드
+//     submitReview() {
+//       const reviewRequest = {
+//         nickname: this.nickname,
+//         body: this.reviewText,
+//         placeId: this.placeId,
+//         placeType: "ULSAN",
+//       };
+//       fetch(`http://localhost:8090/api/reviews/create`, {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({
+//         body: this.reviewText,
+//         placeId: this.id,
+//         placeType: "ULSAN",
+//       }),
+//       })
+//         .then(resp => resp.json())
+//         .then(data => {
+//           console.log('Review added successfully');
+//           this.getReviews(); // 리뷰 목록을 새로고침
+//           this.reviewText = '';
+//         })
+//         .catch(error => {
+//           console.error('Error adding review:', error);
+//         });
+//     },
   }
 }
 </script>
@@ -170,7 +226,7 @@ export default {
 <style scoped>
 .detail-container {
   margin: 50px auto;
-  max-width: 600px;
+  max-width: 480px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -242,5 +298,8 @@ export default {
 
 .review-form input[type="file"] {
   margin-bottom: 10px;
+}
+.author {
+  text-align: left;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
 	<div class="gyeonggi2">
     <!-- 검색어 입력 상자 -->
-    <input type="text" v-model="searchQuery" @keyup.enter="performSearch" placeholder="시설 이름, 도시 이름을 입력하세요" class="form-control mb-4">
+    <input type="text" v-model="searchQuery" @keyup.enter="performSearch" placeholder="시설 이름, 도시 이름을 입력하세요" class="form-control mx-auto mb-4">
 
 		<div class="card-deck justify-content-center">
 			<div
@@ -11,8 +11,11 @@
         @click="goToDetailPage(o.id)"
 				style="cursor: pointer">
 				<div class="card-body">
-					<h5 class="card-title">{{ o.name }}</h5>
-					<hr>
+          <div class="image-container">
+            <img :src="getImageUrl(o.id)" class="card-img-top image" alt="Image" />
+          </div>
+          <hr>
+          <h5 class="card-title">{{ o.name }}</h5>
 					<p class="card-text">
 						<strong>주소:</strong> {{ o.address }} <br>
 						<strong>지역명:</strong> {{ o.location }} <br>
@@ -67,6 +70,9 @@
 	  goToDetailPage(id) {
       	this.$router.push({ name: 'Gyeonggi2Detail', params: { id: id } })
     },
+    getImageUrl(id) {
+      return require(`@/assets/gyeonggi2/${id}.jpg`);
+    },
     performSearch() {
       fetch(`http://localhost:8090/gyeonggi2/search`)
         .then(resp => resp.json())
@@ -77,32 +83,52 @@
     }
 	}
   };
+
   </script>
   <style scoped>
   .card-deck {
-	display: flex;
-	flex-wrap: wrap;
-	margin-right: -15px;
-	margin-left: -15px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
   }
 
   .card {
-	flex: 0 0 33.333333%;
-	max-width: 33.333333%;
-	padding-right: 15px;
-	padding-left: 15px;
-	cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것을 나타냅니다. */
+    flex: 0 0 100%; /* Allow the card to expand to 100% of its container */
+    max-width: calc(500px + 30px); /* Limit the maximum width of the card */
+    margin-right: 15px;
+    margin-left: 15px;
+    cursor: pointer;
+  }
+
+  .image-container {
+    width: calc(100% - 0px);
+    height: 500px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .card-body {
-	flex: 1 1 auto;
+    flex: 1 1 auto;
   }
 
   .card-title {
-	margin-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
   }
 
   .card-text {
-	margin-bottom: 1rem;
+    margin-bottom: 1rem;
   }
-  </style>
+  .form-control {
+    width: 1280px;
+  }
+</style>

@@ -1,11 +1,15 @@
 package com.ll.traveler.domain.place.place.gangwon;
 
-
+import com.ll.traveler.domain.member.member.entity.Member;
+import com.ll.traveler.domain.member.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.security.core.Authentication;
 
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
@@ -21,6 +25,7 @@ import java.util.List;
 public class Gangwon2ApiController {
 
     private final Gangwon2ApiService gangwon2ApiService;
+    private final MemberService memberService;
 
     @GetMapping("/apiGangwon2")
     public String callApi() throws IOException {
@@ -67,6 +72,41 @@ public class Gangwon2ApiController {
     @GetMapping("/gangwon2/search")
     public List<Gangwon2> searchAllGangwon() {
         return gangwon2ApiService.getAllGangwon2Data();
+    }
+    @GetMapping("/gangwon2/checkLike/{id}")
+    public boolean checkLikeStatus(@PathVariable("id") Long id, Authentication authentication) {
+        Gangwon2 gangwon2 = gangwon2ApiService.getGangwon2DataById(id);
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        Member member = memberService.findByUsername(username);
+
+        if (gangwon2.hasLike(member)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @PostMapping("/gangwon2/like/{id}")
+    public void like(@PathVariable("id") Long id,Authentication authentication) {
+        Gangwon2 gangwon2 = gangwon2ApiService.getGangwon2DataById(id);
+        Member member = memberService.findByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
+
+        gangwon2ApiService.like(gangwon2, member);
+    }
+
+    @PostMapping("/gangwon2/cancelLike/{id}")
+    public void cancelLike(@PathVariable("id") Long id,Authentication authentication) {
+        Gangwon2 gangwon2 = gangwon2ApiService.getGangwon2DataById(id);
+        Member member = memberService.findByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
+
+        gangwon2ApiService.cancelLike(gangwon2, member);
+    }
+
+    @GetMapping("/gangwon2/getLikeCount/{id}")
+    public int getLikeCount(@PathVariable("id") Long id) {
+        Gangwon2 gangwon2 = gangwon2ApiService.getGangwon2DataById(id);
+
+        return gangwon2.getLikes().size();
     }
 
 }

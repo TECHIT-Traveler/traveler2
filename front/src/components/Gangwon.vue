@@ -95,7 +95,7 @@ export default {
 
 .card {
   flex: 0 0 100%; /* Allow the card to expand to 100% of its container */
-  max-width: calc(600px + 30px); /* Limit the maximum width of the card */
+  max-width: calc(500px + 30px); /* Limit the maximum width of the card */
   margin-right: 15px;
   margin-left: 15px;
   cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것을 나타냅니다. */

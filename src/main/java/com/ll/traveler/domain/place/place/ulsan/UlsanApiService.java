@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import com.ll.traveler.domain.member.member.entity.Member;
 
 @Slf4j
 @Service
@@ -51,16 +52,28 @@ public class UlsanApiService {
 
         return ulsanList;
     }
+
     private String getStringValue(JsonNode node, String fieldName) {
         JsonNode fieldValue = node.get(fieldName);
         return fieldValue != null && !fieldValue.isNull() ? fieldValue.asText() : "-";
     }
+
     public List<Ulsan> getAllUlsanData() {
         return ulsanApiRepository.findAllByIdLessThan(30);
     }
+
     public Ulsan getUlsanDataById(Long id) {
         Optional<Ulsan> ulsanOptional = ulsanApiRepository.findById(id);
         return ulsanOptional.orElse(null);
     }
 
+    @Transactional
+    public void like(Ulsan ulsan, Member member) {
+        ulsan.like(member);
+    }
+
+    @Transactional
+    public void cancelLike(Ulsan ulsan, Member member) {
+        ulsan.cancelLike(member);
+    }
 }
