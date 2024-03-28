@@ -1,17 +1,12 @@
 package com.ll.traveler.domain.member.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ll.traveler.global.jpa.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -22,6 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Setter
 @ToString(callSuper = true)// 클래스의 toString() 메서드를 생성할 때 부모 클래스의 필드들도 포함할지 여부를 지정
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Member extends BaseEntity {
 
     @Column(unique = true)

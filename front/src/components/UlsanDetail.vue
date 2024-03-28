@@ -6,23 +6,44 @@
     </div>
     <div class="detail-body">
       <div class="detail-info">
-        <!-- <div class="detail-images">
-          <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
-        </div> -->
         <p><strong>지번 주소:</strong> {{ o.address }}</p>
         <p><strong>도로명 주소:</strong> {{ o.streetNameAddress }}</p>
         <p><strong>연락처:</strong> {{ o.tel }}</p>
       </div>
       <div id="map" style="width: 100%; height: 400px;"></div>
     </div>
+    <!-- detail-buttons -->
     <div class="detail-buttons">
-      <button class="like-button"><i class="fas fa-heart"></i> 좋아요</button>
-      <button class="save-button"><i class="fas fa-star"></i> 저장</button>
+      <button class="btn btn-outline-danger"><i class="fas fa-heart"></i> 좋아요</button>
+      <button class="btn btn-outline-warning"><i class="fas fa-star"></i> 저장</button>
     </div>
-    <div class="comment-form">
-      <textarea v-model="commentText" placeholder="댓글을 작성해주세요" id="summernote"></textarea>
-      <input type="file" accept="image/*" @change="handleImageUpload">
-      <button @click="submitComment">작성</button>
+    <div class="reviews">
+      <h2>리뷰 목록</h2>
+      <div v-if="reviews.length === 0">리뷰가 없습니다.</div>
+      <div v-else>
+        <!-- 리뷰 목록을 폼 형식으로 표시 -->
+        <!-- 리뷰 목록을 폼 형식으로 표시 -->
+        <form v-for="(review, index) in reviews" :key="index" class="review-form">
+          <div class="review-content">
+            <!-- 리뷰 내용 표시 -->
+            <p><strong>{{ review.author.nickname }}</strong>: {{ review.body }}</p>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- 등록폼 -->
+    <div class="review-form mt-3">
+      <form @submit.prevent="submitReview">
+        <div class="form-group">
+          <textarea class="form-control" v-model="reviewText" placeholder="리뷰를 작성해주세요" id="summernote"></textarea>
+        </div>
+        <div class="form-group">
+          <input type="file" class="form-control-file" accept="image/*" @change="handleImageUpload">
+        </div>
+        <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-lg btn-primary">작성</button>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -30,19 +51,19 @@
 <script>
 export default {
   name: 'UlsanDetail',
-  data () {
+  data() {
     return {
       o: {},
       mainImageUrl: '',
-      detailImages: [
-        'https://via.placeholder.com/150x150',
-        'https://via.placeholder.com/150x150',
-        'https://via.placeholder.com/150x150'
-      ] // 상세 이미지 URL들
+      reviewText: '', // 리뷰 텍스트
+      reviews: [], // 리뷰 목록
+      uploadedImages: [], // 업로드된 이미지들
+      userInfo: { id: null, nickname: null } // 사용자 정보 객체 추가
     }
   },
-  created () {
+  created() {
     this.getUlsanData(this.$route.params.id)
+    this.getUserInfoAndReviews() // 사용자 정보 및 리뷰 목록 가져오기
   },
   methods: {
     initMap () {
@@ -84,30 +105,67 @@ export default {
         }
       }
     },
-    submitComment () {
-      // 여기에 댓글을 서버에 저장하는 코드를 추가하세요.
-      // 예시: fetch를 사용하여 서버로 댓글 데이터를 보낼 수 있습니다.
-      console.log('댓글 내용:', this.commentText)
-      console.log('첨부된 사진:', this.uploadedImages)
-      // 저장 후 폼 초기화
-      this.commentText = ''
-      this.uploadedImages = []
-    },
-    mounted () {
-      $('#summernote').summernote({
-        tabsize: 2,
-        height: 500
-      })
-    },
-    beforeDestroy () {
-      // Summernote 인스턴스 제거
-      if ($('#summernote').summernote) {
-        $('#summernote').summernote('destroy')
+    async getUserInfoAndReviews() {
+      try {
+        await this.getUserInfo();
+        await this.getReviews();
+        // 여기서 submitReview 메소드 호출
+      } catch (error) {
+        console.error(error);
       }
-    }
+    },
+    // 사용자 정보 가져오기
+    async getUserInfo() {
+      try {
+        const response = await this.$axios.get('http://localhost:8090/member/login-info', {
+          withCredentials: true
+        });
+        this.userInfo.id = response.data.id;
+        this.userInfo.nickname = response.data.nickname;
+      } catch (error) {
+        console.error('사용자 정보 요청 실패:', error);
+      }
+    },
+    // 리뷰 목록 가져오기
+    async getReviews() {
+      try {
+        const response = await fetch('http://localhost:8090/api/reviews/all');
+        const data = await response.json();
+        this.reviews = data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    // 리뷰 작성 및 업로드
+    submitReview() {
+      const reviewRequest = {
+        body: this.reviewText,
+        author: {
+          id : this.userInfo.id,
+          nickname: this.userInfo.nickname
+        }
+      };
+      fetch(`http://localhost:8090/api/reviews/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reviewRequest),
+      })
+        .then(resp => resp.json())
+        .then(data => {
+          console.log('Review added successfully');
+          this.getReviews(); // 리뷰 목록을 새로고침
+          this.reviewText = ''; 
+        })
+        .catch(error => {
+          console.error('Error adding review:', error);
+        });
+    },
   }
 }
 </script>
+
 
 <style scoped>
 .detail-container {
@@ -161,35 +219,18 @@ export default {
   background-repeat: no-repeat;
 }
 
-/* 나머지 스타일은 그대로 두고 버튼과 댓글 폼의 스타일을 추가합니다 */
+/* 나머지 스타일은 그대로 두고 버튼과 리뷰 폼의 스타일을 추가합니다 */
 .detail-buttons {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
 }
 
-.like-button,
-.save-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #007bff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.like-button:hover,
-.save-button:hover {
-  background-color: #0056b3;
-}
-
-.comment-form {
+.review-form {
   margin-top: 20px;
 }
 
-.comment-form textarea {
+.review-form textarea {
   width: 100%;
   height: 100px;
   margin-bottom: 10px;
@@ -199,22 +240,7 @@ export default {
   resize: none;
 }
 
-.comment-form input[type="file"] {
+.review-form input[type="file"] {
   margin-bottom: 10px;
-}
-
-.comment-form button {
-  padding: 10px 20px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #007bff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.comment-form button:hover {
-  background-color: #0056b3;
 }
 </style>
