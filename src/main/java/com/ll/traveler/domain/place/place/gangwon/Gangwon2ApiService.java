@@ -58,12 +58,4 @@ public class Gangwon2ApiService {
        return null;
     }
 
-    public List<Gangwon2> searchName(String name) {
-        return gangwon2ApiRepository.findAllByNameContaining(name);
-    }
-
-    public List<Gangwon2> searchAddress(String address) {
-        return gangwon2ApiRepository.findAllByStreetAddressContaining(address);
-    }
-
 }

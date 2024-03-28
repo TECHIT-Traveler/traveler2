@@ -54,8 +54,9 @@ public class Gyeonggi2ApiController {
     public Gyeonggi2 detail2(@PathVariable("id") Long id) {
         return gyeonggi2ApiService.getGyeonggi2DataById(id);
     }
-    @GetMapping("/gyeonggi2/address/{address}")
-    public List<Gyeonggi2> searchAddress(@PathVariable String address) {
-        return gyeonggi2ApiService.searchAddress(address);
+
+    @GetMapping("/gyeonggi2/search")
+    public List<Gyeonggi2> searchAllGyeonggi(){
+        return gyeonggi2ApiService.getAllGyeonggi2Data();
     }
 }

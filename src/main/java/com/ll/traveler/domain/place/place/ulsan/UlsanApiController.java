@@ -6,6 +6,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
@@ -66,13 +67,8 @@ public class UlsanApiController {
         return ulsanApiService.getUlsanDataById(id);
     }
 
-    @GetMapping("/ulsan/facility/{facility}")
-    public List<Ulsan> searchFacility(@PathVariable String facility) {
-        return ulsanApiService.searchFacility(facility);
-    }
-
-    @GetMapping("/ulsan/city/{city}")
-    public List<Ulsan> searchCity(@PathVariable String city) {
-        return ulsanApiService.searchCity(city);
+    @GetMapping("/ulsan/search")
+    public List<Ulsan> searchAllUlsan() {
+        return ulsanApiService.getAllUlsanData();
     }
 }

@@ -1,21 +1,19 @@
 <template>
   <div class="detail-container">
     <div class="detail-header">
-      <h1>{{ o.업체명 }}</h1>
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
     </div>
+      <h1>{{ o.name }}</h1>
     <div class="detail-body">
       <div class="detail-info">
-        <p><strong>업체 구분:</strong> {{ o.업체구분 }}</p>
-        <!-- 상세 이미지들 추가 -->
+        <!-- 상세 이미지들 추가
         <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
-        </div>
-        <p><strong>지번 주소:</strong> {{ o.지번_주소 }}</p>
-        <p><strong>도로명 주소:</strong> {{ o.도로명_주소 }}</p>
-        <p><strong>위도:</strong> {{ o.위도 }}</p>
-        <p><strong>경도:</strong> {{ o.경도 }}</p>
-        <p><strong>연락처:</strong> {{ o.연락처 }}</p>
+        </div> -->
+        <p><strong>업종:</strong> {{ o.division }}</p>
+        <p><strong>지번 주소:</strong> {{ o.lotAddress }}</p>
+        <p><strong>도로명 주소:</strong> {{ o.streetAddress }}</p>
+        <p><strong>연락처:</strong> {{ o.contact }}</p>
       </div>
       <div id="map" style="width: 100%; height: 400px;"></div>
     </div>

@@ -37,30 +37,32 @@ public class GyeonggiService {
             // "row" 노드 찾기
             JsonNode rowNode = dataListNode.get(1).get("row");
 
-        for (JsonNode val : rowNode ) {
+            for (JsonNode node : rowNode) {
+                Gyeonggi gyeonggi = new Gyeonggi();
+                gyeonggi.setParkNm(getStringValue(node, "PARK_NM"));
+                gyeonggi.setSignguNm(getStringValue(node, "SIGNGU_NM"));
+                gyeonggi.setEmdNm(getStringValue(node, "EMD_NM"));
+                gyeonggi.setAr(getStringValue(node, "AR"));
+                gyeonggi.setCmgpermsnTm(getStringValue(node, "CMG_PERMSN_TM"));
+                gyeonggi.setCmgpermsnDay(getStringValue(node, "CMG_PERMSN_DAY"));
+                gyeonggi.setOpertinstNm(getStringValue(node, "OPERT_INST_NM"));
+                gyeonggi.setReprsntTelNo(getStringValue(node, "REPRSNT_TELNO"));
+                gyeonggi.setExpn(getStringValue(node, "EXPN"));
+                gyeonggi.setUtlzChrg(getStringValue(node, "UTLZ_CHRG"));
+                gyeonggi.setPartclrMatr(getStringValue(node, "PARTCLR_MATR"));
+                gyeonggi.setImageNm(getStringValue(node, "IMAGE_NM"));
 
-            Gyeonggi gyeonggi = Gyeonggi.builder()
-                    .parkNm(val.get("PARK_NM").asText())
-                    .signguNm(val.get("SIGNGU_NM").asText())
-                    .emdNm(val.get("EMD_NM").asText())
-                    .ar(val.get("AR").asText())
-                    .cmgpermsnTm(val.get("CMGPERMSN_TM").asText())
-                    .cmgpermsnDay(val.get("CMGPERMSN_DAY").asText())
-                    .opertinstNm(val.get("OPERTINST_NM").asText())
-                    .reprsntTelNo(val.get("REPRSNT_TELNO").asText())
-                    .expn(val.get("EXPN").asText())
-                    .utlzChrg(val.get("UTLZ_CHRG").asText())
-                    .partclrMatr(val.get("PARTCLR_MATR").asText())
-                    .imageNm(val.get("IMAGE_NM").asText())
-                    .build();
-
-                gyeonggiList.add(gyeonggiRepository.save(gyeonggi)); // 데이터베이스에 저장 후 리스트에 추가
+                gyeonggiList.add(gyeonggiRepository.save(gyeonggi));
             }
         } catch (Exception e) {
             log.error("Failed to save database", e);
         }
 
         return gyeonggiList;
+    }
+    private String getStringValue(JsonNode node, String fieldName) {
+        JsonNode fieldValue = node.get(fieldName);
+        return fieldValue != null && !fieldValue.isNull() ? fieldValue.asText() : "-";
     }
     public List<Gyeonggi> getAllGyeonggiData(){
         return gyeonggiRepository.findAll();
@@ -71,15 +73,4 @@ public class GyeonggiService {
         return gyeonggiOptional.orElse(null);
     }
 
-    public List<Gyeonggi> searchPark(String park) {
-        return gyeonggiRepository.findAllByParkNmContaining(park);
-    }
-
-    public List<Gyeonggi> searchSigngu(String signgu) {
-        return gyeonggiRepository.findAllBySignguNmContaining(signgu);
-    }
-
-    public List<Gyeonggi> searchEmd(String emd) {
-        return gyeonggiRepository.findAllByEmdNmContaining(emd);
-    }
 }

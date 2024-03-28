@@ -1,16 +1,11 @@
 package com.ll.traveler.domain.place.place.gangwon;
 
 
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
@@ -69,14 +64,9 @@ public class Gangwon2ApiController {
         Gangwon2 detail = gangwon2ApiService.getGangwon2DataById(id);
         return detail;
     }
-
-    @GetMapping("/apiGangwon2/name/{name}")
-    public List<Gangwon2> searchName(@PathVariable String name) {
-        return gangwon2ApiService.searchName(name);
+    @GetMapping("/gangwon2/search")
+    public List<Gangwon2> searchAllGangwon() {
+        return gangwon2ApiService.getAllGangwon2Data();
     }
 
-    @GetMapping("/apiGangwon2/address/{address}")
-    public List<Gangwon2> searchAddress(@PathVariable String address) {
-        return gangwon2ApiService.searchAddress(address);
-    }
 }
