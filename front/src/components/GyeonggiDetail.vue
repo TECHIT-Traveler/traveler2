@@ -1,27 +1,22 @@
 <template>
   <div class="detail-container">
     <div class="detail-header">
-      <h1>{{ o.park_NM }}</h1>
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
     </div>
+      <h1>{{ o.parkNm }}</h1>
     <div class="detail-body">
       <div class="detail-info">
-        <p><strong>시군구 명:</strong> {{ o.signgu_NM}}</p>
-        <!-- 상세 이미지들 추가 -->
-        <div class="detail-images">
+        <!-- <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
-        </div>
-        <strong>규모시설면적:</strong> {{ o.ar }} <br>
-        <strong>출입허용시간:</strong> {{ o.cmgpermsn_TM }} <br>
-        <strong>출입허용일:</strong> {{ o.cmgpermsn_DAY }} <br>
-        <strong>운영기관명</strong> {{ o.opertinst_NM }} <br>
-        <strong>대표전화번호</strong> {{ o.reprsnt_TELNO }} <br>
-        <strong>비용</strong> {{ o.expn }} <br>
-        <strong>이용요금</strong> {{ o.utlz_CHRG }} <br>
-        <strong>특이사항</strong> {{ o.partclr_MATR }} <br>
-        <strong>이미지</strong> {{ o.image_NM }} <br>
-        <strong>위도</strong> {{ o.refine_WGS84_LAT }} <br>
-        <strong>경도</strong> {{ o.refine_WGS84_LOGT }} <br>
+        </div> -->
+        <div class="detail-item">주소:{{ o.signguNm}} {{ o.emdNm }}</div>
+        <div class="detail-item">규모시설면적: {{ o.ar }} </div>
+        <div class="detail-item">출입허용시간: {{ o.cmgpermsnTm }} </div>
+        <div class="detail-item">출입허용일: {{ o.cmgpermsnDay }} </div>
+        <div class="detail-item">운영기관명: {{ o.opertinstNm }} </div>
+        <div class="detail-item">대표전화번호: {{ o.reprsntTelNo }} </div>
+        <div class="detail-item">비용: {{ o.expn }} {{ o.utlzChrg }}</div>
+        <div class="detail-item">특이사항: {{ o.partclrMatr }}</div>
       </div>
       <div id="map" style="width: 100%; height: 400px;"></div>
     </div>
@@ -43,7 +38,7 @@
 <script>
 export default {
   name: 'GyeonggiDetail',
-  data () {
+  data() {
     return {
       o: {},
       mainImageUrl: '',
@@ -56,7 +51,7 @@ export default {
       likeCount: 0
     }
   },
-  created () {
+  created() {
     this.getGyeonggiData(this.$route.params.id)
     this.checkLikeStatus(this.$route.params.id)
   },
@@ -109,16 +104,16 @@ export default {
     initMap () {
       const mapContainer = document.getElementById('map')
       const mapOptions = {
-        center: new window.kakao.maps.LatLng(this.o.refine_WGS84_LAT, this.o.refine_WGS84_LOGT),
+        center: new window.kakao.maps.LatLng(this.o.refineWgs84Lat, this.o.refineWgs84Logt),
         level: 3
       }
       this.map = new window.kakao.maps.Map(mapContainer, mapOptions)
-      const markerPosition = new window.kakao.maps.LatLng(this.o.refine_WGS84_LAT, this.o.refine_WGS84_LOGT)
+      const markerPosition = new window.kakao.maps.LatLng(this.o.refineWgs84Lat, this.o.refineWgs84Logt)
       const marker = new window.kakao.maps.Marker({ position: markerPosition })
       marker.setMap(this.map)
       window.kakao.maps.event.addListener(marker, 'click', () => {
         const infoWindow = new window.kakao.maps.InfoWindow({
-          content: `<div>${this.o.park_NM}</div>`
+          content: `<div>${this.o.parkNm}</div>`
         })
         infoWindow.open(this.map, marker)
       })
@@ -133,26 +128,26 @@ export default {
         })
         .catch(err => console.error(err))
     },
-    handleImageUpload (event) {
-      const files = event.target.files
+    handleImageUpload(event) {
+      const files = event.target.files;
       if (files) {
         for (let i = 0; i < files.length; i++) {
-          const reader = new FileReader()
-          reader.readAsDataURL(files[i])
+          const reader = new FileReader();
+          reader.readAsDataURL(files[i]);
           reader.onload = (e) => {
-            this.uploadedImages.push(e.target.result)
+            this.uploadedImages.push(e.target.result);
           }
         }
       }
     },
-    submitComment () {
+    submitComment() {
       // 여기에 댓글을 서버에 저장하는 코드를 추가하세요.
       // 예시: fetch를 사용하여 서버로 댓글 데이터를 보낼 수 있습니다.
-      console.log('댓글 내용:', this.commentText)
-      console.log('첨부된 사진:', this.uploadedImages)
+      console.log('댓글 내용:', this.commentText);
+      console.log('첨부된 사진:', this.uploadedImages);
       // 저장 후 폼 초기화
-      this.commentText = ''
-      this.uploadedImages = []
+      this.commentText = '';
+      this.uploadedImages = [];
     },
     mounted() {
       $('#summernote').summernote({
@@ -221,6 +216,14 @@ export default {
   background-repeat: no-repeat;
 }
 
+
+.detail-item {
+  font-size: 18px;
+  text-align: left;
+  font-weight: 500;
+  margin-bottom: 10px;
+  padding: 10px;
+}
 /* 나머지 스타일은 그대로 두고 버튼과 댓글 폼의 스타일을 추가합니다 */
 .detail-buttons {
   display: flex;

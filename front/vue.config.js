@@ -1,5 +1,6 @@
 const bootstrapSassAbstractsImports = require("vue-cli-plugin-bootstrap-vue/sassAbstractsImports.js");
 module.exports = {
+  buildDir: "nuxt-dist",
   css: {
     loaderOptions: {
       sass: {
@@ -10,10 +11,7 @@ module.exports = {
       },
     },
   },
-};
-module.exports = {
   devServer: {
     proxy: "http://localhost:8090",
   },
-  publicPath: '/'
 };

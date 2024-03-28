@@ -6,15 +6,11 @@
     </div>
     <div class="detail-body">
       <div class="detail-info">
-<!--        <p><strong>업체 구분:</strong> {{ o.업체구분 }}</p>-->
-        <!-- 상세 이미지들 추가 -->
-        <div class="detail-images">
+        <!-- <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
-        </div>
+        </div> -->
         <p><strong>지번 주소:</strong> {{ o.address }}</p>
         <p><strong>도로명 주소:</strong> {{ o.streetNameAddress }}</p>
-        <p><strong>위도:</strong> {{ o.lat }}</p>
-        <p><strong>경도:</strong> {{ o.lng }}</p>
         <p><strong>연락처:</strong> {{ o.tel }}</p>
       </div>
       <div id="map" style="width: 100%; height: 400px;"></div>
@@ -52,16 +48,16 @@ export default {
     initMap () {
       const mapContainer = document.getElementById('map')
       const mapOptions = {
-        center: new window.kakao.maps.LatLng(this.o.위도, this.o.경도),
+        center: new window.kakao.maps.LatLng(this.o.lat, this.o.lng),
         level: 3
       }
       this.map = new window.kakao.maps.Map(mapContainer, mapOptions)
-      const markerPosition = new window.kakao.maps.LatLng(this.o.위도, this.o.경도)
+      const markerPosition = new window.kakao.maps.LatLng(this.o.lat, this.o.lng)
       const marker = new window.kakao.maps.Marker({ position: markerPosition })
       marker.setMap(this.map)
       window.kakao.maps.event.addListener(marker, 'click', () => {
         const infoWindow = new window.kakao.maps.InfoWindow({
-          content: `<div>${this.o.업체명}</div>`
+          content: `<div>${this.o.facility}</div>`
         })
         infoWindow.open(this.map, marker)
       })

@@ -1,8 +1,11 @@
 <template>
   <div class="ulsan">
+    <!-- 검색어 입력 상자 -->
+    <input type="text" v-model="searchQuery" @keyup.enter="performSearch" placeholder="시설 이름, 도시 이름을 입력하세요" class="form-control mx-auto mb-4">
+
     <div class="card-deck justify-content-center">
       <div
-        v-for="(o, k) in ulsanData"
+        v-for="(o, k) in filteredUlsanData"
         :key="k"
         :to="'/ulsan/' + o.id"
         class="card mb-4"
@@ -18,8 +21,6 @@
           <p class="card-text">
             <strong>지번 주소:</strong> {{ o.address }} <br>
             <strong>도로명 주소:</strong> {{ o.streetNameAddress }} <br>
-            <strong>위도:</strong> {{ o.lat }} <br>
-            <strong>경도:</strong> {{ o.lng }} <br>
             <strong>연락처:</strong> {{ o.tel }} <br>
           </p>
         </div>
@@ -36,11 +37,34 @@ export default {
   name: 'Ulsan',
   data () {
     return {
-      ulsanData: []
+      ulsanData: [],
+      searchQuery: '', // 검색어를 저장하는 데이터 추가
+      searchResult: [] // 검색 결과를 저장하는 데이터 추가
+    }
+  },
+  computed: {
+    // 검색어를 기반으로 필터링된 결과를 계산하는 computed property
+    filteredUlsanData() {
+      if (!this.searchQuery) {
+        return this.ulsanData; // 검색어가 없으면 전체 데이터를 반환
+      } else {
+        // 시설 이름 또는 도로명 주소 등 모든 필드에서 검색어를 찾아서 반환
+        return this.ulsanData.filter(item => {
+          // 검색어가 포함된 경우 true를 반환하여 필터링에 포함시킴
+          return Object.values(item).some(field => {
+            // 필드의 값이 문자열인 경우에만 검색 수행
+            if (typeof field === 'string') {
+              return field.toLowerCase().includes(this.searchQuery.toLowerCase());
+            }
+            return false;
+          });
+        });
+      }
     }
   },
   methods: {
     getUlsanData () {
+      // API에서 데이터를 가져오는 데이터
       fetch('http://localhost:8090/ulsan')
         .then(resp => resp.json())
         .then(data => {
@@ -53,6 +77,14 @@ export default {
     },
     getImageUrl(id) {
       return require(`@/assets/ulsan/${id}.jpg`);
+    },
+    performSearch() {
+      fetch(`http://localhost:8090/ulsan/search`)
+        .then(resp => resp.json())
+        .then(data => {
+          this.searchResult = data;
+        })
+        .catch(err => console.log(err));
     }
   }
 }
@@ -71,7 +103,7 @@ export default {
   max-width: calc(600px + 30px); /* Limit the maximum width of the card */
   margin-right: 15px;
   margin-left: 15px;
-  cursor: pointer;
+  cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것을 나타냅니다. */
 }
 
 .image-container {
@@ -101,4 +133,7 @@ export default {
 .card-text {
   margin-bottom: 1rem;
 }
+.form-control {
+    width: 1280px;
+  }
 </style>

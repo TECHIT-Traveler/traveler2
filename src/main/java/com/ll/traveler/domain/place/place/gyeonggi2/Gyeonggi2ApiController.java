@@ -54,12 +54,16 @@ public class Gyeonggi2ApiController {
     public List<Gyeonggi2> showGyeonggi2() {
         List<Gyeonggi2> gyeonggi2List = gyeonggi2ApiService.getAllGyeonggi2Data();
         return gyeonggi2List;
-
     }
 
     @GetMapping("/gyeonggi2/{id}")
-    public Gyeonggi2 detail(@PathVariable("id") Long id) {
+    public Gyeonggi2 detail2(@PathVariable("id") Long id) {
         return gyeonggi2ApiService.getGyeonggi2DataById(id);
+    }
+
+    @GetMapping("/gyeonggi2/search")
+    public List<Gyeonggi2> searchAllGyeonggi() {
+        return gyeonggi2ApiService.getAllGyeonggi2Data();
     }
 
     @GetMapping("/gyeonggi2/checkLike/{id}")
@@ -96,10 +100,5 @@ public class Gyeonggi2ApiController {
         Gyeonggi2 gyeonggi2 = gyeonggi2ApiService.getGyeonggi2DataById(id);
 
         return gyeonggi2.getLikes().size();
-    }
-
-    @GetMapping("/gyeonggi2/address/{address}")
-    public List<Gyeonggi2> searchAddress(@PathVariable String address) {
-        return gyeonggi2ApiService.searchAddress(address);
     }
 }

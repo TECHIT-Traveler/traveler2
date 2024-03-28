@@ -31,17 +31,22 @@ public class Gyeonggi2ApiService {
 
         for (JsonNode node : dataListNode) {
             Gyeonggi2 gyeonggi2 = Gyeonggi2.builder()
-                    .location(node.get("지역명").asText())
-                    .address(node.get("주소").asText())
-                    .contact(node.get("전화번호").asText())
-                    .time(node.get("이용시간").asText())
-                    .homePage(node.get("홈페이지").asText())
+                    .location(getStringValue(node, "지역명"))
+                    .address(getStringValue(node, "주소"))
+                    .contact(getStringValue(node, "전화번호"))
+                    .time(getStringValue(node, "이용시간"))
+                    .homePage(getStringValue(node, "홈페이지"))
                     .build();
 
             gyeonggi2List.add(gyeonggi2ApiRepository.save(gyeonggi2));
         }
 
         return gyeonggi2List;
+    }
+
+    private String getStringValue(JsonNode node, String fieldName) {
+        JsonNode fieldValue = node.get(fieldName);
+        return fieldValue != null && !fieldValue.isNull() ? fieldValue.asText() : "-";
     }
 
     public List<Gyeonggi2> getAllGyeonggi2Data(){
@@ -51,10 +56,6 @@ public class Gyeonggi2ApiService {
     public Gyeonggi2 getGyeonggi2DataById(Long id) {
         Optional<Gyeonggi2> gyeonggi2Optional = gyeonggi2ApiRepository.findById(id);
         return gyeonggi2Optional.orElse(null);
-    }
-
-    public List<Gyeonggi2> searchAddress(String address) {
-        return gyeonggi2ApiRepository.findAllByAddressContaining(address);
     }
 
     @Transactional

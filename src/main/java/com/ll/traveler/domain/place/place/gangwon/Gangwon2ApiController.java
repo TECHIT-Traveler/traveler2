@@ -69,15 +69,9 @@ public class Gangwon2ApiController {
         Gangwon2 detail = gangwon2ApiService.getGangwon2DataById(id);
         return detail;
     }
-
-    @GetMapping("/apiGangwon2/name/{name}")
-    public List<Gangwon2> searchName(@PathVariable String name) {
-        return gangwon2ApiService.searchName(name);
-    }
-
-    @GetMapping("/apiGangwon2/address/{address}")
-    public List<Gangwon2> searchAddress(@PathVariable String address) {
-        return gangwon2ApiService.searchAddress(address);
+    @GetMapping("/gangwon2/search")
+    public List<Gangwon2> searchAllGangwon() {
+        return gangwon2ApiService.getAllGangwon2Data();
     }
 
     @GetMapping("/gangwon2/checkLike/{id}")

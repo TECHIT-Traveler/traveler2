@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ll.traveler.domain.member.member.entity.Member;
 import lombok.RequiredArgsConstructor;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,32 +38,34 @@ public class GyeonggiService {
             // "row" 노드 찾기
             JsonNode rowNode = dataListNode.get(1).get("row");
 
-        for (JsonNode node : rowNode ) {
+            for (JsonNode node : rowNode) {
+                Gyeonggi gyeonggi = new Gyeonggi();
+                gyeonggi.setParkNm(getStringValue(node, "PARK_NM"));
+                gyeonggi.setSignguNm(getStringValue(node, "SIGNGU_NM"));
+                gyeonggi.setEmdNm(getStringValue(node, "EMD_NM"));
+                gyeonggi.setAr(getStringValue(node, "AR"));
+                gyeonggi.setCmgpermsnTm(getStringValue(node, "CMG_PERMSN_TM"));
+                gyeonggi.setCmgpermsnDay(getStringValue(node, "CMG_PERMSN_DAY"));
+                gyeonggi.setOpertinstNm(getStringValue(node, "OPERT_INST_NM"));
+                gyeonggi.setReprsntTelNo(getStringValue(node, "REPRSNT_TELNO"));
+                gyeonggi.setExpn(getStringValue(node, "EXPN"));
+                gyeonggi.setUtlzChrg(getStringValue(node, "UTLZ_CHRG"));
+                gyeonggi.setPartclrMatr(getStringValue(node, "PARTCLR_MATR"));
+                gyeonggi.setImageNm(getStringValue(node, "IMAGE_NM"));
+                gyeonggi.setRefineWgs84Lat(getStringValue(node, "REFINE_WGS84_LAT"));
+                gyeonggi.setRefineWgs84Logt(getStringValue(node, "REFINE_WGS84_LOGT"));
 
-            Gyeonggi gyeonggi = Gyeonggi.builder()
-                    .parkNm(node.get("PARK_NM").asText())
-                    .signguNm(node.get("SIGNGU_NM").asText())
-                    .emdNm(node.get("EMD_NM").asText())
-                    .ar(node.get("AR").asText())
-                    .cmgpermsnTm(node.get("CMG_PERMSN_TM").asText())
-                    .cmgpermsnDay(node.get("CMG_PERMSN_DAY").asText())
-                    .opertinstNm(node.get("OPERT_INST_NM").asText())
-                    .reprsntTelNo(node.get("REPRSNT_TELNO").asText())
-                    .expn(node.get("EXPN").asText())
-                    .utlzChrg(node.get("UTLZ_CHRG").asText())
-                    .partclrMatr(node.get("PARTCLR_MATR").asText())
-                    .imageNm(node.get("IMAGE_NM").asText())
-                    .refineWgs84Lat(node.get("REFINE_WGS84_LAT").asText())
-                    .refineWgs84Logt(node.get("REFINE_WGS84_LOGT").asText())
-                    .build();
-
-                gyeonggiList.add(gyeonggiRepository.save(gyeonggi)); // 데이터베이스에 저장 후 리스트에 추가
+                gyeonggiList.add(gyeonggiRepository.save(gyeonggi));
             }
         } catch (Exception e) {
             log.error("Failed to save database", e);
         }
 
         return gyeonggiList;
+    }
+    private String getStringValue(JsonNode node, String fieldName) {
+        JsonNode fieldValue = node.get(fieldName);
+        return fieldValue != null && !fieldValue.isNull() ? fieldValue.asText() : "-";
     }
     public List<Gyeonggi> getAllGyeonggiData(){
         return gyeonggiRepository.findAll();
@@ -71,18 +74,6 @@ public class GyeonggiService {
     public Gyeonggi getGyeonggiDataById(Long id) {
         Optional<Gyeonggi> gyeonggiOptional = gyeonggiRepository.findById(id);
         return gyeonggiOptional.orElse(null);
-    }
-
-    public List<Gyeonggi> searchPark(String park) {
-        return gyeonggiRepository.findAllByParkNmContaining(park);
-    }
-
-    public List<Gyeonggi> searchSigngu(String signgu) {
-        return gyeonggiRepository.findAllBySignguNmContaining(signgu);
-    }
-
-    public List<Gyeonggi> searchEmd(String emd) {
-        return gyeonggiRepository.findAllByEmdNmContaining(emd);
     }
 
     @Transactional

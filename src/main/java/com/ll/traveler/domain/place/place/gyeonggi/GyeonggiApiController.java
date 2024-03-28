@@ -98,13 +98,8 @@ public class GyeonggiApiController {
         return gyeonggiService.getGyeonggiDataById(id);
     }
 
-    @GetMapping("/gyeonggi/signgu/{signgu}")
-    public List<Gyeonggi> searchSigngu(@PathVariable String signgu) {
-        return gyeonggiService.searchSigngu(signgu);
-    }
-
-    @GetMapping("/gyeonggi/emd/{emd}")
-    public List<Gyeonggi> searchEmd(@PathVariable String emd) {
-        return gyeonggiService.searchEmd(emd);
+    @GetMapping("/gyeonggi/search")
+    public List<Gyeonggi> searchAllGyeonggi(){
+        return gyeonggiService.getAllGyeonggiData();
     }
 }

@@ -33,25 +33,19 @@ public class UlsanApiService {
 
         for (JsonNode node : listNode) {
             Ulsan ulsan = Ulsan.builder()
-                    .unqId(node.get("unqId").asText())
-                    .city(node.get("city").asText())
-                    .facility(node.get("facility").asText())
-                    //.lcnsInfo(node.get("lcnsInfo").asText())
-                    //.lcnsAprDate(node.get("lcnsAprDate").asText())
-                    //.lcnsCncDate(node.get("lcnsCncDate").asText())
-                    .bsnsStts(node.get("bsnsStts").asText())
-                    //.failDate(node.get("failDate").asText())
-                    .tel(node.get("tel").asText())
-                    //.wkdBsn(node.get("wkdBsn").asText())
-                    //.wknBsn(node.get("wknBsn").asText())
-                    .cls(node.get("cls").asText())
-                    .remarks(node.get("remarks").asText())
-                    .zipCode(node.get("zipCode").asText())
-                    .streetNameAddress(node.get("streetNameAddress").asText())
-                    .address(node.get("address").asText())
-                    .lat(node.get("lat").asText())
-                    .lng(node.get("lng").asText())
-                    .rgstDate(node.get("rgstDate").asText())
+                    .unqId(getStringValue(node, "unqId"))
+                    .city(getStringValue(node, "city"))
+                    .facility(getStringValue(node, "facility"))
+                    .bsnsStts(getStringValue(node, "bsnsStts"))
+                    .tel(getStringValue(node, "tel"))
+                    .cls(getStringValue(node, "cls"))
+                    .remarks(getStringValue(node, "remarks"))
+                    .zipCode(getStringValue(node, "zipCode"))
+                    .streetNameAddress(getStringValue(node, "streetNameAddress"))
+                    .address(getStringValue(node, "address"))
+                    .lat(getStringValue(node, "lat"))
+                    .lng(getStringValue(node, "lng"))
+                    .rgstDate(getStringValue(node, "rgstDate"))
                     .build();
 
             ulsanList.add(ulsanApiRepository.save(ulsan));
@@ -59,21 +53,16 @@ public class UlsanApiService {
 
         return ulsanList;
     }
-
+    private String getStringValue(JsonNode node, String fieldName) {
+        JsonNode fieldValue = node.get(fieldName);
+        return fieldValue != null && !fieldValue.isNull() ? fieldValue.asText() : "-";
+    }
     public List<Ulsan> getAllUlsanData() {
         return ulsanApiRepository.findAllByIdLessThan(30);
     }
     public Ulsan getUlsanDataById(Long id) {
         Optional<Ulsan> ulsanOptional = ulsanApiRepository.findById(id);
         return ulsanOptional.orElse(null);
-    }
-
-    public List<Ulsan> searchFacility(String facility) {
-        return ulsanApiRepository.findAllByFacilityContaining(facility);
-    }
-
-    public List<Ulsan> searchCity(String city) {
-        return ulsanApiRepository.findAllByCityContaining(city);
     }
 
     @Transactional
