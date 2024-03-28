@@ -2,6 +2,7 @@ package com.ll.traveler.domain.place.place.gyeonggi2;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ll.traveler.domain.member.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,11 +31,12 @@ public class Gyeonggi2ApiService {
 
         for (JsonNode node : dataListNode) {
             Gyeonggi2 gyeonggi2 = Gyeonggi2.builder()
+                    .name((getStringValue(node, "업체명")))
                     .location(getStringValue(node, "지역명"))
                     .address(getStringValue(node, "주소"))
                     .contact(getStringValue(node, "전화번호"))
                     .time(getStringValue(node, "이용시간"))
-                    .homePage(getStringValue(node, "홈페이지"))
+                    .homepage(getStringValue(node, "홈페이지"))
                     .build();
 
             gyeonggi2List.add(gyeonggi2ApiRepository.save(gyeonggi2));
@@ -55,6 +57,16 @@ public class Gyeonggi2ApiService {
     public Gyeonggi2 getGyeonggi2DataById(Long id) {
         Optional<Gyeonggi2> gyeonggi2Optional = gyeonggi2ApiRepository.findById(id);
         return gyeonggi2Optional.orElse(null);
+    }
+
+    @Transactional
+    public void like(Gyeonggi2 gyeonggi2, Member member) {
+        gyeonggi2.like(member);
+    }
+
+    @Transactional
+    public void cancelLike(Gyeonggi2 gyeonggi2, Member member) {
+        gyeonggi2.cancelLike(member);
     }
 
 }

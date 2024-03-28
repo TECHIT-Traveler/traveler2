@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.ll.traveler.domain.member.member.entity.Member;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,5 +58,16 @@ public class Gangwon2ApiService {
         }
        return null;
     }
+
+    @Transactional
+    public void like(Gangwon2 gangwon2, Member member) {
+        gangwon2.like(member);
+    }
+
+    @Transactional
+    public void cancelLike(Gangwon2 gangwon2, Member member) {
+        gangwon2.cancelLike(member);
+    }
+
 
 }

@@ -2,6 +2,7 @@ package com.ll.traveler.domain.place.place.gyeonggi;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ll.traveler.domain.member.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +52,9 @@ public class GyeonggiService {
                 gyeonggi.setUtlzChrg(getStringValue(node, "UTLZ_CHRG"));
                 gyeonggi.setPartclrMatr(getStringValue(node, "PARTCLR_MATR"));
                 gyeonggi.setImageNm(getStringValue(node, "IMAGE_NM"));
+                gyeonggi.setRefineWgs84Lat(getStringValue(node, "REFINE_WGS84_LAT"));
+                gyeonggi.setRefineWgs84Logt(getStringValue(node, "REFINE_WGS84_LOGT"));
+
 
                 gyeonggiList.add(gyeonggiRepository.save(gyeonggi));
             }
@@ -71,6 +75,16 @@ public class GyeonggiService {
     public Gyeonggi getGyeonggiDataById(Long id) {
         Optional<Gyeonggi> gyeonggiOptional = gyeonggiRepository.findById(id);
         return gyeonggiOptional.orElse(null);
+    }
+
+    @Transactional
+    public void like(Gyeonggi gyeonggi, Member member) {
+        gyeonggi.like(member);
+    }
+
+    @Transactional
+    public void cancelLike(Gyeonggi gyeonggi, Member member) {
+        gyeonggi.cancelLike(member);
     }
 
 }
