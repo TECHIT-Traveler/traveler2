@@ -1,22 +1,24 @@
 <template>
   <div class="detail-container">
     <div class="detail-header">
-
+      <h1>{{o.업체명}}</h1>
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
-
     </div>
     <div class="detail-body">
       <div class="detail-info">
-        <p><strong>지역명:</strong> {{ o.지역명}}</p>
         <!-- 상세 이미지들 추가 -->
         <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
         </div>
+        <p><strong>지역명:</strong> {{ o.지역명}}</p>
         <strong>주소:</strong> {{ o.주소 }} <br>
         <strong>전화번호:</strong> {{ o.전화번호 }} <br>
         <strong>이용시간:</strong> {{ o.이용시간 }} <br>
-        <strong>홈페이지</strong> {{ o.홈페이지 }} <br>
-
+        <template v-if="o.홈페이지 !== null">
+          <strong>
+            홈페이지: <a :href="o.홈페이지">{{ o.홈페이지 }}</a>
+          </strong> <br>
+        </template>
       </div>
     </div>
     <div class="detail-buttons">
@@ -39,7 +41,7 @@ export default {
   data() {
     return {
       o: {},
-      mainImageUrl: 'https://via.placeholder.com/500x300',
+      mainImageUrl: '',
       detailImages: [
         'https://via.placeholder.com/150x150',
         'https://via.placeholder.com/150x150',
@@ -56,6 +58,7 @@ export default {
         .then(resp => resp.json())
         .then(data => {
           this.o = data
+          this.mainImageUrl = require((`@/assets/gyeonggi2/${id}.jpg`))
         })
         .catch(err => console.error(err))
     },

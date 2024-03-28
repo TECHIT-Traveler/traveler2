@@ -31,6 +31,7 @@ public class Gyeonggi2ApiService {
 
         for (JsonNode node : dataListNode) {
             Gyeonggi2 gyeonggi2 = Gyeonggi2.builder()
+                    .업체명(node.get("업체명").asText())
                     .지역명(node.get("지역명").asText())
                     .주소(node.get("주소").asText())
                     .전화번호(node.get("전화번호").asText())

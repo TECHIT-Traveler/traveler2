@@ -4,6 +4,10 @@
 			<div v-for="(o, k) in gyeonggi2Data" :key="k" class="card mb-4" @click="goToDetailPage(o.id)"
 				style="cursor: pointer">
 				<div class="card-body">
+          <div class="image-container">
+            <img :src="getImageUrl(o.id)" class="card-img-top image" alt="Image" />
+          </div>
+          <hr>
 					<h5 class="card-title">{{ o.업체명 }}</h5>
 					<hr>
 					<p class="card-text">
@@ -19,57 +23,77 @@
 	</div>
 </template>
 
-  <script>
+<script>
   export default {
-	mounted () {
-	  this.getGyeonggi2Data()()
-	},
-	name: 'Gyeonggi2',
-	data () {
-	  return {
-      gyeonggi2Data: []
-	  }
-	},
-	methods: {
-	  getGyeonggi2Data() {
-		fetch('http://localhost:8090/gyeonggi2')
-		  .then(resp => resp.json())
-		  .then(data => {
-			this.gyeonggi2Data = data
-		  }).catch(err => console.log(err))
-	  },
-	  goToDetailPage(id) {
-      	this.$router.push({ name: 'Gyeonggi2Detail', params: { id: id } })
-    	}
-	}
+mounted () {
+  this.getGyeonggi2Data()()
+},
+  name: 'Gyeonggi2',
+  data () {
+  return {
+    gyeonggi2Data: []
   }
+},
+  methods: {
+    getGyeonggi2Data() {
+    fetch('http://localhost:8090/gyeonggi2')
+      .then(resp => resp.json())
+      .then(data => {
+        this.gyeonggi2Data = data
+      }).catch(err => console.log(err))
+  },
+  goToDetailPage(id) {
+      this.$router.push({ name: 'Gyeonggi2Detail', params: { id: id } })
+    },
+    getImageUrl(id) {
+      return require(`@/assets/gyeonggi2/${id}.jpg`);
+    }
+  }
+}
+
   </script>
 
-  <style scoped>
-  .card-deck {
-	display: flex;
-	flex-wrap: wrap;
-	margin-right: -15px;
-	margin-left: -15px;
-  }
+<style scoped>
+.card-deck {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
 
-  .card {
-	flex: 0 0 33.333333%;
-	max-width: 33.333333%;
-	padding-right: 15px;
-	padding-left: 15px;
-	cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 것을 나타냅니다. */
-  }
+.card {
+  flex: 0 0 100%; /* Allow the card to expand to 100% of its container */
+  max-width: calc(600px + 30px); /* Limit the maximum width of the card */
+  margin-right: 15px;
+  margin-left: 15px;
+  cursor: pointer;
+}
 
-  .card-body {
-	flex: 1 1 auto;
-  }
+.image-container {
+  width: calc(100% - 0px);
+  height: 500px;
+  overflow: hidden;
+  position: relative;
+}
 
-  .card-title {
-	margin-bottom: 0.75rem;
-  }
+.image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-  .card-text {
-	margin-bottom: 1rem;
-  }
-  </style>
+.card-body {
+  flex: 1 1 auto;
+}
+
+.card-title {
+  margin-bottom: 0.75rem;
+}
+
+.card-text {
+  margin-bottom: 1rem;
+}
+</style>

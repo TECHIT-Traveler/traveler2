@@ -6,7 +6,6 @@
     </div>
     <div class="detail-body">
       <div class="detail-info">
-<!--        <p><strong>업체 구분:</strong> {{ o.업체구분 }}</p>-->
         <!-- 상세 이미지들 추가 -->
         <div class="detail-images">
           <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>

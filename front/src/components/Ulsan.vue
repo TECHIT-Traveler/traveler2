@@ -38,7 +38,7 @@ export default {
     return {
       ulsanData: []
     }
-  },
+},
   methods: {
     getUlsanData () {
       fetch('http://localhost:8090/ulsan')
