@@ -17,7 +17,7 @@
 <img src="https://img.shields.io/badge/Bootstrap-8000FF?style=for-the-badge&logo=Bootstrap&logoColor=white">
 <img src="https://img.shields.io/badge/JavaScript-FACC2E?style=for-the-badge&logo=JavaScript&logoColor=white">
 <img src="https://img.shields.io/badge/KAKAO MAP API-yellow?style=for-the-badge&logo=KAKAO&logoColor=white">
-<img src="https://img.shields.io/badge/VEU-08298A?style=for-the-badge&logo=VEU&logoColor=white">
+<img src="https://img.shields.io/badge/Vue.js-08298A?style=for-the-badge&logo=VEU&logoColor=white">
 
 ### BACK-END
 <img src="https://img.shields.io/badge/Java-orange?style=for-the-badge&logo=Java&logoColor=white"> <img src="https://img.shields.io/badge/Spring Boot-green?style=for-the-badge&logo=Spring Boot&logoColor=white">
