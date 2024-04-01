@@ -2,10 +2,13 @@ package com.ll.traveler.domain.place.place.gyeonggi2;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ll.traveler.domain.place.place.entity.Place;
+import com.ll.traveler.domain.place.place.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.ll.traveler.domain.place.place.entity.Gyeonggi2;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,18 +21,19 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class Gyeonggi2ApiService {
 
-    private final Gyeonggi2ApiRepository gyeonggi2ApiRepository;
+//    private final Gyeonggi2ApiRepository gyeonggi2ApiRepository;
+    private final PlaceRepository placeRepository;
 
     @Transactional
-    public List<Gyeonggi2> mapJsonToGyeonggi2List(String jsonData) throws IOException {
-        List<Gyeonggi2> gyeonggi2List = new ArrayList<>();
+    public List<Place> mapJsonToGyeonggi2List(String jsonData) throws IOException {
+        List<Place> gyeonggi2List = new ArrayList<>();
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(jsonData);
         JsonNode dataListNode = rootNode.get("data");
 
         for (JsonNode node : dataListNode) {
-            Gyeonggi2 gyeonggi2 = Gyeonggi2.builder()
+            Place place = Gyeonggi2.builder()
                     .location(getStringValue(node, "지역명"))
                     .address(getStringValue(node, "주소"))
                     .contact(getStringValue(node, "전화번호"))
@@ -37,7 +41,7 @@ public class Gyeonggi2ApiService {
                     .homePage(getStringValue(node, "홈페이지"))
                     .build();
 
-            gyeonggi2List.add(gyeonggi2ApiRepository.save(gyeonggi2));
+            gyeonggi2List.add(placeRepository.save(place));
         }
 
         return gyeonggi2List;
@@ -48,12 +52,12 @@ public class Gyeonggi2ApiService {
         return fieldValue != null && !fieldValue.isNull() ? fieldValue.asText() : "-";
     }
 
-    public List<Gyeonggi2> getAllGyeonggi2Data(){
-        return gyeonggi2ApiRepository.findAll();
+    public List<Place> getAllGyeonggi2Data(){
+        return placeRepository.findAll();
     }
 
-    public Gyeonggi2 getGyeonggi2DataById(Long id) {
-        Optional<Gyeonggi2> gyeonggi2Optional = gyeonggi2ApiRepository.findById(id);
+    public Place getGyeonggi2DataById(Long id) {
+        Optional<Place> gyeonggi2Optional = placeRepository.findById(id);
         return gyeonggi2Optional.orElse(null);
     }
 

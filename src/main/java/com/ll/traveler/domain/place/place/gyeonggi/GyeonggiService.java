@@ -2,7 +2,10 @@ package com.ll.traveler.domain.place.place.gyeonggi;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ll.traveler.domain.place.place.entity.Place;
+import com.ll.traveler.domain.place.place.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
+import com.ll.traveler.domain.place.place.entity.Gyeonggi;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,12 +23,12 @@ import java.util.Optional;
 @Transactional(readOnly = true) // 읽기전용
 public class GyeonggiService {
 
-    private final GyeonggiRepository gyeonggiRepository;
+    private final PlaceRepository placeRepository;
 
     @Transactional
-    public List<Gyeonggi> mapJsonToGyeonggiList(String jsonData) throws IOException {
+    public List<Place> mapJsonToGyeonggiList(String jsonData) throws IOException {
 
-        List<Gyeonggi> gyeonggiList = new ArrayList<>();
+        List<Place> gyeonggiList = new ArrayList<>();
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -38,21 +41,35 @@ public class GyeonggiService {
             JsonNode rowNode = dataListNode.get(1).get("row");
 
             for (JsonNode node : rowNode) {
-                Gyeonggi gyeonggi = new Gyeonggi();
-                gyeonggi.setParkNm(getStringValue(node, "PARK_NM"));
-                gyeonggi.setSignguNm(getStringValue(node, "SIGNGU_NM"));
-                gyeonggi.setEmdNm(getStringValue(node, "EMD_NM"));
-                gyeonggi.setAr(getStringValue(node, "AR"));
-                gyeonggi.setCmgpermsnTm(getStringValue(node, "CMG_PERMSN_TM"));
-                gyeonggi.setCmgpermsnDay(getStringValue(node, "CMG_PERMSN_DAY"));
-                gyeonggi.setOpertinstNm(getStringValue(node, "OPERT_INST_NM"));
-                gyeonggi.setReprsntTelNo(getStringValue(node, "REPRSNT_TELNO"));
-                gyeonggi.setExpn(getStringValue(node, "EXPN"));
-                gyeonggi.setUtlzChrg(getStringValue(node, "UTLZ_CHRG"));
-                gyeonggi.setPartclrMatr(getStringValue(node, "PARTCLR_MATR"));
-                gyeonggi.setImageNm(getStringValue(node, "IMAGE_NM"));
+                Place gyeonggi = Gyeonggi.builder()
+                        .name(getStringValue(node, "PARK_NM"))
+                        .signguNm(getStringValue(node, "SIGNGU_NM"))
+                        .emdNm(getStringValue(node, "EMD_NM"))
+                        .ar(getStringValue(node, "AR"))
+                        .cmgpermsnTm(getStringValue(node, "CMG_PERMSN_TM"))
+                        .cmgpermsnDay(getStringValue(node, "CMG_PERMSN_DAY"))
+                        .opertinstNm(getStringValue(node, "OPERT_INST_NM"))
+                        .contact(getStringValue(node, "REPRSNT_TELNO"))
+//                        .expn(getStringValue(node, "EXPN"))
+//                        .utlzChrg(getStringValue(node, "UTLZ_CHRG"))
+                        .partclrMatr(getStringValue(node, "PARTCLR_MATR"))
+                        .imageNm(getStringValue(node, "IMAGE_NM"))
+                        .build();
+//                Gyeonggi gyeonggi = new Gyeonggi();
+//                gyeonggi.setParkNm(getStringValue(node, "PARK_NM"));
+//                gyeonggi.setSignguNm(getStringValue(node, "SIGNGU_NM"));
+//                gyeonggi.setEmdNm(getStringValue(node, "EMD_NM"));
+//                gyeonggi.setAr(getStringValue(node, "AR"));
+//                gyeonggi.setCmgpermsnTm(getStringValue(node, "CMG_PERMSN_TM"));
+//                gyeonggi.setCmgpermsnDay(getStringValue(node, "CMG_PERMSN_DAY"));
+//                gyeonggi.setOpertinstNm(getStringValue(node, "OPERT_INST_NM"));
+//                gyeonggi.setReprsntTelNo(getStringValue(node, "REPRSNT_TELNO"));
+//                gyeonggi.setExpn(getStringValue(node, "EXPN"));
+//                gyeonggi.setUtlzChrg(getStringValue(node, "UTLZ_CHRG"));
+//                gyeonggi.setPartclrMatr(getStringValue(node, "PARTCLR_MATR"));
+//                gyeonggi.setImageNm(getStringValue(node, "IMAGE_NM"));
 
-                gyeonggiList.add(gyeonggiRepository.save(gyeonggi));
+                gyeonggiList.add(placeRepository.save(gyeonggi));
             }
         } catch (Exception e) {
             log.error("Failed to save database", e);
@@ -64,12 +81,12 @@ public class GyeonggiService {
         JsonNode fieldValue = node.get(fieldName);
         return fieldValue != null && !fieldValue.isNull() ? fieldValue.asText() : "-";
     }
-    public List<Gyeonggi> getAllGyeonggiData(){
-        return gyeonggiRepository.findAll();
+    public List<Place> getAllGyeonggiData(){
+        return placeRepository.findAll();
     }
 
-    public Gyeonggi getGyeonggiDataById(Long id) {
-        Optional<Gyeonggi> gyeonggiOptional = gyeonggiRepository.findById(id);
+    public Place getGyeonggiDataById(Long id) {
+        Optional<Place> gyeonggiOptional = placeRepository.findById(id);
         return gyeonggiOptional.orElse(null);
     }
 

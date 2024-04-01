@@ -2,28 +2,29 @@ package com.ll.traveler.domain.place.place.ulsan;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.ll.traveler.domain.place.place.entity.Place;
+import com.ll.traveler.domain.place.place.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import com.ll.traveler.domain.place.place.entity.Ulsan;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UlsanApiService {
-    private final UlsanApiRepository ulsanApiRepository;
+    private final PlaceRepository placeRepository;
+//    private final UlsanApiRepository ulsanApiRepository;
 
     @Transactional
-    public List<Ulsan> mapXmlToUlsanList(String xmlData) throws IOException {
-        List<Ulsan> ulsanList = new ArrayList<>();
+    public List<Place> mapXmlToUlsanList(String xmlData) throws IOException {
+        List<Place> ulsanList = new ArrayList<>();
 
         XmlMapper xmlMapper = new XmlMapper();
         JsonNode rootNode = xmlMapper.readTree(xmlData);
@@ -33,23 +34,23 @@ public class UlsanApiService {
         JsonNode listNode = dataListNode.get("list");
 
         for (JsonNode node : listNode) {
-            Ulsan ulsan = Ulsan.builder()
+            Place place = Ulsan.builder()
                     .unqId(getStringValue(node, "unqId"))
                     .city(getStringValue(node, "city"))
-                    .facility(getStringValue(node, "facility"))
-                    .bsnsStts(getStringValue(node, "bsnsStts"))
-                    .tel(getStringValue(node, "tel"))
+                    .name(getStringValue(node, "facility"))
+//                    .bsnsStts(getStringValue(node, "bsnsStts"))
+                    .contact(getStringValue(node, "tel"))
                     .cls(getStringValue(node, "cls"))
                     .remarks(getStringValue(node, "remarks"))
                     .zipCode(getStringValue(node, "zipCode"))
-                    .streetNameAddress(getStringValue(node, "streetNameAddress"))
+                    .address(getStringValue(node, "streetNameAddress"))
                     .address(getStringValue(node, "address"))
-                    .lat(getStringValue(node, "lat"))
-                    .lng(getStringValue(node, "lng"))
+                    .latitude(getStringValue(node, "lat"))
+                    .longitude(getStringValue(node, "lng"))
                     .rgstDate(getStringValue(node, "rgstDate"))
                     .build();
 
-            ulsanList.add(ulsanApiRepository.save(ulsan));
+            ulsanList.add(placeRepository.save(place));
         }
 
         return ulsanList;
@@ -58,13 +59,13 @@ public class UlsanApiService {
         JsonNode fieldValue = node.get(fieldName);
         return fieldValue != null && !fieldValue.isNull() ? fieldValue.asText() : "-";
     }
-    public List<Ulsan> getAllUlsanData() {
-        return ulsanApiRepository.findAllByIdLessThan(30);
+    public List<Place> getAllUlsanData() {
+        return placeRepository.findAllByIdLessThan(30);
     }
 
 
-    public Ulsan getUlsanDataById(Long id) {
-        Optional<Ulsan> ulsanOptional = ulsanApiRepository.findById(id);
+    public Place getUlsanDataById(Long id) {
+        Optional<Place> ulsanOptional = placeRepository.findById(id);
         return ulsanOptional.orElse(null);
     }
 

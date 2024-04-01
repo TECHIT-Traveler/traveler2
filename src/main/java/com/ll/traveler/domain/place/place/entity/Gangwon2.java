@@ -1,19 +1,19 @@
 package com.ll.traveler.domain.place.place.entity;
 
-import com.ll.traveler.global.jpa.IdEntity;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
-@Builder
+@SuperBuilder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
 @Getter
-public class PlacePhoto extends IdEntity {
-    private String path; // 사진 경로
-    @ManyToOne
-    private Place place;
+@Setter
+public class Gangwon2 extends Place { // 엔티티
+
+    private String division;
+
 }
