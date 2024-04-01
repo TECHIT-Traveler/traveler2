@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
@@ -58,6 +61,8 @@ public class UlsanApiService {
     public List<Ulsan> getAllUlsanData() {
         return ulsanApiRepository.findAllByIdLessThan(30);
     }
+
+
     public Ulsan getUlsanDataById(Long id) {
         Optional<Ulsan> ulsanOptional = ulsanApiRepository.findById(id);
         return ulsanOptional.orElse(null);

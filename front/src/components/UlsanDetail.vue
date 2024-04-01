@@ -6,9 +6,6 @@
     </div>
     <div class="detail-body">
       <div class="detail-info">
-        <!-- <div class="detail-images">
-          <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
-        </div> -->
         <p><strong>지번 주소:</strong> {{ o.address }}</p>
         <p><strong>도로명 주소:</strong> {{ o.streetNameAddress }}</p>
         <p><strong>연락처:</strong> {{ o.tel }}</p>
@@ -24,13 +21,17 @@
       <input type="file" accept="image/*" @change="handleImageUpload">
       <button @click="submitComment">작성</button>
     </div>
+    <div class="pagination">
+      <button @click="getPreviousUlsan" :disabled="currentPage === 1">이전</button>
+      <button @click="getNextUlsan" :disabled="currentPage === totalPages">다음</button>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'UlsanDetail',
-  data () {
+  data() {
     return {
       o: {},
       mainImageUrl: '',
@@ -38,14 +39,16 @@ export default {
         'https://via.placeholder.com/150x150',
         'https://via.placeholder.com/150x150',
         'https://via.placeholder.com/150x150'
-      ] // 상세 이미지 URL들
+      ], // 상세 이미지 URL들
+      currentPage: 1,
+      totalPages: 1
     }
   },
-  created () {
+  created() {
     this.getUlsanData(this.$route.params.id)
   },
   methods: {
-    initMap () {
+    initMap() {
       const mapContainer = document.getElementById('map')
       const mapOptions = {
         center: new window.kakao.maps.LatLng(this.o.위도, this.o.경도),
@@ -62,7 +65,7 @@ export default {
         infoWindow.open(this.map, marker)
       })
     },
-    getUlsanData (id) {
+    getUlsanData(id) {
       fetch(`http://localhost:8090/ulsan/${id}`)
         .then(resp => resp.json())
         .then(data => {
@@ -72,7 +75,16 @@ export default {
         })
         .catch(err => console.error(err))
     },
-    handleImageUpload (event) {
+    fetchUlsanData(pageNumber) {
+      fetch(`http://localhost:8090/ulsan?page=${pageNumber}`)
+        .then(resp => resp.json())
+        .then(data => {
+          this.o = data;
+          this.updatePagination(data);
+        })
+        .catch(err => console.error(err));
+    },
+    handleImageUpload(event) {
       const files = event.target.files
       if (files) {
         for (let i = 0; i < files.length; i++) {
@@ -84,7 +96,7 @@ export default {
         }
       }
     },
-    submitComment () {
+    submitComment() {
       // 여기에 댓글을 서버에 저장하는 코드를 추가하세요.
       // 예시: fetch를 사용하여 서버로 댓글 데이터를 보낼 수 있습니다.
       console.log('댓글 내용:', this.commentText)
@@ -93,13 +105,29 @@ export default {
       this.commentText = ''
       this.uploadedImages = []
     },
-    mounted () {
+    getPreviousUlsan() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+        this.fetchUlsanData(this.currentPage);
+      }
+    },
+    getNextUlsan() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.fetchUlsanData(this.currentPage);
+      }
+    },
+
+    updatePagination(ulsan) {
+      this.currentPage = ulsan.id;
+    },
+    mounted() {
       $('#summernote').summernote({
         tabsize: 2,
         height: 500
       })
     },
-    beforeDestroy () {
+    beforeDestroy() {
       // Summernote 인스턴스 제거
       if ($('#summernote').summernote) {
         $('#summernote').summernote('destroy')

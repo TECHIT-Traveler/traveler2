@@ -65,6 +65,7 @@ export default new Router({
       name: "GangwonDetail",
       component: GangwonDetail,
     },
+    // UlsanDetail 컴포넌트에 대한 경로 설정에서 ID를 동적으로 받도록 수정
     {
       path: "/ulsan/:id",
       name: "UlsanDetail",
