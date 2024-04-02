@@ -2,6 +2,7 @@ package com.ll.traveler.domain.place.place.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.ll.traveler.domain.member.member.entity.Member;
+import com.ll.traveler.domain.place.placeLike.entity.PlaceLike;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;

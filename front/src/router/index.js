@@ -10,6 +10,7 @@ import Place from "@/components/Place.vue";
 import PlaceDetail from "@/components/PlaceDetail.vue";
 
 import MyPage from "@/components/MyPage.vue";
+import Like from "@/components/Like.vue";
 
 Vue.use(Router);
 Vue.use(cookies);
@@ -46,5 +47,10 @@ export default new Router({
       name: "MyPage",
       component: MyPage,
     },
+    {
+      path: '/like/:id', // 동적 파라미터를 사용한 라우터 경로 설정
+      name: 'Like',
+      component: Like
+    }
   ],
 });
