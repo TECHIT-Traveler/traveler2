@@ -207,24 +207,3 @@ export default {
 }
 </style>
 
-<!--<div class="detail-body">-->
-<!--<div class="detail-info">-->
-<!--  <div class="detail-item" v-if="o.division">업종:{{ o.division }}</div>-->
-<!--  <div class="detail-item" v-if="o.address">주소:{{ o.address }}</div>-->
-<!--  <div class="detail-item" v-if="o.ar">규모시설면적: {{ o.ar }} </div>-->
-<!--  <div class="detail-item" v-if="o.cmgpermsnTm">출입허용시간: {{ o.cmgpermsnTm }} </div>-->
-<!--  <div class="detail-item" v-if="o.cmgpermsnDay">출입허용일: {{ o.cmgpermsnDay }} </div>-->
-<!--  <div class="detail-item" v-if="o.opertinstNm">운영기관명: {{ o.opertinstNm }} </div>-->
-<!--  <div class="detail-item" v-if="o.contact">대표전화번호: {{ o.contact }} </div>-->
-<!--  <div class="detail-item" v-if="o.utlzChrg">비용: {{ o.expn }} {{ o.utlzChrg }}</div>-->
-<!--  <div class="detail-item" v-if="o.partclrMatr">특이사항: {{ o.partclrMatr }}</div>-->
-<!--  <div class="detail-item" v-if="o.time">이용시간: {{ o.time }}</div>-->
-
-<!--  <div v-if="o.homepage !== null">-->
-<!--    <div class="detail-item" v-if="o.homepage">홈페이지: <a :href="o.homepage">{{ o.homepage }}</a></div>-->
-<!--  </div>-->
-
-<!--  <div class="detail-item" v-if="o.cls">휴무일: {{ o.cls }}</div>-->
-<!--</div>-->
-<!--<div id="map" style="width: 100%; height: 400px;"></div>-->
-<!--</div>-->

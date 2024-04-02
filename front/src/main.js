@@ -6,7 +6,6 @@ import router from "./router";
 import axios from "axios";
 import BootstrapVue from "bootstrap-vue";
 import "bootswatch/dist/Zephyr/bootstrap.min.css";
-import "./registerServiceWorker";
 
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;
