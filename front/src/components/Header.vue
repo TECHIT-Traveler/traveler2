@@ -10,18 +10,8 @@
         <div class="navbar-collapse collapse show" id="navbarColor03">
           <!-- 네비게이션 메뉴 -->
           <ul class="navbar-nav me-auto">
-            <b-nav-item-dropdown  class="nav-item active mr-auto">
-              <template #button-content>
-                <b>경기</b>
-              </template>
-              <b-dropdown-item @click="$router.push('/Gyeonggi')">경기</b-dropdown-item>
-              <b-dropdown-item @click="$router.push('/Gyeonggi2')">경기2</b-dropdown-item>
-            </b-nav-item-dropdown>
             <li class="nav-item">
-              <router-link to="/Gangwon" class="nav-link active">강원</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="/Ulsan" class="nav-link active">울산</router-link>
+              <router-link to="/Place" class="nav-link active">반려동물 동반가능 장소</router-link>
             </li>
           </ul>
             <!-- dropdown -->
@@ -104,8 +94,8 @@ export default {
   font-size: 16px;
 }
 .nav-item.dropdown{
-  list-style-type: none; 
-  padding-left: 0; 
+  list-style-type: none;
+  padding-left: 0;
 }
 .navbar-brand {
   margin-left: 8px;

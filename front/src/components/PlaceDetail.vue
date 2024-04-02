@@ -3,26 +3,33 @@
     <div class="detail-header">
       <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
     </div>
-      <h1>{{ o.parkNm }}</h1>
+    <h1>{{ o.name }}</h1>
     <div class="detail-body">
       <div class="detail-info">
-        <!-- <div class="detail-images">
-          <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
-        </div> -->
-        <div class="detail-item">주소:{{ o.signguNm}} {{ o.emdNm }}</div>
-        <div class="detail-item">규모시설면적: {{ o.ar }} </div>
-        <div class="detail-item">출입허용시간: {{ o.cmgpermsnTm }} </div>
-        <div class="detail-item">출입허용일: {{ o.cmgpermsnDay }} </div>
-        <div class="detail-item">운영기관명: {{ o.opertinstNm }} </div>
-        <div class="detail-item">대표전화번호: {{ o.reprsntTelNo }} </div> 
-        <div class="detail-item">비용: {{ o.expn }} {{ o.utlzChrg }}</div>
-        <div class="detail-item">특이사항: {{ o.partclrMatr }}</div>
+        <div class="detail-item" v-if="o.division">업종:{{ o.division }}</div>
+        <div class="detail-item" v-if="o.address">주소:{{ o.address }}</div>
+        <div class="detail-item" v-if="o.ar">규모시설면적: {{ o.ar }} </div>
+        <div class="detail-item" v-if="o.cmgpermsnTm">출입허용시간: {{ o.cmgpermsnTm }} </div>
+        <div class="detail-item" v-if="o.cmgpermsnDay">출입허용일: {{ o.cmgpermsnDay }} </div>
+        <div class="detail-item" v-if="o.opertinstNm">운영기관명: {{ o.opertinstNm }} </div>
+        <div class="detail-item" v-if="o.contact">전화번호: {{ o.contact }} </div>
+        <div class="detail-item" v-if="o.utlzChrg">비용: {{ o.expn }} {{ o.utlzChrg }}</div>
+        <div class="detail-item" v-if="o.partclrMatr">특이사항: {{ o.partclrMatr }}</div>
+        <div class="detail-item" v-if="o.time">이용시간: {{ o.time }}</div>
+        <div class="detail-item" v-if="o.cls">휴무일: {{ o.cls }}</div>
+        <div class="detail-item" v-if="o.remarks">비고: {{ o.remarks }}</div>
+        <div class="detail-item" v-if="o.zipCode">우편번호: {{ o.zipCode }}</div>
+
+        <div v-if="o.homepage !== null">
+          <div class="detail-item" v-if="o.homepage">홈페이지: <a :href="o.homepage">{{ o.homepage }}</a></div>
+        </div>
       </div>
+      <div id="map" style="width: 100%; height: 400px;"></div>
     </div>
     <div class="detail-buttons">
-        <button class="like-button"><i class="fas fa-heart"></i> 좋아요</button>
-        <button class="save-button"><i class="fas fa-star"></i> 저장</button>
-      </div>
+      <button class="btn btn-outline-danger" v-if="isLiked === true" @click="cancelLike"><i class="fas fa-heart" style="color: red"></i>{{ likeCount }}</button>
+      <button class="btn btn-outline-danger" v-else @click="like"><i class="fas fa-heart"></i>{{ likeCount }}</button>
+    </div>
     <div class="comment-form">
       <textarea v-model="commentText" placeholder="댓글을 작성해주세요" id="summernote">
 
@@ -35,41 +42,38 @@
 
 <script>
 export default {
-  name: 'GyeonggiDetail',
+  name: 'PlaceDetail',
   data() {
     return {
       o: {},
       mainImageUrl: '',
-      detailImages: [
-          'https://via.placeholder.com/150x150',
-          'https://via.placeholder.com/150x150',
-          'https://via.placeholder.com/150x150'
-        ] // 상세 이미지 URL들
+      isLiked: null,
+      likeCount: 0
     }
   },
   created() {
-    this.getGyeonggiData(this.$route.params.id)
+    this.getPlaceData(this.$route.params.id)
   },
   methods: {
     initMap () {
       const mapContainer = document.getElementById('map')
       const mapOptions = {
-        center: new window.kakao.maps.LatLng(this.o.refine_wgs84_lat, this.o.refine_wgs84_logt),
+        center: new window.kakao.maps.LatLng(this.o.latitude, this.o.longitude),
         level: 3
       }
       this.map = new window.kakao.maps.Map(mapContainer, mapOptions)
-      const markerPosition = new window.kakao.maps.LatLng(this.o.refine_wgs84_lat , this.o.refine_wgs84_logt)
+      const markerPosition = new window.kakao.maps.LatLng(this.o.latitude, this.o.longitude)
       const marker = new window.kakao.maps.Marker({ position: markerPosition })
       marker.setMap(this.map)
       window.kakao.maps.event.addListener(marker, 'click', () => {
         const infoWindow = new window.kakao.maps.InfoWindow({
-          content: `<div>${this.o.park_NM}</div>`
+          content: `<div>${this.o.name}</div>`
         })
         infoWindow.open(this.map, marker)
       })
     },
-    getGyeonggiData (id) {
-      fetch(`http://localhost:8090/gyeonggi/${id}`)
+    getPlaceData (id) {
+      fetch(`http://localhost:8090/api/v1/places/${id}`)
         .then(resp => resp.json())
         .then(data => {
           this.o = data
@@ -99,18 +103,6 @@ export default {
       this.commentText = '';
       this.uploadedImages = [];
     },
-    mounted() {
-      $('#summernote').summernote({
-      tabsize: 2,
-      height: 500
-    });
-    },
-    beforeDestroy() {
-    // Summernote 인스턴스 제거
-    if ($('#summernote').summernote) {
-      $('#summernote').summernote('destroy');
-    }
-  }
   }
 }
 </script>
@@ -181,23 +173,6 @@ export default {
   margin-top: 20px;
 }
 
-.like-button,
-.save-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  color: #fff;
-  background-color: #007bff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.like-button:hover,
-.save-button:hover {
-  background-color: #0056b3;
-}
-
 .comment-form {
   margin-top: 20px;
 }
@@ -231,3 +206,25 @@ export default {
   background-color: #0056b3;
 }
 </style>
+
+<!--<div class="detail-body">-->
+<!--<div class="detail-info">-->
+<!--  <div class="detail-item" v-if="o.division">업종:{{ o.division }}</div>-->
+<!--  <div class="detail-item" v-if="o.address">주소:{{ o.address }}</div>-->
+<!--  <div class="detail-item" v-if="o.ar">규모시설면적: {{ o.ar }} </div>-->
+<!--  <div class="detail-item" v-if="o.cmgpermsnTm">출입허용시간: {{ o.cmgpermsnTm }} </div>-->
+<!--  <div class="detail-item" v-if="o.cmgpermsnDay">출입허용일: {{ o.cmgpermsnDay }} </div>-->
+<!--  <div class="detail-item" v-if="o.opertinstNm">운영기관명: {{ o.opertinstNm }} </div>-->
+<!--  <div class="detail-item" v-if="o.contact">대표전화번호: {{ o.contact }} </div>-->
+<!--  <div class="detail-item" v-if="o.utlzChrg">비용: {{ o.expn }} {{ o.utlzChrg }}</div>-->
+<!--  <div class="detail-item" v-if="o.partclrMatr">특이사항: {{ o.partclrMatr }}</div>-->
+<!--  <div class="detail-item" v-if="o.time">이용시간: {{ o.time }}</div>-->
+
+<!--  <div v-if="o.homepage !== null">-->
+<!--    <div class="detail-item" v-if="o.homepage">홈페이지: <a :href="o.homepage">{{ o.homepage }}</a></div>-->
+<!--  </div>-->
+
+<!--  <div class="detail-item" v-if="o.cls">휴무일: {{ o.cls }}</div>-->
+<!--</div>-->
+<!--<div id="map" style="width: 100%; height: 400px;"></div>-->
+<!--</div>-->

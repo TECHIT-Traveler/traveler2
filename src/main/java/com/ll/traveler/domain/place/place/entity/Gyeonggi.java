@@ -1,6 +1,6 @@
 package com.ll.traveler.domain.place.place.entity;
 
-import com.ll.traveler.global.jpa.IdEntity;
+
 import jakarta.persistence.Entity;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -14,7 +14,6 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @Setter
 public class Gyeonggi extends Place {
-    private String parkNm;
     private String signguNm; // 시군구 명
     private String emdNm; // 읍면동명
     private String ar; // 규모시설면적

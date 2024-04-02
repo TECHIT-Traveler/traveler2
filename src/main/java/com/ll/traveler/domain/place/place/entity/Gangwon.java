@@ -12,7 +12,7 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor(access = PROTECTED)
 @Getter
 @Setter
-public class Gangwon2 extends Place { // 엔티티
+public class Gangwon extends Place { // 엔티티
 
     private String division;
 

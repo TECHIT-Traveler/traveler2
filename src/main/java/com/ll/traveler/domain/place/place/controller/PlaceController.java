@@ -3,15 +3,12 @@ package com.ll.traveler.domain.place.place.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.ll.traveler.domain.member.member.service.MemberService;
 import com.ll.traveler.domain.place.place.entity.*;
-import com.ll.traveler.domain.place.place.gangwon.Gangwon2ApiService;
-import com.ll.traveler.domain.place.place.gyeonggi.GyeonggiService;
-import com.ll.traveler.domain.place.place.gyeonggi2.Gyeonggi2ApiService;
 import com.ll.traveler.domain.place.place.service.PlaceService;
-import com.ll.traveler.domain.place.place.ulsan.UlsanApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
@@ -23,43 +20,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1")
 public class PlaceController {
 
-    private final Gangwon2ApiService gangwon2ApiService;
-//    private final Gangwon2ApiRepository gangwon2ApiRepository;
-    private final GyeonggiService gyeonggiService;
-    private final MemberService memberService;
-    private final UlsanApiService ulsanApiService;
-    private final Gyeonggi2ApiService gyeonggi2ApiService;
     private final PlaceService placeService;
 
-    @GetMapping("/apiGangwon2")
-    public String callGangwon2Api() throws IOException {
-        StringBuilder result = new StringBuilder();
-
-        String urlStr = "https://api.odcloud.kr/api/15096638/v1/uddi:718fc83f-ef5d-41b0-9290-afbe366ad802?page=1&perPage=10&serviceKey=CXFCnn25be0lhjZXJtmWuH4WDFCB7Pasr%2Bci5Gz8OV3w9jTtGldsTpX%2BqEL7KF9pLgeXornjNYMWDA%2BHhXp4xQ%3D%3D";
-
-
-        URL url = new URL(urlStr);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("GET");
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-
-        String returnLine;
-
-        while ((returnLine = br.readLine()) != null) {
-            result.append(returnLine + "\n\r");
-        }
-        con.disconnect();
-
-        gangwon2ApiService.mapJsonToGyeonggi2List(result.toString());
-
-        return result.toString();
-    }
-
-    @GetMapping("/apiGyeonggi")
-    public String callGyeonggiApi() throws IOException {
+    @GetMapping("/gyeonggi")
+    public String fetchGyeonggiApi() throws IOException {
         StringBuilder result = new StringBuilder();
 
         String urlstr = "https://openapi.gg.go.kr/OTHERHALFANIENTPARK?" +
@@ -81,13 +48,13 @@ public class PlaceController {
         }
         con.disconnect();
 
-        gyeonggiService.mapJsonToGyeonggiList(result.toString());
+        placeService.mapJsonToGyeonggiList(result.toString());
 
         return result.toString();
     }
 
-    @GetMapping("/apiGyeonggi2")
-    public String callGyeonggi2Api() throws IOException {
+    @GetMapping("/gyeonggi2")
+    public String fetchGyeonggi2Api() throws IOException {
         StringBuilder result = new StringBuilder();
 
         String urlStr = "https://api.odcloud.kr/api/15103199/v1/uddi:e352b824-15d9-49c0-9c50-ff01c13805cf?page=1&perPage=10&returnType=xml&serviceKey=CXFCnn25be0lhjZXJtmWuH4WDFCB7Pasr%2Bci5Gz8OV3w9jTtGldsTpX%2BqEL7KF9pLgeXornjNYMWDA%2BHhXp4xQ%3D%3D";
@@ -106,13 +73,38 @@ public class PlaceController {
         }
         con.disconnect();
 
-        gyeonggi2ApiService.mapJsonToGyeonggi2List(result.toString());
+        placeService.mapJsonToGyeonggi2List(result.toString());
 
         return result.toString();
     }
 
-    @GetMapping("/apiUlsan")
-    public String callUlsanApi() throws IOException {
+    @GetMapping("/gangwon")
+    public String fetchGangwonApi() throws IOException {
+        StringBuilder result = new StringBuilder();
+
+        String urlStr = "https://api.odcloud.kr/api/15096638/v1/uddi:718fc83f-ef5d-41b0-9290-afbe366ad802?page=1&perPage=10&serviceKey=CXFCnn25be0lhjZXJtmWuH4WDFCB7Pasr%2Bci5Gz8OV3w9jTtGldsTpX%2BqEL7KF9pLgeXornjNYMWDA%2BHhXp4xQ%3D%3D";
+
+
+        URL url = new URL(urlStr);
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+
+        String returnLine;
+
+        while ((returnLine = br.readLine()) != null) {
+            result.append(returnLine + "\n\r");
+        }
+        con.disconnect();
+
+        placeService.mapJsonToGangwonList(result.toString());
+
+        return result.toString();
+    }
+
+    @GetMapping("/ulsan")
+    public String fetchUlsanApi() throws IOException {
 
         StringBuilder result = new StringBuilder();
 
@@ -141,37 +133,25 @@ public class PlaceController {
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonData = objectMapper.writeValueAsString(jsonNode);
 
-        ulsanApiService.mapXmlToUlsanList(result.toString());
+        placeService.mapXmlToUlsanList(result.toString());
         return jsonData;
     }
 
-
-    @GetMapping("gyeonggi")
-    public List<Place> showGyeonggi() {
-        List<Place> gyeonggiList = gyeonggiService.getAllGyeonggiData();
-        return gyeonggiList;
+    @GetMapping("/places")
+    public List<Place> showPlace() {
+        List<Place> placeList = placeService.getAllPlaceData();
+        return placeList;
     }
 
-
-    @GetMapping("/gangwon2")
-    public List<Place> showGangwon2() {
-        List<Place> gangwon2List = gangwon2ApiService.getAllGangwon2Data();
-        return gangwon2List;
+    @GetMapping("/places/{id}")
+    public Place placeDetail(@PathVariable("id") Long id) {
+        return placeService.getPlaceDataById(id);
     }
 
-    @GetMapping("/ulsan")
-    public List<Place> showUlsan() {
-        List<Place> ulsanList = ulsanApiService.getAllUlsanData();
-        return ulsanList;
+    @GetMapping("/places/search")
+    public List<Place> search(){
+        return placeService.getAllPlaceData();
     }
-
-    @GetMapping("gyeonggi2")
-    public List<Place> showGyeonggi2() {
-        List<Place> gyeonggi2List = gyeonggi2ApiService.getAllGyeonggi2Data();
-        return gyeonggi2List;
-    }
-
-
 
 }
 
