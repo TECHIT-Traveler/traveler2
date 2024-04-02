@@ -28,7 +28,7 @@ export default new Router({
       component: Place,
     },
     {
-      path: "/Place/:id?",
+      path: "/places/:id",
       name: "PlaceDetail",
       component: PlaceDetail,
     },

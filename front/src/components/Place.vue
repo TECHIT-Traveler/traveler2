@@ -7,7 +7,7 @@
       <div
         v-for="(o, k) in filteredPlaceData"
         :key="k"
-        :to="'/Place/' + o.id"
+        :to="'/places/' + o.id"
         class="card mb-4"
         @click="goToDetailPage(o.id)"
         style="cursor: pointer">
