@@ -3,10 +3,12 @@ package com.ll.traveler.domain.place.place.ulsan;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.ll.traveler.domain.member.member.entity.Member;
+import com.ll.traveler.domain.member.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +22,7 @@ import java.util.List;
 public class UlsanApiController {
 
     private final UlsanApiService ulsanApiService;
+    private final MemberService memberService;
 
     @GetMapping("/apiUlsan")
     public String callApi() throws IOException {
@@ -60,8 +63,50 @@ public class UlsanApiController {
         List<Ulsan> ulsanList = ulsanApiService.getAllUlsanData();
         return ulsanList;
     }
+
     @GetMapping("/ulsan/{id}")
     public Ulsan detailUlsan(@PathVariable("id") Long id) {
         return ulsanApiService.getUlsanDataById(id);
+    }
+
+    @GetMapping("/ulsan/search")
+    public List<Ulsan> searchAllUlsan() {
+        return ulsanApiService.getAllUlsanData();
+    }
+
+    @GetMapping("/ulsan/checkLike/{id}")
+    public boolean checkLikeStatus(@PathVariable("id") Long id, Authentication authentication) {
+        Ulsan ulsan = ulsanApiService.getUlsanDataById(id);
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        Member member = memberService.findByUsername(username);
+
+        if (ulsan.hasLike(member)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @PostMapping("/ulsan/like/{id}")
+    public void like(@PathVariable("id") Long id,Authentication authentication) {
+        Ulsan ulsan = ulsanApiService.getUlsanDataById(id);
+        Member member = memberService.findByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
+
+        ulsanApiService.like(ulsan, member);
+    }
+
+    @PostMapping("/ulsan/cancelLike/{id}")
+    public void cancelLike(@PathVariable("id") Long id,Authentication authentication) {
+        Ulsan ulsan = ulsanApiService.getUlsanDataById(id);
+        Member member = memberService.findByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
+
+        ulsanApiService.cancelLike(ulsan, member);
+    }
+
+    @GetMapping("/ulsan/getLikeCount/{id}")
+    public int getLikeCount(@PathVariable("id") Long id) {
+        Ulsan ulsan = ulsanApiService.getUlsanDataById(id);
+
+        return ulsan.getLikes().size();
     }
 }

@@ -1,47 +1,43 @@
-<template>
-  <div class="detail-container">
-    <div class="detail-header">
-      <h1>{{o.업체명}}</h1>
-      <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
-    </div>
-    <div class="detail-body">
-      <div class="detail-info">
-        <!-- 상세 이미지들 추가 -->
-        <div class="detail-images">
-          <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
+
+    <template>
+      <div class="detail-container">
+        <div class="detail-header">
+          <h1>{{ o.name }}</h1>
+          <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
+
         </div>
-        <p><strong>지역명:</strong> {{ o.지역명}}</p>
-        <strong>주소:</strong> {{ o.주소 }} <br>
-        <strong>전화번호:</strong> {{ o.전화번호 }} <br>
-        <strong>이용시간:</strong> {{ o.이용시간 }} <br>
-        <template v-if="o.홈페이지 !== null">
-          <strong>
-            홈페이지: <a :href="o.홈페이지">{{ o.홈페이지 }}</a>
-          </strong> <br>
-        </template>
+        <div class="detail-body">
+          <div class="detail-info">
+            <!-- 상세 이미지들 추가 -->
+            <div class="detail-images">
+              <div class="detail-image" v-for="(image, index) in detailImages" :key="index" :style="{ backgroundImage: `url(${image})` }"></div>
+            </div>
+            <p><strong>지역명:</strong> {{ o.location}}</p>
+            <strong>주소:</strong> {{ o.address }} <br>
+            <strong>전화번호:</strong> {{ o.contact }} <br>
+            <strong>이용시간:</strong> {{ o.time }} <br>
+            <template v-if="o.homepage !== null">
+              <strong>
+                홈페이지: <a :href="o.homepage">{{ o.homepage }}</a>
+              </strong> <br>
+            </template>
+            <hr>
+          </div>
+          <div id="map" style="width: 100%; height: 400px;"></div>
+        </div>
+        <div class="detail-buttons">
+          <button class="btn btn-outline-danger" v-if="isLiked === true" @click="cancelLike"><i class="fas fa-heart" style="color: red"></i>{{ likeCount }}</button>
+          <button class="btn btn-outline-danger" v-else @click="like"><i class="fas fa-heart"></i>{{ likeCount }}</button>
+        </div>
       </div>
-    </div>
-    <div class="detail-buttons">
-      <button class="like-button"><i class="fas fa-heart"></i> 좋아요</button>
-      <button class="save-button"><i class="fas fa-star"></i> 저장</button>
-    </div>
-    <div class="comment-form">
-      <textarea v-model="commentText" placeholder="댓글을 작성해주세요" id="summernote">
-
-      </textarea>
-      <input type="file" accept="image/*" @change="handleImageUpload">
-      <button @click="submitComment">작성</button>
-    </div>
-  </div>
-</template>
-
+    </template>
 <script>
 export default {
   name: 'Gyeonggi2Detail',
   data() {
     return {
       o: {},
-      mainImageUrl: '',
+      mainImageUrl: 'https://via.placeholder.com/500x300',
       detailImages: [
         'https://via.placeholder.com/150x150',
         'https://via.placeholder.com/150x150',
@@ -51,14 +47,90 @@ export default {
   },
   created() {
     this.getGyeonggi2Data(this.$route.params.id)
+    this.checkLikeStatus(this.$route.params.id)
   },
   methods: {
+    checkLikeStatus (id) {
+      this.$axios.get(`http://localhost:8090/gyeonggi2/checkLike/${id}`)
+        .then(response => {
+          this.isLiked = response.data
+          console.log('isLiked: ', this.isLiked)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    like () {
+      const id = this.o.id
+      this.$axios.post(`http://localhost:8090/gyeonggi2/like/${id}`)
+        .then(response => {
+          console.log('좋아요 처리 성공')
+          this.isLiked = true
+          this.updateLikeCount(id)
+        })
+        .catch(error => {
+          console.error('좋아요 처리 중 오류 발생', error)
+          alert('로그인이 필요합니다.')
+        })
+    },
+    cancelLike () {
+      const id = this.o.id
+      this.$axios.post(`http://localhost:8090/gyeonggi2/cancelLike/${id}`)
+        .then(response => {
+          console.log('좋아요 취소 처리 성공')
+          this.isLiked = false
+          this.updateLikeCount(id)
+        })
+        .catch(error => {
+          console.error('좋아요 처리 중 오류 발생', error)
+          alert('로그인이 필요합니다.')
+        })
+    },
+    updateLikeCount (id) {
+      this.$axios.get(`http://localhost:8090/gyeonggi2/getLikeCount/${id}`)
+        .then(response => {
+          this.likeCount = response.data
+        })
+        .catch(error => {
+          console.log('좋아요 수 업데이트 중 오류 발생', error)
+        })
+    },
+    initMap () {
+      const mapContainer = document.getElementById('map')
+      const mapOptions = {
+        center: new window.kakao.maps.LatLng(37.5, 127),
+        level: 3
+      }
+      this.map = new window.kakao.maps.Map(mapContainer, mapOptions)
+      var geocoder = new window.kakao.maps.services.Geocoder()
+
+      geocoder.addressSearch(this.o.주소, (result, status) => {
+        if (status === window.kakao.maps.sevices.Status.OK) {
+          var coords = new window.kakao.maps.LatLng(result[0].y, result[0].x)
+
+          var marker = new window.kakao.Marker({
+            map: this.map,
+            position: coords
+          })
+
+          marker.setMap(this.map)
+
+          window.kakao.maps.event.addListener(marker, 'click', () => {
+            const infoWindow = new window.kakao.maps.InfoWindow({
+              content: `<div style="width:150px;text-align:center;padding:6px 0;">${this.o.업체명}</div>`
+            })
+            infoWindow.open(this.map, marker)
+          })
+        }
+      })
+    },
     getGyeonggi2Data(id) {
       fetch(`http://localhost:8090/gyeonggi2/${id}`)
         .then(resp => resp.json())
         .then(data => {
           this.o = data
           this.mainImageUrl = require((`@/assets/gyeonggi2/${id}.jpg`))
+          this.initMap()
         })
         .catch(err => console.error(err))
     },
@@ -158,7 +230,20 @@ export default {
   margin-top: 20px;
 }
 
-.like-button,
+.like-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.like-button:hover {
+  border: 0.5px solid black;
+}
+
 .save-button {
   padding: 10px 20px;
   font-size: 16px;

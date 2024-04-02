@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface UlsanApiRepository extends JpaRepository<Ulsan, Long> {
     List<Ulsan> findAllByIdLessThan(long id);
+
 }

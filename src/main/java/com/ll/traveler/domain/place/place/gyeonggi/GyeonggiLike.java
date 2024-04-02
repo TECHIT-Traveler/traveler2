@@ -1,5 +1,6 @@
-package com.ll.traveler.domain.review.review.entity;
+package com.ll.traveler.domain.place.place.gyeonggi;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ll.traveler.domain.member.member.entity.Member;
 import com.ll.traveler.global.jpa.IdEntity;
 import jakarta.persistence.Entity;
@@ -16,9 +17,12 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
 @Getter
-public class ReviewLike extends IdEntity {
+public class GyeonggiLike extends IdEntity {
     @ManyToOne
     private Member member;
+
     @ManyToOne
-    private Review review;
+    @JsonBackReference
+    private Gyeonggi post;
+
 }

@@ -1,9 +1,17 @@
 package com.ll.traveler.domain.place.place.ulsan;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.ll.traveler.domain.member.member.entity.Member;
+import com.ll.traveler.domain.place.place.gyeonggi2.Gyeonggi2Like;
 import com.ll.traveler.global.jpa.IdEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static jakarta.persistence.CascadeType.ALL;
 import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Builder
@@ -32,4 +40,27 @@ public class Ulsan extends IdEntity {
     private String lat;  // 위도
     private String lng; // 경도
     private String rgstDate; // 등록일자
+
+    @OneToMany(mappedBy = "post", cascade =  ALL, orphanRemoval = true)
+    @Builder.Default
+    @JsonManagedReference
+    private List<UlsanLike> likes = new ArrayList<>();
+
+    public boolean hasLike(Member member) {
+        return likes.stream()
+                .anyMatch(like -> like.getMember().equals(member));
+    }
+
+    public void like(Member member) {
+        likes.add(
+                UlsanLike.builder()
+                        .member(member)
+                        .post(this)
+                        .build()
+        );
+    }
+
+    public void cancelLike(Member member) {
+        likes.removeIf(like -> like.getMember().equals(member));
+    }
 }

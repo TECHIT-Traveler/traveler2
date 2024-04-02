@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.ll.traveler.domain.member.member.entity.Member;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,13 +32,13 @@ public class Gangwon2ApiService {
 
         for (JsonNode node : dataListNode) {
             Gangwon2 gangwon2 = Gangwon2.builder()
-                    .업체구분(node.get("업체구분").asText())
-                    .업체명(node.get("업체명").asText())
-                    .지번_주소(node.get("지번 주소").asText())
-                    .도로명_주소(node.get("도로명 주소").asText())
-                    .위도(node.get("위도").asText())
-                    .경도(node.get("경도").asText())
-                    .연락처(node.get("연락처").asText())
+                    .division(node.get("업체구분").asText())
+                    .name(node.get("업체명").asText())
+                    .lotAddress(node.get("지번 주소").asText())
+                    .streetAddress(node.get("도로명 주소").asText())
+                    .latitude(node.get("위도").asText())
+                    .longitude(node.get("경도").asText())
+                    .contact(node.get("연락처").asText())
                     .build();
 
             gangwon2List.add(gangwon2ApiRepository.save(gangwon2));
@@ -57,4 +58,16 @@ public class Gangwon2ApiService {
         }
        return null;
     }
+
+    @Transactional
+    public void like(Gangwon2 gangwon2, Member member) {
+        gangwon2.like(member);
+    }
+
+    @Transactional
+    public void cancelLike(Gangwon2 gangwon2, Member member) {
+        gangwon2.cancelLike(member);
+    }
+
+
 }

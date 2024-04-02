@@ -57,6 +57,8 @@ public class JWTFilter extends OncePerRequestFilter { // 요청에 담긴 JWT를
             System.out.println("token expired");
             filterChain.doFilter(request, response);
 
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 상태 코드 설정
+            response.setHeader("WWW-Authenticate", "Bearer"); // 인증 방식 명시
             return;
         }
 

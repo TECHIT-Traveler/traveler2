@@ -1,6 +1,7 @@
 package com.ll.traveler.global.security;
 
 import com.ll.traveler.domain.member.member.entity.Member;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
+    @Getter
     private Member member;
     private Map<String, Object> attributes;
     private static final long serialVersionUID = 1L;
@@ -32,6 +34,9 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
         this.member = member;
         this.attributes = attributes;
     }
+
+
+
 
    @Override
     public String getPassword(){
