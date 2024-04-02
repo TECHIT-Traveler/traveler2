@@ -1,7 +1,8 @@
-package com.ll.traveler.domain.place.place.entity;
+package com.ll.traveler.domain.place.placeLike.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ll.traveler.domain.member.member.entity.Member;
+import com.ll.traveler.domain.place.place.entity.Place;
 import com.ll.traveler.global.jpa.IdEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
