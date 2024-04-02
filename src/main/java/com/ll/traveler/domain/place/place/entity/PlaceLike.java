@@ -1,4 +1,4 @@
-package com.ll.traveler.domain.place.place.gangwon;
+package com.ll.traveler.domain.place.place.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.ll.traveler.domain.member.member.entity.Member;
@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -16,12 +17,12 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
 @Getter
-public class GangwonLike extends IdEntity {
+public class PlaceLike extends IdEntity {
     @ManyToOne
     private Member member;
 
     @ManyToOne
     @JsonBackReference
-    private Gangwon2 post;
+    private Place place;
 
 }

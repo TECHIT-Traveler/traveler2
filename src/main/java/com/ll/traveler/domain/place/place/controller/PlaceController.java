@@ -3,13 +3,14 @@ package com.ll.traveler.domain.place.place.controller;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.ll.traveler.domain.place.place.entity.*;
+import com.ll.traveler.domain.member.member.entity.Member;
+import com.ll.traveler.domain.member.member.service.MemberService;
+import com.ll.traveler.domain.place.place.entity.Place;
 import com.ll.traveler.domain.place.place.service.PlaceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +25,7 @@ import java.util.List;
 public class PlaceController {
 
     private final PlaceService placeService;
-
+    private final MemberService memberService;
     @GetMapping("/gyeonggi")
     public String fetchGyeonggiApi() throws IOException {
         StringBuilder result = new StringBuilder();
@@ -151,6 +152,42 @@ public class PlaceController {
     @GetMapping("/places/search")
     public List<Place> search(){
         return placeService.getAllPlaceData();
+    }
+
+    @GetMapping("/places/{id}/likes/status")
+    public boolean checkLikeStatus(@PathVariable("id") Long id, Authentication authentication) {
+        Place place = placeService.getPlaceDataById(id);
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        Member member = memberService.findByUsername(username);
+
+        if (place.hasLike(member)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @PostMapping("/places/{id}/likes")
+    public void like(@PathVariable("id") Long id, Authentication authentication) {
+        Place place = placeService.getPlaceDataById(id);
+        Member member = memberService.findByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
+
+        placeService.like(place, member);
+    }
+
+    @DeleteMapping("/places/{id}/likes")
+    public void cancelLike(@PathVariable("id") Long id, Authentication authentication) {
+        Place place = placeService.getPlaceDataById(id);
+        Member member = memberService.findByUsername(((UserDetails) authentication.getPrincipal()).getUsername());
+
+        placeService.cancelLike(place, member);
+    }
+
+    @GetMapping("/places/{id}/likes/count")
+    public int getLikeCount(@PathVariable("id") Long id) {
+        Place place = placeService.getPlaceDataById(id);
+
+        return place.getLikes().size();
     }
 
 }

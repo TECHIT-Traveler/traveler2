@@ -74,7 +74,7 @@ export default {
           this.userInfo = null
           this.$cookies.remove('Authorization')
           this.$cookies.remove('JSESSIONID')
-          window.location.href = '/'
+          // window.location.href = '/'
         })
         .catch(error => {
           console.error('로그아웃 실패', error)

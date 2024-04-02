@@ -3,6 +3,7 @@ package com.ll.traveler.domain.place.place.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.ll.traveler.domain.member.member.entity.Member;
 import com.ll.traveler.domain.place.place.entity.*;
 import com.ll.traveler.domain.place.place.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,11 @@ import java.util.Optional;
 @Transactional(readOnly = true) // 읽기전용
 public class PlaceService {
     private final PlaceRepository placeRepository;
+    // 카카오맵 API의 base URL
+    private static final String KAKAO_MAP_BASE_URL = "https://dapi.kakao.com/v2/local/search/address.json";
+
+    // 카카오맵 API 키
+    private static final String KAKAO_MAP_API_KEY = "YOUR_KAKAO_MAP_API_KEY";
 
     @Transactional
     public List<Place> mapJsonToGyeonggiList(String jsonData) throws IOException {
@@ -47,6 +53,8 @@ public class PlaceService {
                         .contact(getStringValue(node, "REPRSNT_TELNO"))
                         .partclrMatr(getStringValue(node, "PARTCLR_MATR"))
                         .imageNm(getStringValue(node, "IMAGE_NM"))
+                        .longitude(getStringValue(node, "REFINE_WGS84_LOGT"))
+                        .latitude(getStringValue(node, "REFINE_WGS84_LAT"))
                         .build();
 
                 gyeonggiList.add(placeRepository.save(place));
@@ -156,5 +164,15 @@ public class PlaceService {
         } else {
             return null;
         }
+    }
+
+    @Transactional
+    public void like(Place place, Member member) {
+        place.like(member);
+    }
+
+    @Transactional
+    public void cancelLike(Place place, Member member) {
+        place.cancelLike(member);
     }
 }
