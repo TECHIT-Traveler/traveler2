@@ -1,21 +1,13 @@
 import Vue from "vue";
 import Router from "vue-router";
+import cookies from "vue-cookies";
 
 import Login from "@/components/Login";
-import cookies from "vue-cookies";
 import Join from "@/components/Join";
 
 import HelloWorld from "@/components/HelloWorld.vue";
-
-import Gyeonggi from "@/components/Gyeonggi.vue";
-import Gyeonggi2 from "@/components/Gyeonggi2.vue";
-import Gangwon from "@/components/Gangwon.vue";
-import Ulsan from "@/components/Ulsan.vue";
-
-import GangwonDetail from "@/components/GangwonDetail.vue";
-import GyeonggiDetail from "@/components/GyeonggiDetail.vue";
-import Gyeonggi2Detail from "@/components/Gyeonggi2Detail.vue";
-import UlsanDetail from "@/components/UlsanDetail.vue";
+import Place from "@/components/Place.vue";
+import PlaceDetail from "@/components/PlaceDetail.vue";
 
 import MyPage from "@/components/MyPage.vue";
 
@@ -30,44 +22,14 @@ export default new Router({
       component: HelloWorld,
     },
     {
-      path: "/Gyeonggi",
-      name: "Gyeonggi",
-      component: Gyeonggi,
+      path: "/Place",
+      name: "Place",
+      component: Place,
     },
     {
-      path: "/Gyeonggi2",
-      name: "Gyeonggi2",
-      component: Gyeonggi2,
-    },
-    {
-      path: "/Gangwon",
-      name: "Gangwon",
-      component: Gangwon,
-    },
-    {
-      path: "/Ulsan",
-      name: "Ulsan",
-      component: Ulsan,
-    },
-    {
-      path: "/gyeonggi/:id",
-      name: "GyeonggiDetail",
-      component: GyeonggiDetail,
-    },
-    {
-      path: "/gyeonggi2/:id",
-      name: "Gyeonggi2Detail",
-      component: Gyeonggi2Detail,
-    },
-    {
-      path: "/gangwon2/:id",
-      name: "GangwonDetail",
-      component: GangwonDetail,
-    },
-    {
-      path: "/ulsan/:id",
-      name: "UlsanDetail",
-      component: UlsanDetail,
+      path: "/places/:id",
+      name: "PlaceDetail",
+      component: PlaceDetail,
     },
     {
       path: "/Login",

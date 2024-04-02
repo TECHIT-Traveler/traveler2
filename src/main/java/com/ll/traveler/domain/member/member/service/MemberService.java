@@ -50,6 +50,17 @@ public class MemberService {
     public Member findByUsername(String username) {
         return memberRepository.findByUsername(username);
     }
+
+    public Member findById(Long id) {
+        Optional<Member> memberOptional = memberRepository.findById(id);
+        if(memberOptional.isPresent()) {
+            return memberOptional.get();
+        }
+        return null;
+    }
+    public Member findByNickname(String nickname) {
+        return memberRepository.findByNickname(nickname);
+    }
 }
 
 

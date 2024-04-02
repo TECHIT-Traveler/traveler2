@@ -52,7 +52,6 @@ export default {
         this.$axios.get('http://localhost:8090/member/login-info', {
           withCredentials: true
         }).then(response => {
-          this.isAuthenticated = true
           this.userInfo = response.data
         }).catch(error => {
           console.log('사용자 정보 요청 실패', error)
