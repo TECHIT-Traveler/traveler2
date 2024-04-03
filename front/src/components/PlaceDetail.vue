@@ -1,7 +1,7 @@
 <template>
   <div class="detail-container">
     <div class="detail-header">
-      <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>
+<!--      <div class="main-image" :style="{ backgroundImage: `url(${mainImageUrl})` }"></div>-->
     </div>
     <h1>{{ o.name }}</h1>
     <div class="detail-body">
@@ -34,7 +34,7 @@
       <textarea v-model="commentText" placeholder="댓글을 작성해주세요" id="summernote">
 
       </textarea>
-      <input type="file" accept="image/*" @change="handleImageUpload">
+<!--      <input type="file" accept="image/*" @change="handleImageUpload">-->
       <button @click="submitComment">작성</button>
     </div>
   </div>
@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       o: {},
-      mainImageUrl: '',
+      // mainImageUrl: '',
       isLiked: null,
       likeCount: 0
     }
@@ -77,23 +77,23 @@ export default {
         .then(resp => resp.json())
         .then(data => {
           this.o = data
-          this.mainImageUrl = require(`@/assets/gyeonggi/${id}.jpg`);
+  //        this.mainImageUrl = require(`@/assets/gyeonggi/${id}.jpg`);
           this.initMap()
         })
         .catch(err => console.error(err))
     },
-    handleImageUpload(event) {
-      const files = event.target.files;
-      if (files) {
-        for (let i = 0; i < files.length; i++) {
-          const reader = new FileReader();
-          reader.readAsDataURL(files[i]);
-          reader.onload = (e) => {
-            this.uploadedImages.push(e.target.result);
-          }
-        }
-      }
-    },
+    // handleImageUpload(event) {
+    //   const files = event.target.files;
+    //   if (files) {
+    //     for (let i = 0; i < files.length; i++) {
+    //       const reader = new FileReader();
+    //       reader.readAsDataURL(files[i]);
+    //       reader.onload = (e) => {
+    //         this.uploadedImages.push(e.target.result);
+    //       }
+    //     }
+    //   }
+    // },
     submitComment() {
       // 여기에 댓글을 서버에 저장하는 코드를 추가하세요.
       // 예시: fetch를 사용하여 서버로 댓글 데이터를 보낼 수 있습니다.

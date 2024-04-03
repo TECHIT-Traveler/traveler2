@@ -41,6 +41,7 @@ export default {
       searchResult: [] // 검색 결과를 저장하는 데이터 추가
     };
   },
+
   computed: {
     filteredPlaceData() {
       if (!this.searchQuery) {
