@@ -21,6 +21,7 @@
     "bootswatch": "^5.3.3",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.4.5",
+    "number-is-nan": "^3.0.0",
     "path": "^0.12.7",
     "pwa": "^1.9.7",
     "register-service-worker": "^1.7.2",

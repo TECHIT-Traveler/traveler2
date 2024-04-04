@@ -1,5 +1,6 @@
 // import Vue from 'vue'
 // import Vuex from 'vuex'
+// import axios from 'axios'
 
 // Vue.use(Vuex)
 
@@ -9,7 +10,7 @@
 //     userInfo: null
 //   },
 //   mutations: {
-//     setAuthenticated(state, isAuthenticated) {
+//     setIsAuthenticated(state, isAuthenticated) {
 //       state.isAuthenticated = isAuthenticated
 //     },
 //     setUserInfo(state, userInfo) {
@@ -19,25 +20,17 @@
 //   actions: {
 //     async checkLoginStatus({ commit }) {
 //       try {
-//         const token = Vue.$cookies.get('Authorization')
+//         const token = this.$cookies.get('Authorization')
 //         if (token) {
-//           commit('setAuthenticated', true)
+//           const response = await axios.get('http://localhost:8090/member/login-info', {
+//             withCredentials: true
+//           })
+//           commit('setIsAuthenticated', true)
+//           commit('setUserInfo', response.data)
 //         }
 //       } catch (error) {
 //         console.error('로그인 사용자 정보 요청 실패', error)
 //       }
-//     },
-//     async logout({ commit }) {
-//       try {
-//         await Vue.$axios.post('http://localhost:8090/member/logout')
-//         commit('setAuthenticated', false)
-//         commit('setUserInfo', null)
-//         Vue.$cookies.remove('Authorization')
-//         Vue.$cookies.remove('JSESSIONID')
-//       } catch (error) {
-//         console.error('로그아웃 실패', error)
-//       }
 //     }
-//   },
-//   modules: {}
+//   }
 // })

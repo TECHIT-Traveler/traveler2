@@ -53,32 +53,104 @@ export default {
   },
   created() {
     this.getPlaceData(this.$route.params.id)
+    this.checkLikeStatus(this.$route.params.id)
   },
   methods: {
+    checkLikeStatus (id) {
+      this.$axios.get(`http://localhost:8090/api/v1/places/${id}/likes/status`)
+        .then(response => {
+          this.isLiked = response.data
+          console.log('isLiked: ', this.isLiked)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    like () {
+      const id = this.o.id
+      this.$axios.post(`http://localhost:8090/api/v1/places/${id}/likes`)
+        .then(response => {
+          console.log('좋아요 처리 성공')
+          this.isLiked = true
+          this.updateLikeCount(id)
+        })
+        .catch(error => {
+          console.error('좋아요 처리 중 오류 발생', error)
+          alert('로그인이 필요합니다.')
+        })
+    },
+    cancelLike () {
+      const id = this.o.id
+      this.$axios.delete(`http://localhost:8090/api/v1/places/${id}/likes`)
+        .then(response => {
+          console.log('좋아요 취소 처리 성공')
+          this.isLiked = false
+          this.updateLikeCount(id)
+        })
+        .catch(error => {
+          console.error('좋아요 처리 중 오류 발생', error)
+          alert('로그인이 필요합니다.')
+        })
+    },
+    updateLikeCount (id) {4
+      this.$axios.get(`http://localhost:8090/api/v1/places/${id}/likes/count`)
+        .then(response => {
+          this.likeCount = response.data
+        })
+        .catch(error => {
+          console.log('좋아요 수 업데이트 중 오류 발생', error)
+        })
+    },
     initMap () {
+      console.log("위도:", this.o.latitude)
       const mapContainer = document.getElementById('map')
-      const mapOptions = {
-        center: new window.kakao.maps.LatLng(this.o.latitude, this.o.longitude),
-        level: 3
+      let mapOptions = {};
+
+      if (!this.o.longitude) {
+        var geocoder = new window.kakao.maps.services.Geocoder();
+        geocoder.addressSearch(this.o.address, (result, status) => {
+          if (status === window.kakao.maps.services.Status.OK) {
+            this.o.latitude = result[0].y;
+            this.o.longitude = result[0].x;
+
+            // 위도와 경도를 가져온 후에 지도를 초기화합니다.
+            this.initializeMap(mapContainer);
+          }
+        });
+      } else {
+        // 이미 위도와 경도가 존재하는 경우에는 그대로 사용합니다.
+        this.initializeMap(mapContainer);
       }
-      this.map = new window.kakao.maps.Map(mapContainer, mapOptions)
-      const markerPosition = new window.kakao.maps.LatLng(this.o.latitude, this.o.longitude)
-      const marker = new window.kakao.maps.Marker({ position: markerPosition })
-      marker.setMap(this.map)
+    },
+
+    initializeMap(mapContainer) {
+      let mapOptions = {};
+      mapOptions.center = new window.kakao.maps.LatLng(this.o.latitude, this.o.longitude);
+      mapOptions.level = 3;
+      this.map = new window.kakao.maps.Map(mapContainer, mapOptions);
+      const markerPosition = new window.kakao.maps.LatLng(this.o.latitude, this.o.longitude);
+      const marker = new window.kakao.maps.Marker({ position: markerPosition });
+      marker.setMap(this.map);
       window.kakao.maps.event.addListener(marker, 'click', () => {
         const infoWindow = new window.kakao.maps.InfoWindow({
           content: `<div>${this.o.name}</div>`
-        })
-        infoWindow.open(this.map, marker)
-      })
+        });
+        infoWindow.open(this.map, marker);
+      });
     },
+
     getPlaceData (id) {
       fetch(`http://localhost:8090/api/v1/places/${id}`)
         .then(resp => resp.json())
         .then(data => {
           this.o = data
+<<<<<<< HEAD
   //        this.mainImageUrl = require(`@/assets/gyeonggi/${id}.jpg`);
+=======
+          // this.mainImageUrl = require(`@/assets/gyeonggi/${id}.jpg`);
+>>>>>>> ef16cbbd12466d5e60a42c08d2345a982ed0676a
           this.initMap()
+          this.likeCount = this.o.likes.length
         })
         .catch(err => console.error(err))
     },
@@ -171,6 +243,35 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
+}
+
+.like-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.like-button:hover {
+  border: 0.5px solid black;
+}
+
+.save-button:hover {
+  background-color: #0056b3;
 }
 
 .comment-form {

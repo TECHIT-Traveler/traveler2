@@ -3,8 +3,11 @@ package com.ll.traveler.domain.place.place.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.ll.traveler.domain.member.member.entity.Member;
 import com.ll.traveler.domain.place.place.entity.*;
 import com.ll.traveler.domain.place.place.repository.PlaceRepository;
+import com.ll.traveler.domain.place.placeLike.entity.PlaceLike;
+import com.ll.traveler.domain.place.placeLike.repository.PlaceLikeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -21,6 +25,7 @@ import java.util.Optional;
 @Transactional(readOnly = true) // 읽기전용
 public class PlaceService {
     private final PlaceRepository placeRepository;
+    private final PlaceLikeRepository placeLikeRepository;
 
     @Transactional
     public List<Place> mapJsonToGyeonggiList(String jsonData) throws IOException {
@@ -47,6 +52,8 @@ public class PlaceService {
                         .contact(getStringValue(node, "REPRSNT_TELNO"))
                         .partclrMatr(getStringValue(node, "PARTCLR_MATR"))
                         .imageNm(getStringValue(node, "IMAGE_NM"))
+                        .longitude(getStringValue(node, "REFINE_WGS84_LOGT"))
+                        .latitude(getStringValue(node, "REFINE_WGS84_LAT"))
                         .build();
 
                 gyeonggiList.add(placeRepository.save(place));
@@ -156,5 +163,22 @@ public class PlaceService {
         } else {
             return null;
         }
+    }
+
+    @Transactional
+    public void like(Place place, Member member) {
+        place.like(member);
+    }
+
+    @Transactional
+    public void cancelLike(Place place, Member member) {
+        place.cancelLike(member);
+    }
+
+    public List<Place> getLikedPlacesByMemberId(long id) {
+        List<PlaceLike> placeLikes = placeLikeRepository.findPlaceLikesByMemberId(id);
+        return placeLikes.stream()
+                .map(PlaceLike::getPlace)
+                .collect(Collectors.toList());
     }
 }
