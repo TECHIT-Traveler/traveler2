@@ -8,11 +8,10 @@ import com.ll.traveler.domain.review.review.dto.ReviewDTO;
 import com.ll.traveler.domain.review.review.entity.Review;
 import com.ll.traveler.domain.review.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.core.Authentication;
 
 import java.io.IOException;
 import java.util.List;
@@ -82,6 +81,13 @@ public class ReviewController {
         List<Review> reviews = reviewService.getReviewsByPlaceId(placeId);
 
         return ResponseEntity.ok(reviews);
+    }
+
+    @GetMapping("/{reviewId}")
+    public ResponseEntity<?> getReview(@PathVariable("reviewId") long reviewId) {
+        Review review = reviewService.getReview(reviewId);
+
+        return ResponseEntity.ok(review);
     }
 }
 

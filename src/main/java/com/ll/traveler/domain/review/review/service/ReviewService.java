@@ -4,7 +4,6 @@ import com.ll.traveler.domain.member.member.entity.Member;
 import com.ll.traveler.domain.member.member.repository.MemberRepository;
 import com.ll.traveler.domain.place.place.entity.Place;
 import com.ll.traveler.domain.place.place.repository.PlaceRepository;
-import com.ll.traveler.domain.review.photo.entity.Photo;
 import com.ll.traveler.domain.review.review.dto.ReviewDTO;
 import com.ll.traveler.domain.review.review.entity.Review;
 import com.ll.traveler.domain.review.review.repository.ReviewRepository;
@@ -86,5 +85,10 @@ public class ReviewService {
 
     public List<Review> getReviewsByPlaceId(long placeId) {
         return reviewRepository.findByPlaceId(placeId);
+    }
+
+    public Review getReview(long reviewId) {
+        return reviewRepository.findById(reviewId)
+                .orElse(null);
     }
 }

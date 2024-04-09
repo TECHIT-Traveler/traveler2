@@ -31,40 +31,31 @@
       <button class="btn btn-outline-danger" v-else @click="like"><i class="fas fa-heart"></i>{{ likeCount }}</button>
     </div>
     <!-- 리뷰 표시 부분 -->
-    <div class="table-responsive">
-      <table class="table table-hover">
-        <thead>
-        <tr>
-          <th scope="col"></th>
-          <th scope="col">작성자</th>
-          <th scope="col">리뷰</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(review, index) in reviews" :key="index">
-          <th scope="row">{{ index + 1 }}</th>
-          <td>{{ review.member.nickname }}</td>
-          <td>
-            <span v-if="!review.editing">{{ review.content }}</span>
-            <input v-else v-model="review.editedContent" type="text" class="form-control">
-          </td>
-          <!-- 수정 및 삭제 버튼 -->
-          <td>
-            <button class="btn btn-sm btn-primary" @click="editReview(review)">수정</button>
-            <button class="btn btn-sm btn-danger" @click="deleteReview(review)">삭제</button>
-          </td>
-          <td>
-            <button v-if="review.editing" class="btn btn-sm btn-success" @click="saveEdit(review)">저장</button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+    <div class="review-container">
+      <div class="card" v-for="(review, index) in reviews" :key="index">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <h5 class="card-title">{{ review.member.nickname }}</h5>
+            <div>
+              <template v-for="i in review.rating">
+                <i class="fas fa-star"></i>
+              </template>
+            </div>
+          </div>
+          <p class="card-text">{{ review.content }}</p>
+          <div v-if="checkReviewOwner(review.member.id)">
+            <button class="btn btn-primary" @click="editReview(review)">수정</button>
+            <button class="btn btn-danger" @click="deleteReview(review)">삭제</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="review-form">
-      <textarea v-model="reviewText" placeholder="리뷰를 작성해주세요"></textarea>
-      <input type="file" accept="image/*" @change="handleImageUpload">
-      <button class="btn btn-outline-primary" @click="submitReview">작성</button>
-    </div>
+    <button class="btn btn-primary" @click="goToReviewPage(o.id)">리뷰 작성하기</button>
+<!--    <div class="review-form">-->
+<!--      <textarea v-model="reviewText" placeholder="리뷰를 작성해주세요"></textarea>-->
+<!--      <input type="file" accept="image/*" @change="handleImageUpload">-->
+<!--      <button class="btn btn-outline-primary" @click="submitReview">작성</button>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -78,13 +69,14 @@ export default {
       isLiked: null,
       likeCount: 0,
       reviews: [],
-      reviewText: ''
+      userInfo: null
     }
   },
   created() {
+    this.getReviews()
     this.getPlaceData(this.$route.params.id)
     this.checkLikeStatus(this.$route.params.id)
-    this.getReviews()
+    this.getUserInfo()
   },
   methods: {
     checkLikeStatus(id) {
@@ -194,30 +186,12 @@ export default {
         }
       }
     },
-    submitReview() {
-      // 리뷰 데이터 전송 후 성공적으로 작성되면 리뷰 정보를 받아옴
-      const reviewData = {
-        content: this.reviewText // 리뷰 내용
-      };
-
-      // 리뷰 데이터를 서버로 전송
-      this.$axios.post(`http://localhost:8090/api/v1/places/${this.$route.params.id}/reviews`, reviewData)
-        .then(response => {
-          console.log('리뷰가 성공적으로 등록되었습니다.');
-          this.getReviews();
-          // 리뷰 작성 후 폼 초기화
-          this.reviewText = '';
-        })
-        .catch(error => {
-          console.error('리뷰 등록 중 오류 발생', error);
-          alert('리뷰를 등록하는 중 문제가 발생했습니다.');
-        });
-    },
     getReviews() {
       const placeId = this.$route.params.id;
       this.$axios.get(`http://localhost:8090/api/v1/places/${placeId}/reviews`)
         .then(response => {
           this.reviews = response.data;
+          console.log('reviews: ', this.reviews)
         })
         .catch(error => {
           console.log('등록된 리뷰 불러오는 중 오류 발생', error);
@@ -229,21 +203,7 @@ export default {
       if (confirmEdit) {
         // 수정할 리뷰의 ID를 얻어옵니다.
         const reviewId = review.id;
-        // 리뷰 수정 API에 요청을 보냅니다.
-        this.$axios.put(`http://localhost:8090/api/v1/places/${this.$route.params.id}/reviews/${reviewId}`, {
-          content: review.editedContent
-        })
-          .then(response => {
-            console.log('리뷰 수정이 성공적으로 완료되었습니다.');
-            this.getReviews();
-            // 성공적으로 수정되면 편집 상태를 false로 변경합니다.
-            review.editing = false;
-            // 화면을 갱신하거나 다시 불러올 수 있는 작업을 수행합니다.
-          })
-          .catch(error => {
-            console.error('리뷰 수정 중 오류 발생', error);
-            alert('리뷰 수정 중 문제가 발생했습니다.');
-          });
+        this.goToReviewModifyPage(reviewId, this.o.id);
       }
     },
     deleteReview(review) {
@@ -264,6 +224,29 @@ export default {
             alert('리뷰 삭제 중 문제가 발생했습니다.');
           });
       }
+    },
+    goToReviewPage (placeId) {
+      this.$router.push({ name: 'Review', params: { id: placeId }});
+    },
+    goToReviewModifyPage(reviewId, placeId) {
+      this.$router.push({name: 'ReviewModify', params: {reviewId: reviewId, placeId: placeId}});
+    },
+    checkReviewOwner(reviewOwnerId) {
+      // 로그인한 사용자인 경우에만 비교를 수행하도록 확인
+      if (this.userInfo) {
+        return this.userInfo.id === reviewOwnerId;
+      }
+      // 로그인하지 않은 경우에는 항상 false를 반환하여 리뷰 수정 및 삭제 버튼을 표시하지 않음
+      return false;
+    },
+    getUserInfo() {
+      this.$axios.get('http://localhost:8090/member/login-info', {
+        withCredentials: true
+      }).then(response => {
+        this.userInfo = response.data
+      }).catch(error => {
+        console.log('사용자 정보 요청 실패', error)
+      })
     }
   }
 }
@@ -343,6 +326,8 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
+.fa-star {
+  color: gold;
+}
 </style>
 
