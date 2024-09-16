@@ -11,6 +11,9 @@ import PlaceDetail from "@/components/PlaceDetail.vue";
 
 import MyPage from "@/components/MyPage.vue";
 import Like from "@/components/Like.vue";
+import Review from "@/components/Review.vue";
+import ReviewModify from "@/components/ReviewModify.vue";
+
 
 Vue.use(Router);
 Vue.use(cookies);
@@ -51,6 +54,16 @@ export default new Router({
       path: '/like/:id', // 동적 파라미터를 사용한 라우터 경로 설정
       name: 'Like',
       component: Like
+    },
+    {
+      path: '/review/:id',
+      name: 'Review',
+      component: Review
+    },
+    {
+      path: '/review/modify/:reviewId',
+      name: 'ReviewModify',
+      component: ReviewModify
     }
   ],
 });
